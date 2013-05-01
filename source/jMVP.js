@@ -4,7 +4,7 @@
  * @param view
  * @param presenter
  */
-function jMVP(model, view, presenter) {
+var jMVP = function(model, view, presenter) {
 
 };
 
