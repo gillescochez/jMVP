@@ -9,7 +9,7 @@ function jMVP(model, view, presenter) {
 };
 
 /**
- * Create a new jMVP View instance
+ * jMVP View object constructor
  * @constructor
  */
 jMVP.View = function() {
@@ -17,7 +17,7 @@ jMVP.View = function() {
 };
 
 /**
- * Create a new jMVP Presenter instance
+ * jMVP Presenter object constructor
  * @constructor
  */
 jMVP.Presenter = function() {
