@@ -2,9 +2,12 @@ var model = {
 	foo: 'test'
 };
 
-var view = new jMVP.View().template('<div>{{$foo}}</div>');
+var view = new jMVP.View();
+view.template('<div>{{$foo}}</div>');
 
-var mvp = new jMVP(model, view);
+var presenter = new jMVP.Presenter();
+
+var mvp = new jMVP(model, view, presenter);
 
 mvp.model.foo.setValue('TEST');
 mvp.view.template('<span>{{$foo}}</span>');
