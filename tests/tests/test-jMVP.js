@@ -1,0 +1,3 @@
+test('jMVP object', function(){
+
+});
