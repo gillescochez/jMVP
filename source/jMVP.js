@@ -4,7 +4,7 @@
  * @param view
  * @param presenter
  */
-var jMVP = function(model, view, presenter) {
+var jMVP = function(oModel, oView, oPresenter) {
 
 };
 
@@ -20,6 +20,10 @@ jMVP.View = function() {
  * jMVP Presenter object constructor
  * @constructor
  */
-jMVP.Presenter = function() {
+jMVP.Presenter = function(object) {
+
+};
+
+jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl) {
 
 };

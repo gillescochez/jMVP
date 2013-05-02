@@ -6,12 +6,8 @@ var view = new jMVP.View();
 view.template('<div>{{$foo}}</div>');
 
 var presenter = new jMVP.Presenter({
-	foo: {
-		format: {
-			// those can be array to handle multiple format converters
-			onSetValue: function() {},
-			onGetValue: function() {}
-		}
+	onFooClick: function() {
+
 	}
 });
 
