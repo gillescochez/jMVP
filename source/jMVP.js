@@ -1,11 +1,25 @@
 /**
  * Create a new jMVP instance
- * @param model
- * @param view
- * @param presenter
+ * @param oMVPModel
+ * @param oMVPView
+ * @param oMVPPresenter
  */
-var jMVP = function(oModel, oView, oPresenter) {
+var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
 
+};
+
+/**
+ * Convert a normal object model into a jMVC Model
+ * @param oModel
+ * @constructor
+ */
+jMVP.Model = function(oModel) {
+
+	this.model = oModel;
+
+	for( var prop in oModel) {
+
+	};
 };
 
 /**
@@ -23,7 +37,12 @@ jMVP.View = function() {
 jMVP.Presenter = function(object) {
 
 };
-
+/**
+ * Load resources and return a jMVP instance using those resources
+ * @param sModelUrl
+ * @param sViewUrl
+ * @param sPresenterUrl
+ */
 jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl) {
 
 };

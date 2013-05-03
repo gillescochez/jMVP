@@ -8,14 +8,34 @@ test('jMVP basic objects test', function(){
 	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 
+	ok(jMVP.Model, 'jMVP.Model exists');
+	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
+	equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
+	equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 arguments');
+
 	ok(jMVP.Presenter, 'jMVP.Presenter exists');
 	equal(typeof jMVP.Presenter, 'function', 'jMVP.Presenter is a function');
-	equal(jMVP.prototype.Presenter, undefined, 'jMVP.View is static');
-	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 3 arguments');
+	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
+	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 arguments');
 
 	ok(jMVP.import, 'jMVP.import exists');
 	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
-	equal(jMVP.prototype.import, undefined, 'jMVP.import is static');
-	equal(jMVP.import.length, 3, 'jMVP.Presenter expect 3 arguments');
+	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
+	equal(jMVP.import.length, 3, 'jMVP.import expect 3 arguments');
 
+});
+
+test('jMVP model to MVP Model', function() {
+
+	var oModel = new jMVP.Model({
+		foo: 'foo'
+	});
+
+	ok(oModel.model, 'object to store original modal');
+	equal(oModel.model.foo, 'foo', 'original data stored');
+	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
+
+	oModel.foo.setValue('FOO');
+	equal(oModel.model.foo, 'FOO', 'original data update');
+	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
 });
