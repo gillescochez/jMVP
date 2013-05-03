@@ -8,6 +8,11 @@ test('jMVP basic objects test', function(){
 	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 
+	ok(jMVP.Data, 'jMVP.Data exists');
+	equal(typeof jMVP.Data, 'function', 'jMVP.Data is a function');
+	equal(jMVP.Data && jMVP.prototype.Data === undefined, true, 'jMVP.Data is static');
+	equal(jMVP.Data.length, 2, 'jMVP.Data expect 1 arguments');
+
 	ok(jMVP.Model, 'jMVP.Model exists');
 	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
 	equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
@@ -25,11 +30,17 @@ test('jMVP basic objects test', function(){
 
 });
 
-test('jMVP model to MVP Model', function() {
+test('jMVP Model/Data object tests', function() {
 
 	var oModel = new jMVP.Model({
-		foo: 'foo'
-	});
+			foo: 'foo'
+		}),
+		oData = new jMVP.Data('a', 'a');
+
+	ok(oData.sKey, 'key property');
+	ok(oData.vValue, 'value property');
+	equal(oData.sKey, 'a', 'key is correct');
+	equal(oData.vValue, 'a', 'value is correct');
 
 	ok(oModel.model, 'object to store original modal');
 	equal(oModel.model.foo, 'foo', 'original data stored');

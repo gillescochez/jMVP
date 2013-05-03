@@ -19,7 +19,12 @@ jMVP.Model = function(oModel) {
 
 	for( var prop in oModel) {
 
-	};
+	}
+};
+
+jMVP.Data = function(sKey, vValue) {
+	this.sKey = sKey;
+	this.vValue = vValue;
 };
 
 /**
