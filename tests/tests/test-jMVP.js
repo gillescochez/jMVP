@@ -11,7 +11,7 @@ test('jMVP basic objects test', function(){
 	ok(jMVP.Data, 'jMVP.Data exists');
 	equal(typeof jMVP.Data, 'function', 'jMVP.Data is a function');
 	equal(jMVP.Data && jMVP.prototype.Data === undefined, true, 'jMVP.Data is static');
-	equal(jMVP.Data.length, 2, 'jMVP.Data expect 1 arguments');
+	equal(jMVP.Data.length, 1, 'jMVP.Data expect 1 arguments');
 
 	ok(jMVP.Model, 'jMVP.Model exists');
 	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
@@ -30,23 +30,28 @@ test('jMVP basic objects test', function(){
 
 });
 
-test('jMVP Model/Data object tests', function() {
+test('jMVP Model and Data objects tests', function() {
 
 	var oModel = new jMVP.Model({
 			foo: 'foo'
 		}),
-		oData = new jMVP.Data('a', 'a');
+		oData = new jMVP.Data('a');
 
-	ok(oData.sKey, 'key property');
 	ok(oData.vValue, 'value property');
-	equal(oData.sKey, 'a', 'key is correct');
 	equal(oData.vValue, 'a', 'value is correct');
 
-	ok(oModel.model, 'object to store original modal');
-	equal(oModel.model.foo, 'foo', 'original data stored');
+	ok(oData.getValue, 'data getter exists');
+	ok(oData.setValue, 'data setter exists');
+	ok(oData.onValueUpdated, 'data onValueUpdated callback exists');
+	equal(typeof oData.getValue, 'function', 'getter is function');
+	equal(typeof oData.setValue, 'function', 'setter is function');
+	equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
+
+	ok(oModel._, 'object to store original modal');
+	equal(oModel._.foo, 'foo', 'original data stored');
 	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
 
 	oModel.foo.setValue('FOO');
-	equal(oModel.model.foo, 'FOO', 'original data update');
+	equal(oModel._.foo, 'FOO', 'original data update');
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
 });
