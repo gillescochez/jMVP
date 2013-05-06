@@ -3,7 +3,7 @@
  * @constructor
  */
 jMVP.View = function() {
-
+	this.oTemplate = new jMVP.Template();
 };
 
 /**
@@ -11,5 +11,5 @@ jMVP.View = function() {
  * @constructor
  */
 jMVP.Template = function() {
-
+	this.eRoot = document.createElement('div');
 };

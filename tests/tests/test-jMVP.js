@@ -136,5 +136,15 @@ test('View / Template object instance', function() {
 	var oView = new jMVP.View(),
 		oTemplate = new jMVP.Template();
 
+	/**
+	 * jMVP.View instance
+	 */
+	ok(oView.oTemplate, 'view as template instance');
+	equal(oView.oTemplate.constructor, jMVP.Template, 'view template is instance of jMVP.Template')
 
+	/**
+	 * jMVP.Template instance
+	 */
+	ok(oTemplate.eRoot, 'eRoot property exists');
+	equal(oTemplate.eRoot.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div')
 });
