@@ -1,17 +1,38 @@
-test('jMVP basic objects test', function(){
+test('Objects / Static methods', function(){
+
+	/**
+	 * jMVP object
+	 */
 
 	ok(window.jMVP, 'jMVP exists');
 	equal(typeof jMVP, 'function', 'jMVP is a function');
 	equal(jMVP.length, 3, 'jMVP expect 3 arguments');
 
+	ok(jMVP.import, 'jMVP.import exists');
+	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
+	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
+	equal(jMVP.import.length, 3, 'jMVP.import expect 3 arguments');
+
+	/**
+	 * jMVP View object
+	 */
+
 	ok(jMVP.View, 'jMVP.View exists');
 	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
+
+	/**
+	 * jMVP Data object
+	 */
 
 	ok(jMVP.Data, 'jMVP.Data exists');
 	equal(typeof jMVP.Data, 'function', 'jMVP.Data is a function');
 	equal(jMVP.Data && jMVP.prototype.Data === undefined, true, 'jMVP.Data is static');
 	equal(jMVP.Data.length, 1, 'jMVP.Data expect 1 argument');
+
+	/**
+	 * jMVP Model object
+	 */
 
 	ok(jMVP.Model, 'jMVP.Model exists');
 	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
@@ -23,19 +44,18 @@ test('jMVP basic objects test', function(){
 	equal(jMVP.Model.dataBind && jMVP.Model.prototype.dataBind === undefined, true, 'jMVP.Model is static');
 	equal(jMVP.Model.dataBind.length, 3, 'jMVP.Model expect 3 arguments');
 
+	/**
+	 * jMVP Presenter object
+	 */
+
 	ok(jMVP.Presenter, 'jMVP.Presenter exists');
 	equal(typeof jMVP.Presenter, 'function', 'jMVP.Presenter is a function');
 	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
 	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 argument');
 
-	ok(jMVP.import, 'jMVP.import exists');
-	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
-	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
-	equal(jMVP.import.length, 3, 'jMVP.import expect 3 arguments');
-
 });
 
-test('jMVP Model and Data objects tests', function() {
+test('Model / Data object instances', function() {
 
 	var oModel = new jMVP.Model({
 			foo: 'foo',
