@@ -11,17 +11,22 @@ test('jMVP basic objects test', function(){
 	ok(jMVP.Data, 'jMVP.Data exists');
 	equal(typeof jMVP.Data, 'function', 'jMVP.Data is a function');
 	equal(jMVP.Data && jMVP.prototype.Data === undefined, true, 'jMVP.Data is static');
-	equal(jMVP.Data.length, 1, 'jMVP.Data expect 1 arguments');
+	equal(jMVP.Data.length, 1, 'jMVP.Data expect 1 argument');
 
 	ok(jMVP.Model, 'jMVP.Model exists');
 	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
 	equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
-	equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 arguments');
+	equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 argument');
+
+	ok(jMVP.Model.dataBind, 'jMVP.Model.dataBind exists');
+	equal(typeof jMVP.Model.dataBind, 'function', 'jMVP.Model.dataBind is a function');
+	equal(jMVP.Model.dataBind && jMVP.Model.prototype.dataBind === undefined, true, 'jMVP.Model is static');
+	equal(jMVP.Model.dataBind.length, 3, 'jMVP.Model expect 3 arguments');
 
 	ok(jMVP.Presenter, 'jMVP.Presenter exists');
 	equal(typeof jMVP.Presenter, 'function', 'jMVP.Presenter is a function');
 	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
-	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 arguments');
+	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 argument');
 
 	ok(jMVP.import, 'jMVP.import exists');
 	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
@@ -33,7 +38,8 @@ test('jMVP basic objects test', function(){
 test('jMVP Model and Data objects tests', function() {
 
 	var oModel = new jMVP.Model({
-			foo: 'foo'
+			foo: 'foo',
+			boo:'boo'
 		}),
 		oData = new jMVP.Data('a');
 

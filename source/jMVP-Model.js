@@ -5,16 +5,26 @@
  */
 jMVP.Model = function(oModel) {
 
-	// store raw model
+	// store raw model reference
 	this._ = oModel;
 
 	// create model API
 	for(var sKey in oModel) {
-		this[sKey] = new jMVP.Data(oModel[sKey]);
-		this[sKey].onValueUpdated = function(vValue) {
-			oModel[sKey] = vValue;
-		};
+		jMVP.Model.dataBind(this, oModel, sKey);
 	}
+};
+
+/**
+ * Create the setter/getter API and keep the raw data sync
+ * @param oInstance
+ * @param oModel
+ * @param sKey
+ */
+jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
+	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
+	oInstance[sKey].onValueUpdated = function(vValue) {
+		oModel[sKey] = vValue;
+	};
 };
 
 /**
