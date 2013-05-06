@@ -36,7 +36,7 @@ test('Objects / Static methods', function(){
 	ok(jMVP.Element, 'jMVP.Element exists');
 	equal(typeof jMVP.Element, 'function', 'jMVP.Element is a function');
 	equal(jMVP.prototype.Element, undefined, 'jMVP.Element is static');
-	equal(jMVP.Element.length, 0, 'jMVP.Element expect 0 argument');
+	equal(jMVP.Element.length, 1, 'jMVP.Element expect 1 argument');
 
 	/**
 	 * jMVP Data object
@@ -156,16 +156,22 @@ test('View / Template / Element objects', function() {
 	 * jMVP.Template instance
 	 */
 	ok(oTemplate.eRoot, 'eRoot property exists');
-	equal(oTemplate.eRoot.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
+	equal(oTemplate.eRoot.constructor, jMVP.Element, 'eRoot is an instance of jMVP.Element');
 
 	ok(oTemplate.addElement, 'addElement method exists');
 	ok(oTemplate.removeElement, 'removeElement method exists');
 	ok(oTemplate.updateElement, 'updateElement method exists');
 
 	/**
-	 * jMVP.Element
+	 * jMVP.Element instance
 	 */
+	ok(oElement.eElement, 'dom element exists');
+	equal(oElement.eElement.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
+
 	ok(oElement.append, 'append exists');
+	oElement.append(document.createElement('div'));
+	equal(oElement.eElement.innerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
+
 	ok(oElement.prepend, 'append exists');
 	ok(oElement.html, 'append exists');
 	ok(oElement.text, 'append exists');

@@ -14,7 +14,7 @@ jMVP.View.prototype.bindTemplate = function(){};
  * @constructor
  */
 jMVP.Template = function() {
-	this.eRoot = document.createElement('div');
+	this.eRoot = new jMVP.Element();
 };
 
 jMVP.Template.prototype.addElement = function(){};
@@ -23,11 +23,16 @@ jMVP.Template.prototype.updateElement = function(){};
 
 /**
  * jMVP Element object constructor
+ * @param [sTagName] Custom nodeName
  * @constructor
  */
-jMVP.Element = function(){};
+jMVP.Element = function(sTagName){
+	this.eElement = document.createElement(sTagName || 'div');
+};
 
-jMVP.Element.prototype.append = function(){};
+jMVP.Element.prototype.append = function(eElement){
+	this.eElement.appendChild(eElement);
+};
 jMVP.Element.prototype.prepend = function(){};
 jMVP.Element.prototype.html = function(){};
 jMVP.Element.prototype.text = function(){};
