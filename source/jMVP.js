@@ -10,12 +10,25 @@ var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
 
 /**
  * Load resources and return a jMVP instance using those resources
- * @param sModelUrl
- * @param sViewUrl
- * @param sPresenterUrl
+ * @param sReference
  * @param fCallback
  */
-jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl, fCallback) {
+jMVP.import = function(sReference, fCallback) {
+
+};
+
+jMVP.oViews = {};
+jMVP.view = function(sReference, oView){
+
+};
+
+jMVP.oModels = {};
+jMVP.model = function(sReference, oModel){
+
+};
+
+jMVP.oPresenters = {};
+jMVP.presenter = function(sReference, oPresenter){
 
 };
 

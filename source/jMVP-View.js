@@ -24,16 +24,45 @@ jMVP.View.prototype.setTemplate = function(oTemplate) {
 };
 
 /**
+ * Render the view to a given element
+ * @param eTarget
+ */
+jMVP.View.prototype.render = function(eTarget) {
+	eTarget.appendChild(this.oTemplate.getElement());
+};
+
+/**
  * jMVP Template object constructor
  * @constructor
  */
 jMVP.Template = function() {
-	this.eRoot = new jMVP.Element();
+	this.oRoot = new jMVP.Element();
+	this.oElements = {};
 };
 
-jMVP.Template.prototype.addElement = function(){};
-jMVP.Template.prototype.removeElement = function(){};
-jMVP.Template.prototype.updateElement = function(){};
+/**
+ * Return the template DOM element
+ * @returns {object}
+ */
+jMVP.Template.prototype.getElement = function(){
+	return this.oRoot.eElement;
+};
+
+/**
+ * Add an element to the current template instance
+ * @param oElementConfig
+ */
+jMVP.Template.prototype.addElement = function(oElementConfig){
+
+	if (!oElementConfig.hasOwnProperty('id')) {
+		throw "addElement: id property must be provided";
+	};
+
+	this.oElements[oElementConfig.id] = oElementConfig;
+};
+
+jMVP.Template.prototype.removeElement = function(oElementReference){};
+jMVP.Template.prototype.updateElement = function(oElementReference){};
 
 /**
  * jMVP Element object constructor
@@ -44,6 +73,10 @@ jMVP.Element = function(sTagName){
 	this.eElement = document.createElement(sTagName || 'div');
 };
 
+/**
+ * Append a DOM element into the current element
+ * @param eElement
+ */
 jMVP.Element.prototype.append = function(eElement){
 	this.eElement.appendChild(eElement);
 };

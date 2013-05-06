@@ -1,40 +1,43 @@
 var model = {
-	foo: 'test'
+	sitetitle: 'jMVP site',
+	pagetitle: 'Hello World!',
+	pagecontent: '<p>Welcome to a jMVP powered website</p>',
+	isBig: true,
+	isRed: true
 };
 
-var view = new jMVP.View();
-
-// TODO implement API and functionality
-view.template('<div>{{$foo}}</div>');
-
-// TODO implement functionality
-var presenter = new jMVP.Presenter({
-
-	onFooClick: function() {
-
+var view = {
+	header: {
+		logo:{},
+		search: {
+			tag: 'input',
+			attributes: {
+				type: 'search'
+			}
+		}
+	},
+	page: {
+		title: {
+			tag: 'h1',
+			text: 'pagetitle',
+			classNames: {
+				red: 'isRed',
+				big: 'isBig'
+			}
+		},
+		content: {
+			html: 'pagecontent'
+		}
 	}
-});
+};
 
-// TODO  implement functionality
-var jmvp = new jMVP(model, view, presenter);
+var presenter = {
 
-
-// TODO implement API and functionality
-jmvp.model.foo.setValue('TEST');
-jmvp.view.template('<span>{{$foo}}</span>');
-
-
-// TODO implement functionality
-jMVP.import('model-file', 'view-file', 'presenter-file', function(jmvp) {
-
-});
-
-var oTemplate = new jMVP.Template();
-
-var oElement = oTemplate.addElement({
-	reference: 'model:foo',
-	text: 'model:foo',
-	attr: {
-		title: 'model:foo'
+	onTitleClick: function(oDOMEvent, oModel, oView) {
+		// should toggle red class on h1 attribute
+		oModel.isRed.setValue(!oModel.isRed.getValue());
 	}
-});
+};
+
+
+jMVP(model, view, presenter);
