@@ -28,3 +28,13 @@ jmvp.view.template('<span>{{$foo}}</span>');
 jMVP.import('model-file', 'view-file', 'presenter-file', function(jmvp) {
 
 });
+
+var oTemplate = new jMVP.Template();
+
+var oElement = oTemplate.addElement({
+	reference: 'model:foo',
+	text: 'model:foo',
+	attr: {
+		title: 'model:foo'
+	}
+});

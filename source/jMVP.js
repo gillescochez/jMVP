@@ -13,6 +13,7 @@ var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
  * @param sModelUrl
  * @param sViewUrl
  * @param sPresenterUrl
+ * @param fCallback
  */
 jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl, fCallback) {
 

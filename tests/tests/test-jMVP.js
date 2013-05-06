@@ -101,7 +101,6 @@ test('jMVP.each', function() {
 	// with array
 	count = 0;
 	jMVP.each(aData, function(vValue, nIdx) {
-		console.log('aData: ', vValue, nIdx)
 		equal(arguments.length, 2, '2 arguments in callback');
 		equal(typeof nIdx, 'number', 'index is number');
 		count++;
@@ -118,7 +117,8 @@ test('Model / Data objects', function() {
 			boo:'boo'
 		},
 		oModel = new jMVP.Model(oRawData),
-		oData = new jMVP.Data('a');
+		oData = new jMVP.Data('a'),
+		valueFromOnValueUpdated;
 
 	ok(oData.vValue, 'value property');
 	equal(oData.vValue, 'a', 'value is correct');
@@ -129,9 +129,13 @@ test('Model / Data objects', function() {
 	equal(typeof oData.getValue, 'function', 'getter is function');
 	equal(typeof oData.setValue, 'function', 'setter is function');
 	equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
+	oData.onValueUpdated = function(vValue) {
+		valueFromOnValueUpdated = vValue;
+	};
+	oData.setValue('A');
+	equal(valueFromOnValueUpdated, 'A', 'onValueUpdated return updated data');
 
 	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
-
 	oModel.foo.setValue('FOO');
 	equal(oRawData.foo, 'FOO', 'original data update');
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
@@ -150,7 +154,12 @@ test('View / Template / Element objects', function() {
 	ok(oView.oTemplate, 'view has template instance');
 	equal(oView.oTemplate.constructor, jMVP.Template, 'view template is an instance of jMVP.Template');
 
-	ok(oView.bindTemplate, 'oView.bindTemplate method exists');
+	ok(oView.getTemplate, 'oView.getTemplate method exists');
+	equal(oView.getTemplate.length, 0, 'getTemplate as 0 argument');
+	deepEqual(oView.getTemplate(), oView.oTemplate, 'getTemplate return oTemplate');
+
+	ok(oView.setTemplate, 'oView.setTemplate method exists');
+	equal(oView.setTemplate.length, 1, 'setTemplate as 1 argument');
 
 	/**
 	 * jMVP.Template instance
@@ -170,10 +179,11 @@ test('View / Template / Element objects', function() {
 
 	ok(oElement.append, 'append exists');
 	oElement.append(document.createElement('div'));
-	equal(oElement.eElement.innerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
+	equal(oElement.eElement.innerHTML.toLowerCase(), '<div></div>', 'eRoot contains an empty div');
 
 	ok(oElement.prepend, 'append exists');
 	ok(oElement.html, 'append exists');
 	ok(oElement.text, 'append exists');
 	ok(oElement.attr, 'append exists');
+	equal(oElement.attr.length, 2, 'attr as 2 argument');
 });
