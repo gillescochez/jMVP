@@ -8,6 +8,11 @@ test('Objects / Static methods', function(){
 	equal(typeof jMVP, 'function', 'jMVP is a function');
 	equal(jMVP.length, 3, 'jMVP expect 3 arguments');
 
+	ok(jMVP.each, 'jMVP.each exists');
+	equal(typeof jMVP.each, 'function', 'jMVP.each is a function');
+	equal(jMVP.each && jMVP.prototype.each === undefined, true, 'jMVP.each is static');
+	equal(jMVP.each.length, 3, 'jMVP.each expect 3 arguments');
+
 	ok(jMVP.import, 'jMVP.import exists');
 	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
 	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
@@ -55,12 +60,52 @@ test('Objects / Static methods', function(){
 
 });
 
+test('each helper function', function() {
+
+	var oData = {
+			a: 'a',
+			b:'b'
+		},
+		sData = 'ab',
+		aData = ['c','d'],
+		count = 0;
+
+	// with object
+	jMVP.each(oData, function(sKey, vValue) {
+		equal(arguments.length, 2, '2 arguments in callback');
+		equal(typeof sKey, 'string', 'key is string');
+		count++;
+	});
+	equal(count, 2, 'each with object');
+
+	// with string
+	count = 0;
+	jMVP.each(sData, function(vValue, nIdx) {
+		equal(arguments.length, 2, '2 arguments in callback');
+		equal(typeof nIdx, 'number', 'index is number');
+		count++;
+	});
+	equal(count, 2, 'each with string');
+
+	// with array
+	count = 0;
+	jMVP.each(aData, function(vValue, nIdx) {
+		console.log('aData: ', vValue, nIdx)
+		equal(arguments.length, 2, '2 arguments in callback');
+		equal(typeof nIdx, 'number', 'index is number');
+		count++;
+	});
+
+	equal(count, 2, 'each with array');
+});
+
 test('Model / Data object instances', function() {
 
-	var oModel = new jMVP.Model({
+	var oRawData = {
 			foo: 'foo',
 			boo:'boo'
-		}),
+		},
+		oModel = new jMVP.Model(oRawData),
 		oData = new jMVP.Data('a');
 
 	ok(oData.vValue, 'value property');
@@ -73,11 +118,9 @@ test('Model / Data object instances', function() {
 	equal(typeof oData.setValue, 'function', 'setter is function');
 	equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
 
-	ok(oModel._, 'object to store original modal');
-	equal(oModel._.foo, 'foo', 'original data stored');
 	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
 
 	oModel.foo.setValue('FOO');
-	equal(oModel._.foo, 'FOO', 'original data update');
+	equal(oRawData.foo, 'FOO', 'original data update');
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
 });

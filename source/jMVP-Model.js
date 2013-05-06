@@ -5,15 +5,9 @@
  */
 jMVP.Model = function(oModel) {
 
-	var sKey;
-
-	// create model API
-	for (sKey in oModel) {
+	jMVP.each(oModel, function(sKey) {
 		jMVP.Model.dataBind(this, oModel, sKey);
-	}
-
-	// store raw model reference
-	this._ = oModel;
+	}, this);
 };
 
 /**

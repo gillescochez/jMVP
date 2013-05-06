@@ -17,3 +17,37 @@ var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
 jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl) {
 
 };
+
+/**
+ * Iterate over object, string and arrays and run a give function on each iteration
+ * @param vData
+ * @param fCallback
+ * @param [oContext]
+ */
+jMVP.each = function(vData, fCallback, oContext) {
+
+	var aData, sKey;
+
+	if (vData.constructor === Object && vData.constructor !== Array) {
+
+		for (sKey in vData) {
+
+			if (vData.hasOwnProperty(sKey)) {
+				fCallback.apply(oContext, [sKey, vData[sKey]]);
+			}
+		}
+
+	} else if (typeof vData === "string" || vData instanceof Array) {
+
+		if (typeof vData === "string") {
+			aData = vData.split("");
+		} else {
+			aData = vData;
+		};
+
+		aData.forEach(function(vValue, nIdx) {
+			console.log(arguments);
+			fCallback.apply(oContext, [vValue, nIdx]);
+		});
+	}
+};
