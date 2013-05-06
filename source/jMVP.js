@@ -14,7 +14,7 @@ var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
  * @param sViewUrl
  * @param sPresenterUrl
  */
-jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl) {
+jMVP.import = function(sModelUrl, sViewUrl, sPresenterUrl, fCallback) {
 
 };
 
@@ -46,7 +46,6 @@ jMVP.each = function(vData, fCallback, oContext) {
 		};
 
 		aData.forEach(function(vValue, nIdx) {
-			console.log(arguments);
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});
 	}

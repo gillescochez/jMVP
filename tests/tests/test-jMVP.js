@@ -16,7 +16,7 @@ test('Objects / Static methods', function(){
 	ok(jMVP.import, 'jMVP.import exists');
 	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
 	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
-	equal(jMVP.import.length, 3, 'jMVP.import expect 3 arguments');
+	equal(jMVP.import.length, 4, 'jMVP.import expect 4 arguments');
 
 	/**
 	 * jMVP View object
@@ -25,6 +25,12 @@ test('Objects / Static methods', function(){
 	ok(jMVP.View, 'jMVP.View exists');
 	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
+	equal(jMVP.View.length, 0, 'jMVP.View expect 0 argument');
+
+	ok(jMVP.Template, 'jMVP.Template exists');
+	equal(typeof jMVP.Template, 'function', 'jMVP.Template is a function');
+	equal(jMVP.prototype.Template, undefined, 'jMVP.Template is static');
+	equal(jMVP.Template.length, 0, 'jMVP.Template expect 0 argument');
 
 	/**
 	 * jMVP Data object
@@ -123,4 +129,12 @@ test('Model / Data object instances', function() {
 	oModel.foo.setValue('FOO');
 	equal(oRawData.foo, 'FOO', 'original data update');
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
+});
+
+test('View / Template object instance', function() {
+
+	var oView = new jMVP.View(),
+		oTemplate = new jMVP.Template();
+
+
 });
