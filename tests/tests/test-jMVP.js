@@ -55,15 +55,11 @@ test('Objects / Static methods', function(){
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
 
-	ok(jMVP.Template, 'jMVP.Template exists');
-	equal(typeof jMVP.Template, 'function', 'jMVP.Template is a function');
-	equal(jMVP.prototype.Template, undefined, 'jMVP.Template is static');
-	equal(jMVP.Template.length, 0, 'jMVP.Template expect 0 argument');
-
-	ok(jMVP.Element, 'jMVP.Element exists');
-	equal(typeof jMVP.Element, 'function', 'jMVP.Element is a function');
-	equal(jMVP.prototype.Element, undefined, 'jMVP.Element is static');
-	equal(jMVP.Element.length, 1, 'jMVP.Element expect 1 argument');
+	ok(jMVP.View.objectToHtml, 'jMVP.View.objectToHtml exists');
+	equal(typeof jMVP.View.objectToHtml, 'function', 'jMVP.View.objectToHtml is a function');
+	equal(jMVP.View.objectToHtml && jMVP.View.prototype.objectToHtml === undefined, true,
+			'jMVP.View.objectToHtml is static');
+	equal(jMVP.View.objectToHtml.length, 1, 'jMVP.View.objectToHtml expect 3 arguments');
 
 	/**
 	 * jMVP Data object
@@ -85,8 +81,8 @@ test('Objects / Static methods', function(){
 
 	ok(jMVP.Model.dataBind, 'jMVP.Model.dataBind exists');
 	equal(typeof jMVP.Model.dataBind, 'function', 'jMVP.Model.dataBind is a function');
-	equal(jMVP.Model.dataBind && jMVP.Model.prototype.dataBind === undefined, true, 'jMVP.Model is static');
-	equal(jMVP.Model.dataBind.length, 3, 'jMVP.Model expect 3 arguments');
+	equal(jMVP.Model.dataBind && jMVP.Model.prototype.dataBind === undefined, true, 'jMVP.Model.dataBind is static');
+	equal(jMVP.Model.dataBind.length, 3, 'jMVP.Model.dataBind expect 3 arguments');
 
 	/**
 	 * jMVP Presenter object
@@ -171,70 +167,14 @@ test('Model / Data instances', function() {
 module('jMVP.View');
 test('View / Template / Element instances', function() {
 
-	var oView = new jMVP.View(),
-		oTemplate = new jMVP.Template(),
-		oElement = new jMVP.Element(),
-		div = document.createElement('div');
+	var oView = new jMVP.View({
+		header:{}
+	});
 
 	/**
 	 * jMVP.View instance
 	 */
-	ok(oView.oTemplate, 'oView.oTemplate exists');
-	equal(oView.oTemplate.constructor, jMVP.Template, 'oView.oTemplate is an instance of jMVP.Template');
-
-	ok(oView.getTemplate, 'oView.getTemplate method exists');
-	equal(oView.getTemplate.length, 0, 'oView.getTemplate as 0 argument');
-	deepEqual(oView.getTemplate(), oView.oTemplate, 'oView.getTemplate return oTemplate');
-
-	ok(oView.setTemplate, 'oView.setTemplate method exists');
-	equal(oView.setTemplate.length, 1, 'oView.setTemplate as 1 argument');
-
-	ok(oView.render, 'oView.render method exists');
-	equal(oView.render.length, 1, 'oView.render as 1 argument');
-	oView.render(div);
-	equal(div.innerHTML.toLowerCase(), '<div></div>', 'oView.render works');
-
-	/**
-	 * jMVP.Template instance
-	 */
-	ok(oTemplate.oRoot, 'oTemplate.oRoot property exists');
-	equal(oTemplate.oRoot.constructor, jMVP.Element, 'oTemplate.oRoot is an instance of jMVP.Element');
-
-	ok(oTemplate.oElements, 'oTemplate.oElements exists');
-	equal(oTemplate.oElements.constructor, Object, 'oTemplate.oElements constructor is Object');
-
-	ok(oTemplate.addElement, 'oTemplate.addElement method exists');
-	equal(oTemplate.addElement.length, 1, 'oTemplate.addElement as 1 argument');
-	var oElementTestConfig = {
-		id: 'test'
-	};
-	oTemplate.addElement(oElementTestConfig);
-	ok(oTemplate.oElements.test, 'oTemplate.oElements.test exists');
-	deepEqual(oTemplate.oElements.test, oElementTestConfig, 'oTemplate.oElements.test stored properly');
-
-	ok(oTemplate.removeElement, 'oTemplate.removeElement method exists');
-	equal(oTemplate.removeElement.length, 1, 'oTemplate.removeElement as 1 argument');
-
-	ok(oTemplate.updateElement, 'oTemplate.updateElement method exists');
-	equal(oTemplate.updateElement.length, 1, 'oTemplate.updateElement as 1 argument');
-
-	ok(oTemplate.getElement, 'oTemplate.getElement method exists');
-	equal(oTemplate.getElement.length, 0, 'oTemplate.getElement as 0 argument');
-	equal(oTemplate.getElement(), oTemplate.oRoot.eElement, 'oTemplate.getElement return right value');
-
-	/**
-	 * jMVP.Element instance
-	 */
-	ok(oElement.eElement, 'dom element exists');
-	equal(oElement.eElement.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
-
-	ok(oElement.append, 'append exists');
-	oElement.append(document.createElement('div'));
-	equal(oElement.eElement.innerHTML.toLowerCase(), '<div></div>', 'eRoot contains an empty div');
-
-	ok(oElement.prepend, 'append exists');
-	ok(oElement.html, 'append exists');
-	ok(oElement.text, 'append exists');
-	ok(oElement.attr, 'append exists');
-	equal(oElement.attr.length, 2, 'attr as 2 argument');
+	ok(oView.oRawView, 'oRawView exists');
+	ok(oView.convertView, 'convertView exists');
+	ok(oView.sHtmlView, 'sHtmlView exists');
 });

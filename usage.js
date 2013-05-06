@@ -40,4 +40,6 @@ var presenter = {
 };
 
 
-jMVP(model, view, presenter);
+var jmvp = jMVP(model, view, presenter);
+
+jmvp.render(document.body);
