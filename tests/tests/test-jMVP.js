@@ -1,3 +1,4 @@
+module('jMVP');
 test('Objects / Static methods', function(){
 
 	/**
@@ -25,12 +26,17 @@ test('Objects / Static methods', function(){
 	ok(jMVP.View, 'jMVP.View exists');
 	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
-	equal(jMVP.View.length, 0, 'jMVP.View expect 0 argument');
+	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
 
 	ok(jMVP.Template, 'jMVP.Template exists');
 	equal(typeof jMVP.Template, 'function', 'jMVP.Template is a function');
 	equal(jMVP.prototype.Template, undefined, 'jMVP.Template is static');
 	equal(jMVP.Template.length, 0, 'jMVP.Template expect 0 argument');
+
+	ok(jMVP.Element, 'jMVP.Element exists');
+	equal(typeof jMVP.Element, 'function', 'jMVP.Element is a function');
+	equal(jMVP.prototype.Element, undefined, 'jMVP.Element is static');
+	equal(jMVP.Element.length, 0, 'jMVP.Element expect 0 argument');
 
 	/**
 	 * jMVP Data object
@@ -65,8 +71,7 @@ test('Objects / Static methods', function(){
 	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 argument');
 
 });
-
-test('each helper function', function() {
+test('jMVP.each', function() {
 
 	var oData = {
 			a: 'a',
@@ -105,7 +110,8 @@ test('each helper function', function() {
 	equal(count, 2, 'each with array');
 });
 
-test('Model / Data object instances', function() {
+module('jMVP.Model');
+test('Model / Data objects', function() {
 
 	var oRawData = {
 			foo: 'foo',
@@ -131,20 +137,37 @@ test('Model / Data object instances', function() {
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
 });
 
-test('View / Template object instance', function() {
+module('jMVP.View');
+test('View / Template / Element objects', function() {
 
 	var oView = new jMVP.View(),
-		oTemplate = new jMVP.Template();
+		oTemplate = new jMVP.Template(),
+		oElement = new jMVP.Element();
 
 	/**
 	 * jMVP.View instance
 	 */
-	ok(oView.oTemplate, 'view as template instance');
-	equal(oView.oTemplate.constructor, jMVP.Template, 'view template is instance of jMVP.Template')
+	ok(oView.oTemplate, 'view has template instance');
+	equal(oView.oTemplate.constructor, jMVP.Template, 'view template is an instance of jMVP.Template');
+
+	ok(oView.bindTemplate, 'oView.bindTemplate method exists');
 
 	/**
 	 * jMVP.Template instance
 	 */
 	ok(oTemplate.eRoot, 'eRoot property exists');
-	equal(oTemplate.eRoot.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div')
+	equal(oTemplate.eRoot.outerHTML.toLowerCase(), '<div></div>', 'eRoot is empty div');
+
+	ok(oTemplate.addElement, 'addElement method exists');
+	ok(oTemplate.removeElement, 'removeElement method exists');
+	ok(oTemplate.updateElement, 'updateElement method exists');
+
+	/**
+	 * jMVP.Element
+	 */
+	ok(oElement.append, 'append exists');
+	ok(oElement.prepend, 'append exists');
+	ok(oElement.html, 'append exists');
+	ok(oElement.text, 'append exists');
+	ok(oElement.attr, 'append exists');
 });
