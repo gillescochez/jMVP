@@ -259,6 +259,9 @@ test('View hooks', function() {
 
 	oView.update('pagetitle', oModel.pagetitle);
 	oView.update('pagecontent', oModel.pagecontent);
+	oView.update('hideTitle', oModel.hideTitle);
+
+console.log(oView.oMap, div);
 
 	equal(div.innerHTML, updatedHtml, 'text and html hooks');
 

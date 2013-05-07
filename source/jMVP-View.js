@@ -11,7 +11,6 @@ jMVP.View = function(oView) {
 	this.eDomView = jMVP.View.objectToElement(
 		this.oRawView, this.oMap
 	);
-	console.log(this.oMap);
 };
 
 /**
@@ -29,11 +28,22 @@ jMVP.View.prototype.render = function(eTarget) {
  * @param vValue
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
+
 	jMVP.each(this.oMap[sReference], function(sHookKey, aElements) {
-		jMVP.each(aElements, function(eElement) {
-			jMVP.View.hooks[sHookKey](eElement, vValue);
-		});
-	});
+
+		// Handle attributes and classNames objects
+		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
+
+			console.log(sHookKey, aElements, sReference, vValue);
+
+		} else {
+
+			jMVP.each(aElements, function(eElement) {
+				jMVP.View.hooks[sHookKey](eElement, vValue);
+			});
+		}
+
+	}, this);
 };
 
 /**
@@ -66,7 +76,9 @@ jMVP.View.hooks = {
 
 	// TODO special handling as value is object
 	attributes: function(eTag, oValue) {},
-	classNames: function(eTag, vValue) {}
+	classNames: function(eTag, vValue) {
+		console.log(arguments);
+	}
 };
 
 /**
@@ -95,8 +107,8 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
 		jMVP.each(jMVP.View.hooks, function(sHookKey) {
 
-			// TODO add support for attributes/className as the value would be an object
 			if (vValue[sHookKey]) {
+
 				// Handle attributes and classNames objects
 				if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
