@@ -11,6 +11,7 @@ jMVP.View = function(oView) {
 	this.eDomView = jMVP.View.objectToElement(
 		this.oRawView, this.oMap
 	);
+	console.log(this.oMap);
 };
 
 /**
@@ -33,13 +34,13 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 			jMVP.View.hooks[sHookKey](eElement, vValue);
 		});
 	});
-	console.log(this.eDomView.innerHTML);
 };
 
 /**
  * Hooks storage for special view binding
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
+// TODO add cross-browser support
 jMVP.View.hooks = {
 
 	/**
@@ -48,7 +49,6 @@ jMVP.View.hooks = {
 	 * @param sValue
 	 */
 	text: function(eTag, sValue) {
-		// TODO add cross-browser support
 		eTag.innerText = sValue;
 	},
 
@@ -65,8 +65,8 @@ jMVP.View.hooks = {
 	visible: function(eTag, bValue) {},
 
 	// TODO special handling as value is object
-	attributes: function(eTag, bValue) {},
-	classNames: function(eTag, bValue) {}
+	attributes: function(eTag, oValue) {},
+	classNames: function(eTag, vValue) {}
 };
 
 /**
@@ -97,9 +97,21 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
 			// TODO add support for attributes/className as the value would be an object
 			if (vValue[sHookKey]) {
-				if (!oMap[vValue[sHookKey]]) oMap[vValue[sHookKey]] = {};
-				if (!oMap[vValue[sHookKey]][sHookKey]) oMap[vValue[sHookKey]][sHookKey] = [];
-				oMap[vValue[sHookKey]][sHookKey].push(eTag);
+				// Handle attributes and classNames objects
+				if (sHookKey === 'attributes' || sHookKey === 'classNames') {
+
+					jMVP.each(vValue[sHookKey], function(sKey, sValue) {
+						if (!oMap[sValue]) oMap[sValue] = {};
+						if (!oMap[sValue][sHookKey]) oMap[sValue][sHookKey] = {};
+						if (!oMap[sValue][sHookKey][sKey]) oMap[sValue][sHookKey][sKey] = [];
+						oMap[sValue][sHookKey][sKey].push(eTag);
+					});
+
+				} else {
+					if (!oMap[vValue[sHookKey]]) oMap[vValue[sHookKey]] = {};
+					if (!oMap[vValue[sHookKey]][sHookKey]) oMap[vValue[sHookKey]][sHookKey] = [];
+					oMap[vValue[sHookKey]][sHookKey].push(eTag);
+				}
 			}
 		});
 

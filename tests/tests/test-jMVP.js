@@ -171,21 +171,6 @@ test('Model / Data instances', function() {
 });
 
 module('jMVP.View');
-test('View hooks', function() {
-
-	ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
-	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
-	equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
-
-	'text,html,visible,attributes,classNames'.split(',').forEach(function(hook) {
-
-		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
-		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
-		equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
-	});
-
-});
-
 test('View / Template / Element instances', function() {
 
 	var oModel = {foo:'foo'},
@@ -221,12 +206,23 @@ test('View / Template / Element instances', function() {
 
 	equal(div.innerHTML, '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
 });
-
 test('View hooks', function() {
+
+	ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
+	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
+	equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
+
+	'text,html,visible,attributes,classNames'.split(',').forEach(function(hook) {
+
+		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
+		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
+		equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
+	});
 
 	var oModel = {
 			pagetitle: 'test',
-			pagecontent: '<p>Bla bla bla</p>'
+			pagecontent: '<p>Bla bla bla</p>',
+			hideTitle: false
 		},
 		oTmpl = {
 			header: {},
@@ -235,10 +231,19 @@ test('View hooks', function() {
 				main: {
 					title: {
 						tag: 'h1',
-							text: 'pagetitle'
+						text: 'pagetitle',
+						attributes: {
+							title: 'pagetitle'
+						},
+						classNames: {
+							visible: 'hideTitle'
+						}
 					},
 					article: {
-						html: 'pagecontent'
+						html: 'pagecontent',
+						attributes: {
+							title: 'pagecontent'
+						}
 					}
 				}
 			}

@@ -8,7 +8,9 @@ var model = {
 
 var view = {
 	header: {
-		logo:{},
+		logo: {
+			text: 'sitetitle'
+		},
 		search: {
 			tag: 'input',
 			attributes: {
