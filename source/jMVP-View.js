@@ -4,34 +4,87 @@
  * @constructor
  */
 jMVP.View = function(oView) {
+
 	this.oRawView = oView;
-	this.eDomView = jMVP.View.objectToElement(this.oRawView);
-	console.log(this.eDomView);
+	this.oMap = {};
+
+	this.eDomView = jMVP.View.objectToElement(
+		this.oRawView, this.oMap
+	);
+};
+
+/**
+ * Render the DOM view to a target DOM element
+ * @param eTarget
+ */
+jMVP.View.prototype.render = function(eTarget) {
+	eTarget.appendChild(this.eDomView);
+	this.eDomView = eTarget.childNodes[eTarget.childNodes.length-1];
+};
+
+/**
+ * Update elements which are affected by the value change
+ * @param sReference
+ * @param vValue
+ */
+jMVP.View.prototype.update = function(sReference, vValue) {
+	jMVP.each(this.oMap[sReference], function(sHookKey, aElements) {
+		jMVP.each(aElements, function(eElement) {
+			jMVP.View.hooks[sHookKey](eElement, vValue);
+		});
+	});
+};
+
+/**
+ * Hooks storage for special view binding
+ * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
+ */
+jMVP.View.hooks = {
+	text: function(eTag, sValue) {
+		eTag.innerText = sValue;
+	},
+	html: function(eTag, sValue) {},
+	visible: function(eTag, bValue) {},
+	attributes: function(eTag, bValue) {},
+	classNames: function(eTag, bValue) {}
 };
 
 /**
  * Convert an view object into DOM
  * @param oRawView
- * @param eParentFragment
+ * @param oMap
+ * @param [eParentFragment]
  * @returns {DocumentFragment}
  */
-jMVP.View.objectToElement = function(oRawView, eParentFragment) {
+jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
-	var eFragment = eParentFragment || document.createDocumentFragment();
+	// TODO try documentFragment approach - extra div is ugly :(
+	var eFragment = eParentFragment || document.createElement('div');
 
 	jMVP.each(oRawView, function(sKey, vValue) {
 
 		var eTag = document.createElement(vValue.tag || 'div');
 
 		// good idea?
-		eTag.className = 'jMVP-' + sKey;
+		eTag.className = 'jmvp-' + sKey;
 
-		if (jMVP.View.hooks[sKey]) {
-			jMVP.View.hooks[sKey](eTag, vValue);
-		} else {
-			if (jMVP.View.viewFragmentHasChildren(vValue)) {
-				jMVP.View.objectToElement(vValue, eTag);
+		// TODO is this needed?
+//		if (jMVP.View.hooks[sKey]) {
+//			jMVP.View.hooks[sKey](eTag, vValue);
+//		}
+
+		jMVP.each(jMVP.View.hooks, function(sHookKey) {
+
+			// TODO add support for attributes/className as the value would be an object
+			if (vValue[sHookKey]) {
+				if (!oMap[vValue[sHookKey]]) oMap[vValue[sHookKey]] = {};
+				if (!oMap[vValue[sHookKey]][sHookKey]) oMap[vValue[sHookKey]][sHookKey] = [];
+				oMap[vValue[sHookKey]][sHookKey].push(eTag);
 			}
+		});
+
+		if (jMVP.View.viewFragmentHasChildren(vValue)) {
+			jMVP.View.objectToElement(vValue, oMap, eTag);
 		}
 
 		eFragment.appendChild(eTag);
@@ -49,70 +102,11 @@ jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
 
 	var bReturn = false;
 
-	jMVP.each(oViewFragment, function(sKey, vValue) {
-
-		// hook = no children
+	jMVP.each(oViewFragment, function(sKey) {
 		if (jMVP.View.hooks[sKey]) bReturn = false;
-
-		// tag = no children
 		else if (sKey === 'tag') bReturn = false;
-
 		else bReturn = true;
-
 	});
 
 	return bReturn;
 };
-
-/**
- * Hooks storage for special view binding
- * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
- */
-jMVP.View.hooks = {
-	text: function(eTag) {},
-	html: function(eTag) {},
-	visible: function(eTag) {},
-	attributes: function(eTag) {},
-	classNames: function(eTag) {}
-};
-
-
-/*
-
-function eachRecursive(obj) {
-	for (var k in obj) {
-
-		if (typeof obj[k] == "Object")
-			eachRecursive(obj[k]);
-		else
-			// do something...
-	}
-};
-
-this.eDomView = objectToElement(oRawView);
-
-objectToElement = function(oRawView) {
-
-	var sKey, oValue, eTag,
-		eFragment = document.createFragment();
-
-	for (sKey in oRawView) {
-
-		oValue = oRawView[sKey];
-		eTag = document.createElement(oValue.tag || 'div');
-		eTag.className = 'jMVP-' + sKey;
-
-		eFragment.appendChild(eTag);
-
-		for (var prop in oValue) {
-
-			if (hooks[prop]) hooks[prop](eTag);
-			else eTag.appendChild(objectToElement(prop));
-		};
-
-	}
-
-	return eElement;
-};
-
-*/

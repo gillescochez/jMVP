@@ -59,7 +59,7 @@ test('Objects / Static methods', function(){
 	equal(typeof jMVP.View.objectToElement, 'function', 'jMVP.View.objectToElement is a function');
 	equal(jMVP.View.objectToElement && jMVP.View.prototype.objectToElement === undefined, true,
 		'jMVP.View.objectToElement is static');
-	equal(jMVP.View.objectToElement.length, 2, 'jMVP.View.objectToElement expect 2 arguments');
+	equal(jMVP.View.objectToElement.length, 3, 'jMVP.View.objectToElement expect 3 arguments');
 
 	ok(jMVP.View.viewFragmentHasChildren, 'jMVP.View.viewFragmentHasChildren exists');
 	equal(typeof jMVP.View.viewFragmentHasChildren, 'function', 'jMVP.View.viewFragmentHasChildren is a function');
@@ -181,13 +181,22 @@ test('View hooks', function() {
 
 		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
 		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
+		equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
 	});
 
 });
 
 test('View / Template / Element instances', function() {
 
-	var oView = new jMVP.View({
+	var oModel = {foo:'foo'},
+		oTmpl = {test:{
+			text: 'foo'
+		}},
+		oView = new jMVP.View(oTmpl),
+		div = document.createElement('div');
+
+	/* More complex View structure
+	{
 		header: {},
 		content: {
 			side: {},
@@ -201,11 +210,36 @@ test('View / Template / Element instances', function() {
 				}
 			}
 		}
-	});
+	}
+	*/
 
 	/**
 	 * jMVP.View instance
 	 */
 	ok(oView.oRawView, 'oRawView exists');
+	deepEqual(oView.oRawView, oTmpl, 'oRawView === oTmpl');
+
 	ok(oView.eDomView, 'eDomView exists');
+
+	ok(oView.oMap, 'oMap exists');
+	equal(typeof oView.oMap, 'object', 'oMap is an object');
+
+	ok(oView.render, 'render exists');
+	equal(typeof oView.render, 'function', 'render is a functgion');
+
+	oView.render(div);
+
+	equal(div.innerHTML, '<div><div class="jmvp-test"></div></div>', 'View rendered properly');
+
+	ok(oView.update, 'update exists');
+	equal(typeof oView.update, 'function', 'update is a function');
+	equal(oView.update.length, 2, 'render expects 2 arguments');
+
+	oView.update('foo', oModel.foo);
+
+	equal(div.innerHTML, '<div><div class="jmvp-test">foo</div></div>', 'View rendered properly');
+});
+
+test('View hooks', function() {
+
 });
