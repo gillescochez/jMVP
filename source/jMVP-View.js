@@ -41,15 +41,30 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
 jMVP.View.hooks = {
+
+	/**
+	 * Update the body of the element with a string
+	 * @param eTag
+	 * @param sValue
+	 */
 	text: function(eTag, sValue) {
+		// TODO add cross-browser support
 		eTag.innerText = sValue;
 	},
+
+	/**
+	 * Update the body of the element with a HTML sring
+	 * @param eTag
+	 * @param sValue
+	 */
 	html: function(eTag, sValue) {
 		eTag.innerHTML = sValue;
 	},
 
 	// TODO leave in view?
 	visible: function(eTag, bValue) {},
+
+	// TODO special handling as value is object
 	attributes: function(eTag, bValue) {},
 	classNames: function(eTag, bValue) {}
 };
