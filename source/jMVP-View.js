@@ -33,6 +33,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 			jMVP.View.hooks[sHookKey](eElement, vValue);
 		});
 	});
+	console.log(this.eDomView.innerHTML);
 };
 
 /**
@@ -43,7 +44,11 @@ jMVP.View.hooks = {
 	text: function(eTag, sValue) {
 		eTag.innerText = sValue;
 	},
-	html: function(eTag, sValue) {},
+	html: function(eTag, sValue) {
+		eTag.innerHTML = sValue;
+	},
+
+	// TODO leave in view?
 	visible: function(eTag, bValue) {},
 	attributes: function(eTag, bValue) {},
 	classNames: function(eTag, bValue) {}

@@ -195,24 +195,6 @@ test('View / Template / Element instances', function() {
 		oView = new jMVP.View(oTmpl),
 		div = document.createElement('div');
 
-	/* More complex View structure
-	{
-		header: {},
-		content: {
-			side: {},
-			main: {
-				title: {
-					tag: 'h1',
-					text: 'pagetitle'
-				},
-				article: {
-					text: 'pagecontent'
-				}
-			}
-		}
-	}
-	*/
-
 	/**
 	 * jMVP.View instance
 	 */
@@ -237,9 +219,42 @@ test('View / Template / Element instances', function() {
 
 	oView.update('foo', oModel.foo);
 
-	equal(div.innerHTML, '<div><div class="jmvp-test">foo</div></div>', 'View rendered properly');
+	equal(div.innerHTML, '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
 });
 
 test('View hooks', function() {
+
+	var oModel = {
+			pagetitle: 'test',
+			pagecontent: '<p>Bla bla bla</p>'
+		},
+		oTmpl = {
+			header: {},
+			content: {
+				side: {},
+				main: {
+					title: {
+						tag: 'h1',
+							text: 'pagetitle'
+					},
+					article: {
+						html: 'pagecontent'
+					}
+				}
+			}
+		},
+		oView = new jMVP.View(oTmpl),
+		div = document.createElement('div'),
+		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title">test</h1><div class="jmvp-article"><p>Bla bla bla</p></div></div></div></div>',
+		emptyHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title"></h1><div class="jmvp-article"></div></div></div></div>';
+
+	oView.render(div);
+
+	equal(div.innerHTML, emptyHtml, 'Complex view markup');
+
+	oView.update('pagetitle', oModel.pagetitle);
+	oView.update('pagecontent', oModel.pagecontent);
+
+	equal(div.innerHTML, updatedHtml, 'text and html hooks');
 
 });
