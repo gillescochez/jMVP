@@ -25,7 +25,7 @@ test('Objects / Static methods', function(){
 	equal(jMVP.model.length, 2, 'jMVP.model expect 2 arguments');
 
 	ok(jMVP.oModels, 'jMVP.oModels exists');
-	equal(typeof jMVP.oModels, 'object', 'jMVP.oModels is a object');
+	equal(typeof jMVP.oModels, 'object', 'jMVP.oModels is an object');
 	equal(jMVP.oModels && jMVP.prototype.oModels === undefined, true, 'jMVP.oModels is static');
 
 	ok(jMVP.view, 'jMVP.view exists');
@@ -34,7 +34,7 @@ test('Objects / Static methods', function(){
 	equal(jMVP.view.length, 2, 'jMVP.view expect 2 arguments');
 
 	ok(jMVP.oViews, 'jMVP.oViews exists');
-	equal(typeof jMVP.oViews, 'object', 'jMVP.oViews is a object');
+	equal(typeof jMVP.oViews, 'object', 'jMVP.oViews is an object');
 	equal(jMVP.oViews && jMVP.prototype.oViews === undefined, true, 'jMVP.oViews is static');
 
 	ok(jMVP.presenter, 'jMVP.presenter exists');
@@ -43,7 +43,7 @@ test('Objects / Static methods', function(){
 	equal(jMVP.presenter.length, 2, 'jMVP.presenter expect 2 arguments');
 
 	ok(jMVP.oPresenters, 'jMVP.oPresenters exists');
-	equal(typeof jMVP.oPresenters, 'object', 'jMVP.oPresenters is a object');
+	equal(typeof jMVP.oPresenters, 'object', 'jMVP.oPresenters is an object');
 	equal(jMVP.oPresenters && jMVP.prototype.oPresenters === undefined, true, 'jMVP.oPresenters is static');
 
 	/**
@@ -55,11 +55,17 @@ test('Objects / Static methods', function(){
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
 
-	ok(jMVP.View.objectToHtml, 'jMVP.View.objectToHtml exists');
-	equal(typeof jMVP.View.objectToHtml, 'function', 'jMVP.View.objectToHtml is a function');
-	equal(jMVP.View.objectToHtml && jMVP.View.prototype.objectToHtml === undefined, true,
-			'jMVP.View.objectToHtml is static');
-	equal(jMVP.View.objectToHtml.length, 1, 'jMVP.View.objectToHtml expect 3 arguments');
+	ok(jMVP.View.objectToElement, 'jMVP.View.objectToElement exists');
+	equal(typeof jMVP.View.objectToElement, 'function', 'jMVP.View.objectToElement is a function');
+	equal(jMVP.View.objectToElement && jMVP.View.prototype.objectToElement === undefined, true,
+		'jMVP.View.objectToElement is static');
+	equal(jMVP.View.objectToElement.length, 2, 'jMVP.View.objectToElement expect 2 arguments');
+
+	ok(jMVP.View.viewFragmentHasChildren, 'jMVP.View.viewFragmentHasChildren exists');
+	equal(typeof jMVP.View.viewFragmentHasChildren, 'function', 'jMVP.View.viewFragmentHasChildren is a function');
+	equal(jMVP.View.viewFragmentHasChildren && jMVP.View.prototype.viewFragmentHasChildren === undefined, true,
+		'jMVP.View.viewFragmentHasChildren is static');
+	equal(jMVP.View.viewFragmentHasChildren.length, 1, 'jMVP.View.viewFragmentHasChildren expect 1 arguments');
 
 	/**
 	 * jMVP Data object
@@ -165,16 +171,41 @@ test('Model / Data instances', function() {
 });
 
 module('jMVP.View');
+test('View hooks', function() {
+
+	ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
+	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
+	equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
+
+	'text,html,visible,attributes,classNames'.split(',').forEach(function(hook) {
+
+		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
+		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
+	});
+
+});
+
 test('View / Template / Element instances', function() {
 
 	var oView = new jMVP.View({
-		header:{}
+		header: {},
+		content: {
+			side: {},
+			main: {
+				title: {
+					tag: 'h1',
+					text: 'pagetitle'
+				},
+				article: {
+					text: 'pagecontent'
+				}
+			}
+		}
 	});
 
 	/**
 	 * jMVP.View instance
 	 */
 	ok(oView.oRawView, 'oRawView exists');
-	ok(oView.convertView, 'convertView exists');
-	ok(oView.sHtmlView, 'sHtmlView exists');
+	ok(oView.eDomView, 'eDomView exists');
 });
