@@ -216,13 +216,17 @@ test('View hooks', function() {
 
 		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
 		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
-		equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
+		if (hook == 'classNames' || hook == 'attributes') {
+			equal(jMVP.View.hooks[hook].length, 3, 'jMVP.View.hooks.' + hook + ' expects 3 arguments');
+		} else {
+			equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
+		}
 	});
 
 	var oModel = {
 			pagetitle: 'test',
 			pagecontent: '<p>Bla bla bla</p>',
-			hideTitle: false
+			hideTitle: true
 		},
 		oTmpl = {
 			header: {},
@@ -242,7 +246,7 @@ test('View hooks', function() {
 					article: {
 						html: 'pagecontent',
 						attributes: {
-							title: 'pagecontent'
+							title: 'pagetitle'
 						}
 					}
 				}
@@ -250,7 +254,7 @@ test('View hooks', function() {
 		},
 		oView = new jMVP.View(oTmpl),
 		div = document.createElement('div'),
-		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title">test</h1><div class="jmvp-article"><p>Bla bla bla</p></div></div></div></div>',
+		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title visible" title="test">test</h1><div class="jmvp-article" title="test"><p>Bla bla bla</p></div></div></div></div>',
 		emptyHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title"></h1><div class="jmvp-article"></div></div></div></div>';
 
 	oView.render(div);
@@ -261,8 +265,5 @@ test('View hooks', function() {
 	oView.update('pagecontent', oModel.pagecontent);
 	oView.update('hideTitle', oModel.hideTitle);
 
-console.log(oView.oMap, div);
-
 	equal(div.innerHTML, updatedHtml, 'text and html hooks');
-
 });

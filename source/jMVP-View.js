@@ -11,6 +11,7 @@ jMVP.View = function(oView) {
 	this.eDomView = jMVP.View.objectToElement(
 		this.oRawView, this.oMap
 	);
+	console.log(this.oMap);
 };
 
 /**
@@ -29,16 +30,21 @@ jMVP.View.prototype.render = function(eTarget) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-	jMVP.each(this.oMap[sReference], function(sHookKey, aElements) {
+	jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
 		// Handle attributes and classNames objects
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
-			console.log(sHookKey, aElements, sReference, vValue);
+			jMVP.each(vHookConfig, function(sKey, aNodes) {
+
+				jMVP.each(aNodes, function(eNode) {
+					jMVP.View.hooks[sHookKey](eNode, vValue, sKey);
+				});
+			});
 
 		} else {
 
-			jMVP.each(aElements, function(eElement) {
+			jMVP.each(vHookConfig, function(eElement) {
 				jMVP.View.hooks[sHookKey](eElement, vValue);
 			});
 		}
@@ -58,6 +64,7 @@ jMVP.View.hooks = {
 	 * @param eTag
 	 * @param sValue
 	 */
+	// TODO Check cross-browser support
 	text: function(eTag, sValue) {
 		eTag.innerText = sValue;
 	},
@@ -75,9 +82,22 @@ jMVP.View.hooks = {
 	visible: function(eTag, bValue) {},
 
 	// TODO special handling as value is object
-	attributes: function(eTag, oValue) {},
-	classNames: function(eTag, vValue) {
-		console.log(arguments);
+	attributes: function(eTag, vValue, sAttrKey) {
+		// remove when undefined or empty string???
+		if (vValue === false || vValue === null) {
+			eTag.removeAttribute(sAttrKey);
+		} else {
+			eTag[sAttrKey] = vValue;
+		};
+	},
+
+	// TODO Check for cross-browser support
+	classNames: function(eTag, bValue, sClassName) {
+		if (bValue) {
+			eTag.className += ' ' + sClassName;
+		} else {
+			eTag.className = eTag.className.replace(new RegExp(sClassName, 'gi'), '');
+		}
 	}
 };
 
