@@ -35,9 +35,11 @@ var view = {
 
 var presenter = {
 
-	onTitleClick: function(oDOMEvent, oModel, oView) {
-		// should toggle red class on h1 attribute
-		oModel.isRed.setValue(!oModel.isRed.getValue());
+	title: {
+		click: function(oDOMEvent, oModel, oView) {
+			oModel.isRed.setValue(!oModel.isRed.getValue());
+		},
+		mouseover: function(oDOMEvent, oModel, oView) {}
 	}
 };
 
