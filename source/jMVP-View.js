@@ -81,7 +81,7 @@ jMVP.View.hooks = {
 	 */
 	attributes: function(aNodes, vValue, sAttrKey) {
 		//TODO remove when undefined or null???
-		jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sClassName, sAttrKey);
+		jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
 	},
 
 	/**
@@ -91,7 +91,7 @@ jMVP.View.hooks = {
 	 * @param sClassName
 	 */
 	classNames: function(aNodes, bValue, sClassName) {
-		jMVP.dom(aNodes)[(bValue === true ? 'add' : 'remove') + 'Class'](sClassName);
+		jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
 	}
 };
 
