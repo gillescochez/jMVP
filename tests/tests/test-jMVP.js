@@ -1,5 +1,5 @@
 module('jMVP');
-test('Objects / Static methods', function(){
+test('Objects / Static methods - basic', function(){
 
 	/**
 	 * jMVP object
@@ -100,7 +100,7 @@ test('Objects / Static methods', function(){
 	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 argument');
 
 });
-test('jMVP.each static method', function() {
+test('jMVP.each static method - functional', function() {
 
 	var oData = {
 			a: 'a',
@@ -139,7 +139,7 @@ test('jMVP.each static method', function() {
 });
 
 module('jMVP.Model');
-test('Model / Data instances', function() {
+test('Model / Data instances - functional', function() {
 
 	var oRawData = {
 			foo: 'foo',
@@ -171,7 +171,7 @@ test('Model / Data instances', function() {
 });
 
 module('jMVP.View');
-test('View / Template / Element instances', function() {
+test('View / Template / Element instances - functional', function() {
 
 	var oModel = {foo:'foo'},
 		oTmpl = {test:{
@@ -276,7 +276,7 @@ test('View hooks', function() {
 });
 
 module('jMVP.dom');
-test('dom helper / Wrap class', function() {
+test('dom helper / Wrap class - basic / functional', function() {
 
 	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
 		div = document.createElement('div'),
@@ -333,4 +333,27 @@ test('dom helper / Wrap class', function() {
 		else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
 	});
 
+});
+
+module('jMVP.Presenter');
+test('Presenter instance - basic / functional', function() {
+
+	var handlers = {
+			test: {
+				click: function() {
+					console.log(arguments);
+				}
+			}
+		},
+		presenter = new jMVP.Presenter(handlers);
+
+	ok(presenter.oMap, 'Map exists');
+	ok(presenter.oMap.test, 'data stored in map');
+	deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
+
+	ok(presenter.trigger, 'trigger exists');
+	equal(typeof presenter.trigger, 'function', 'trigger is a function');
+	equal(presenter.trigger.length, 1, 'trigger expects 1 arguments');
+
+	ok(presenter.trigger, 'trigger exists');
 });
