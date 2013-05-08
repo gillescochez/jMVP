@@ -17,17 +17,47 @@ jMVP.import = function(sReference, fCallback) {
 
 };
 
+/**
+ * Used to stored views declared using jMVP
+ * @type {{}}
+ */
 jMVP.oViews = {};
+
+/**
+ * Declare a new jMVP static view object
+ * @param sReference
+ * @param oView
+ */
 jMVP.view = function(sReference, oView){
 
 };
 
+/**
+ * Used to store models declared using jMVP
+ * @type {{}}
+ */
 jMVP.oModels = {};
+
+/**
+ * Declare a new jMVP static model object
+ * @param sReference
+ * @param oModel
+ */
 jMVP.model = function(sReference, oModel){
 
 };
 
+/**
+ * Used to store presenters declared using jMVP
+ * @type {{}}
+ */
 jMVP.oPresenters = {};
+
+/**
+ * Declare a new jMVP static presenter object
+ * @param sReference
+ * @param oPresenter
+ */
 jMVP.presenter = function(sReference, oPresenter){
 
 };
