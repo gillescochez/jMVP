@@ -38,7 +38,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 			});
 
 		} else {
-			
+
 			jMVP.View.hooks[sHookKey](vHookConfig, vValue);
 		}
 
@@ -123,6 +123,12 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 		jMVP.each(jMVP.View.hooks, function(sHookKey) {
 
 			if (vValue[sHookKey]) {
+
+				/**
+				 * Considering how complex the structure of the Map is it might be wised
+				 * to have multiple maps, one for each hook and store it that way
+				 * objects will be less heavy and not as deep should improve performace
+				 */
 
 				// Handle attributes and classNames objects
 				if (sHookKey === 'attributes' || sHookKey === 'classNames') {
