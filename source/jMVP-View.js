@@ -11,7 +11,6 @@ jMVP.View = function(oView) {
 	this.eDomView = jMVP.View.objectToElement(
 		this.oRawView, this.oMap
 	);
-	console.log(this.oMap);
 };
 
 /**
@@ -30,13 +29,13 @@ jMVP.View.prototype.render = function(eTarget) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
+	//TODO Too much loop loop loop...
 	jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
 		// Handle attributes and classNames objects
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
 			jMVP.each(vHookConfig, function(sKey, aNodes) {
-
 				jMVP.each(aNodes, function(eNode) {
 					jMVP.View.hooks[sHookKey](eNode, vValue, sKey);
 				});
@@ -108,6 +107,7 @@ jMVP.View.hooks = {
  * @param [eParentFragment]
  * @returns {DocumentFragment}
  */
+//TODO refactoring, method is too long and doing too much stuff
 jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
 	// TODO try documentFragment approach - extra div is ugly :(
@@ -120,7 +120,7 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 		// good idea?
 		eTag.className = 'jmvp-' + sKey;
 
-		// TODO is this needed?
+		// TODO is this needed? Think so if Hooks set on view object's root
 //		if (jMVP.View.hooks[sKey]) {
 //			jMVP.View.hooks[sKey](eTag, vValue);
 //		}
@@ -167,9 +167,7 @@ jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
 	var bReturn = false;
 
 	jMVP.each(oViewFragment, function(sKey) {
-		if (jMVP.View.hooks[sKey]) bReturn = false;
-		else if (sKey === 'tag') bReturn = false;
-		else bReturn = true;
+		bReturn = !(jMVP.View.hooks[sKey] || sKey === 'tag');
 	});
 
 	return bReturn;
