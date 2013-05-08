@@ -266,4 +266,11 @@ test('View hooks', function() {
 	oView.update('hideTitle', oModel.hideTitle);
 
 	equal(div.innerHTML, updatedHtml, 'text and html hooks');
+
+//	document.body.appendChild(div);
+//
+//	setInterval(function() {
+//		oModel.hideTitle = !oModel.hideTitle;
+//		oView.update('hideTitle', oModel.hideTitle);
+//	}, 1000);
 });
