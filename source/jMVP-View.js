@@ -29,10 +29,8 @@ jMVP.View.prototype.render = function(eTarget) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-	//TODO Too much loop loop loop...
 	jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
-		// Handle attributes and classNames objects
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
 			jMVP.each(vHookConfig, function(sKey, aNodes) {
@@ -40,10 +38,8 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 			});
 
 		} else {
-
-			jMVP.each(vHookConfig, function(eElement) {
-				jMVP.View.hooks[sHookKey](eElement, vValue);
-			});
+			
+			jMVP.View.hooks[sHookKey](vHookConfig, vValue);
 		}
 
 	}, this);
@@ -57,17 +53,16 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 jMVP.View.hooks = {
 
 	/**
-	 * Update the body of the element with a string
+	 * Text update hook
 	 * @param aNodes
 	 * @param sValue
 	 */
-	// TODO Check cross-browser support
 	text: function(aNodes, sValue) {
 		jMVP.dom(aNodes).text(sValue);
 	},
 
 	/**
-	 * Update the body of the element with a HTML sring
+	 * HTML update hook
 	 * @param aNodes
 	 * @param sValue
 	 */
@@ -78,18 +73,24 @@ jMVP.View.hooks = {
 	// TODO leave in view?
 	visible: function(aNodes, bValue) {},
 
-	// TODO special handling as value is object
+	/**
+	 * Attributes update hook
+	 * @param aNodes
+	 * @param vValue
+	 * @param sAttrKey
+	 */
 	attributes: function(aNodes, vValue, sAttrKey) {
-		// remove when undefined or empty string???
-		if (vValue === false || vValue === null) {
-			jMVP.dom(aNodes).rmAttr(sAttrKey);
-		} else {
-			jMVP.dom(aNodes).setAttr(sAttrKey, vValue);
-		};
+		//TODO remove when undefined or null???
+		jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sClassName, sAttrKey);
 	},
 
+	/**
+	 * CSS classes update hook
+	 * @param aNodes
+	 * @param bValue
+	 * @param sClassName
+	 */
 	classNames: function(aNodes, bValue, sClassName) {
-		console.log((bValue === true ? 'add' : 'remove') + 'Class', arguments);
 		jMVP.dom(aNodes)[(bValue === true ? 'add' : 'remove') + 'Class'](sClassName);
 	}
 };

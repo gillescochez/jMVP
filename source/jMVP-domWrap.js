@@ -37,7 +37,6 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
  */
 jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 	return this.each(function() {
-		console.log(this);
 		this.className += ' ' + sClassName;
 	});
 };
