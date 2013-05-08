@@ -89,6 +89,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 			aData = vData;
 		};
 
+		// TODO write a Array.prototype.forEach shim
 		aData.forEach(function(vValue, nIdx) {
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});

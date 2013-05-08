@@ -36,9 +36,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
 			jMVP.each(vHookConfig, function(sKey, aNodes) {
-				jMVP.each(aNodes, function(eNode) {
-					jMVP.View.hooks[sHookKey](eNode, vValue, sKey);
-				});
+				jMVP.View.hooks[sHookKey](aNodes, vValue, sKey);
 			});
 
 		} else {
@@ -60,43 +58,39 @@ jMVP.View.hooks = {
 
 	/**
 	 * Update the body of the element with a string
-	 * @param eTag
+	 * @param aNodes
 	 * @param sValue
 	 */
 	// TODO Check cross-browser support
-	text: function(eTag, sValue) {
-		eTag.innerText = sValue;
+	text: function(aNodes, sValue) {
+		jMVP.dom(aNodes).text(sValue);
 	},
 
 	/**
 	 * Update the body of the element with a HTML sring
-	 * @param eTag
+	 * @param aNodes
 	 * @param sValue
 	 */
-	html: function(eTag, sValue) {
-		eTag.innerHTML = sValue;
+	html: function(aNodes, sValue) {
+		jMVP.dom(aNodes).html(sValue);
 	},
 
 	// TODO leave in view?
-	visible: function(eTag, bValue) {},
+	visible: function(aNodes, bValue) {},
 
 	// TODO special handling as value is object
-	attributes: function(eTag, vValue, sAttrKey) {
+	attributes: function(aNodes, vValue, sAttrKey) {
 		// remove when undefined or empty string???
 		if (vValue === false || vValue === null) {
-			eTag.removeAttribute(sAttrKey);
+			jMVP.dom(aNodes).rmAttr(sAttrKey);
 		} else {
-			eTag[sAttrKey] = vValue;
+			jMVP.dom(aNodes).setAttr(sAttrKey, vValue);
 		};
 	},
 
-	// TODO Check for cross-browser support
-	classNames: function(eTag, bValue, sClassName) {
-		if (bValue) {
-			eTag.className += ' ' + sClassName;
-		} else {
-			eTag.className = eTag.className.replace(new RegExp(sClassName, 'gi'), '');
-		}
+	classNames: function(aNodes, bValue, sClassName) {
+		console.log((bValue === true ? 'add' : 'remove') + 'Class', arguments);
+		jMVP.dom(aNodes)[(bValue === true ? 'add' : 'remove') + 'Class'](sClassName);
 	}
 };
 

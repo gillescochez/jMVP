@@ -274,3 +274,63 @@ test('View hooks', function() {
 //		oView.update('hideTitle', oModel.hideTitle);
 //	}, 1000);
 });
+
+module('jMVP.dom');
+test('dom helper / Wrap class', function() {
+
+	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
+		div = document.createElement('div'),
+		divDom,
+		aDiv = [
+			document.createElement('div'),
+			document.createElement('div')
+		],
+		total = aDiv.length,
+		count = 0;
+
+	/**
+	 * Basic tests
+	 */
+	ok(jMVP.dom, '.dom exists');
+	equal(typeof jMVP.dom, 'function', '.dom is a function');
+
+	ok(jMVP.dom.Wrap, '.dom.Wrap exists');
+	equal(typeof jMVP.dom.Wrap, 'function', '.dom.Wrap is a function');
+
+	aMethods.forEach(function(sMethod) {
+		ok(jMVP.dom.Wrap.prototype[sMethod], 'jMVP.dom.Wrap.prototype.' + sMethod + ' exists');
+		equal(typeof jMVP.dom.Wrap.prototype[sMethod], 'function', 'jMVP.dom.Wrap.prototype.' + sMethod + ' is a function');
+	});
+
+	/**
+	 * Functionality tests
+	 */
+	//TODO Move text and html test from View hooks into here
+	divDom = jMVP.dom(div);
+	deepEqual(divDom.constructor, jMVP.dom.Wrap, 'dom method return an instance of dom.Wrap');
+	deepEqual(divDom.aNodes[0], div, 'element is stored');
+
+	// testing each
+	jMVP.dom(aDiv).each(function() {
+		deepEqual(aDiv[count], this, 'correct node');
+		count++;
+	});
+	equal(count, total, 'each iterated correctly');
+
+	divDom.addClass('foo');
+	equal(divDom.aNodes[0].className, ' foo', 'addClass success');
+	divDom.removeClass('foo');
+	equal(divDom.aNodes[0].className, '', 'removeClass success');
+
+	divDom.setAttr('foo', 'yes');
+	equal(divDom.aNodes[0].getAttribute('foo'), 'yes', 'setAttr success');
+	divDom.rmAttr('foo');
+	equal(divDom.aNodes[0].getAttribute('foo'), null, 'rmAttr success');
+
+
+	aMethods.forEach(function(sMethod) {
+		if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
+		else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
+	});
+
+});

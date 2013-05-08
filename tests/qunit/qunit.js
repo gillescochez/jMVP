@@ -258,7 +258,11 @@ Test.prototype = {
 
 var QUnit = {
 
-	// call on start of module test to prepend name to all tests
+	/**
+	 * call on start of module test to prepend name to all tests
+	 * @param name
+	 * @param [testEnvironment]
+	 */
 	module: function(name, testEnvironment) {
 		config.currentModule = name;
 		config.currentModuleTestEnviroment = testEnvironment;
