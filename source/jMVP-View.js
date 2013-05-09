@@ -106,14 +106,14 @@ jMVP.View.hooks = {
 jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
 	// TODO try documentFragment approach - extra div is ugly :(
-	var eFragment = eParentFragment || document.createElement('div');
+	var eView = eParentFragment || document.createElement('div');
 
 	jMVP.each(oRawView, function(sKey, vValue) {
 
-		var eTag = document.createElement(vValue.tag || 'div');
+		var eNode = document.createElement(vValue.tag || 'div');
 
 		// good idea?
-		eTag.className = 'jmvp-' + sKey;
+		eNode.className = 'jmvp-' + sKey;
 
 		// TODO is this needed? Think so if Hooks set on view object's root
 //		if (jMVP.View.hooks[sKey]) {
@@ -124,12 +124,6 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 
 			if (vValue[sHookKey]) {
 
-				/**
-				 * Considering how complex the structure of the Map is it might be wised
-				 * to have multiple maps, one for each hook and store it that way
-				 * objects will be less heavy and not as deep should improve performace
-				 */
-
 				// Handle attributes and classNames objects
 				if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
@@ -137,25 +131,25 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 						if (!oMap[sValue]) oMap[sValue] = {};
 						if (!oMap[sValue][sHookKey]) oMap[sValue][sHookKey] = {};
 						if (!oMap[sValue][sHookKey][sKey]) oMap[sValue][sHookKey][sKey] = [];
-						oMap[sValue][sHookKey][sKey].push(eTag);
+						oMap[sValue][sHookKey][sKey].push(eNode);
 					});
 
 				} else {
 					if (!oMap[vValue[sHookKey]]) oMap[vValue[sHookKey]] = {};
 					if (!oMap[vValue[sHookKey]][sHookKey]) oMap[vValue[sHookKey]][sHookKey] = [];
-					oMap[vValue[sHookKey]][sHookKey].push(eTag);
+					oMap[vValue[sHookKey]][sHookKey].push(eNode);
 				}
 			}
 		});
 
 		if (jMVP.View.viewFragmentHasChildren(vValue)) {
-			jMVP.View.objectToElement(vValue, oMap, eTag);
+			jMVP.View.objectToElement(vValue, oMap, eNode);
 		}
 
-		eFragment.appendChild(eTag);
+		eView.appendChild(eNode);
 	});
 
-	return eFragment;
+	return eView;
 };
 
 /**
