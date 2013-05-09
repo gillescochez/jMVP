@@ -338,10 +338,19 @@ test('dom helper / Wrap class - basic / functional', function() {
 module('jMVP.Presenter');
 test('Presenter instance - basic / functional', function() {
 
-	var handlers = {
+	var clicked = false,
+        div = document.createElement('div');
+
+    div.className = 'jMVP-test';
+
+    var mockEvent = {
+            target: div,
+            type: 'click'
+        },
+        handlers = {
 			test: {
 				click: function() {
-					console.log(arguments);
+                    clicked = true;
 				}
 			}
 		},
@@ -351,9 +360,14 @@ test('Presenter instance - basic / functional', function() {
 	ok(presenter.oMap.test, 'data stored in map');
 	deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
 
-	ok(presenter.trigger, 'trigger exists');
-	equal(typeof presenter.trigger, 'function', 'trigger is a function');
-	equal(presenter.trigger.length, 1, 'trigger expects 1 arguments');
+	ok(presenter.routeEvent, 'trigger exists');
+	equal(typeof presenter.routeEvent, 'function', 'trigger is a function');
+	equal(presenter.routeEvent.length, 1, 'trigger expects 1 arguments');
 
-	ok(presenter.trigger, 'trigger exists');
+    // should trigger click
+    presenter.routeEvent(mockEvent);
+    equal(clicked, true, 'click event handler executed');
+
+
+
 });

@@ -12,20 +12,27 @@ jMVP.Presenter = function(oConfig) {
 	}, this);
 };
 
-jMVP.Presenter.prototype.trigger = function(oDOMEvent) {
+/**
+ *
+ * @param oDOMEvent
+ */
+jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
+
 	var eNode = oDOMEvent.target,
 		sReference;
 
-	jMVP.each(eNode.className.split(' '), function(sClassName) {
-		
+	jMVP.each(eNode.className.indexOf(' ') !== -1 ? eNode.className.split(' ') : [eNode.className], function(sClassName) {
+
 		if (sClassName.substring(0, 4) === 'jMVP') {
+
 			sReference = sClassName.substring(5, sClassName.length);
 
 			if (this.oMap.hasOwnProperty(sReference)) {
 				if (this.oMap[sReference].hasOwnProperty(oDOMEvent.type)) {
-					console.log('execute');
+					// TODO What to use as context?
+                    this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent])
 				}
 			}
 		}
-	});
+	}, this);
 };
