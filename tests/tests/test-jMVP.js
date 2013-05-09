@@ -19,6 +19,10 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
 	equal(jMVP.import.length, 2, 'jMVP.import expect 2 arguments');
 
+    /**
+     * Object Declaration API
+     */
+
 	ok(jMVP.model, 'jMVP.model exists');
 	equal(typeof jMVP.model, 'function', 'jMVP.model is a function');
 	equal(jMVP.model && jMVP.prototype.model === undefined, true, 'jMVP.model is static');
@@ -97,7 +101,7 @@ test('Objects / Static methods - basic', function(){
 	ok(jMVP.Presenter, 'jMVP.Presenter exists');
 	equal(typeof jMVP.Presenter, 'function', 'jMVP.Presenter is a function');
 	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
-	equal(jMVP.Presenter.length, 1, 'jMVP.Presenter expect 1 argument');
+	equal(jMVP.Presenter.length, 3, 'jMVP.Presenter expect 3 argument');
 
 });
 test('jMVP.each static method - functional', function() {
@@ -354,20 +358,35 @@ test('Presenter instance - basic / functional', function() {
 				}
 			}
 		},
+        view = {
+            test: {
+                text: 'foo'
+            }
+        },
+        model = {
+            foo: 'foo'
+        },
 		presenter = new jMVP.Presenter(handlers);
 
 	ok(presenter.oMap, 'Map exists');
 	ok(presenter.oMap.test, 'data stored in map');
-	deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
+    deepEqual(presenter.oMap, handlers, 'data stored properly');
+    deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
 
 	ok(presenter.routeEvent, 'trigger exists');
 	equal(typeof presenter.routeEvent, 'function', 'trigger is a function');
 	equal(presenter.routeEvent.length, 1, 'trigger expects 1 arguments');
 
-    // should trigger click
     presenter.routeEvent(mockEvent);
     equal(clicked, true, 'click event handler executed');
 
+    presenter = new jMVP.Presenter(
+        handlers, new jMVP.View(view), new jMVP.Model(model)
+    );
 
+    ok(presenter.oView, 'View is stored');
+    ok(presenter.oModel, 'Model is stored');
+    deepEqual(presenter.oView.constructor, jMVP.View, 'View object stored is jMVP.View instance');
+    deepEqual(presenter.oModel.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
 
 });
