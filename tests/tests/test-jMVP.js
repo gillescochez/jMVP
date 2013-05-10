@@ -282,7 +282,7 @@ test('View hooks', function() {
 module('jMVP.dom');
 test('dom helper / Wrap class - basic / functional', function() {
 
-	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
+	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr,getByClass'.split(','),
 		div = document.createElement('div'),
 		divDom,
 		aDiv = [
@@ -295,11 +295,16 @@ test('dom helper / Wrap class - basic / functional', function() {
 	/**
 	 * Basic tests
 	 */
-	ok(jMVP.dom, '.dom exists');
-	equal(typeof jMVP.dom, 'function', '.dom is a function');
+    ok(jMVP.dom, '.dom exists');
+    equal(typeof jMVP.dom, 'function', '.dom is a function');
 
 	ok(jMVP.dom.Wrap, '.dom.Wrap exists');
 	equal(typeof jMVP.dom.Wrap, 'function', '.dom.Wrap is a function');
+
+    ok(jMVP.dom.getElementsByClassName, '.dom.getElementsByClassName exists');
+    equal(typeof jMVP.dom.getElementsByClassName, 'function', '.dom.getElementsByClassName is a function');
+
+    ok(jMVP.dom.INNER_TEXT, 'INNER_TEXT constant exists');
 
 	aMethods.forEach(function(sMethod) {
 		ok(jMVP.dom.Wrap.prototype[sMethod], 'jMVP.dom.Wrap.prototype.' + sMethod + ' exists');
@@ -331,10 +336,20 @@ test('dom helper / Wrap class - basic / functional', function() {
 	divDom.rmAttr('foo');
 	equal(divDom.aNodes[0].getAttribute('foo'), null, 'rmAttr success');
 
+    var span = document.createElement('span');
+    span.className = 'test';
+    div.appendChild(span);
 
+    deepEqual(jMVP.dom(div).getByClass('test'), span, 'dom.getByClass works');
+
+    // reset divDom before chain test as can affect test above
+    divDom = jMVP.dom(document.createElement('div'));
 	aMethods.forEach(function(sMethod) {
-		if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
-		else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
+        // skip getByClass as returning an array
+        if (sMethod != 'getByClass') {
+            if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
+            else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
+        }
 	});
 
 });
@@ -388,5 +403,6 @@ test('Presenter instance - basic / functional', function() {
     ok(presenter.oModel, 'Model is stored');
     deepEqual(presenter.oView.constructor, jMVP.View, 'View object stored is jMVP.View instance');
     deepEqual(presenter.oModel.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
+
 
 });

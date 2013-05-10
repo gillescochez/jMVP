@@ -16,8 +16,6 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
 		this.oMap[sReference] = oHandlers;
 	}, this);
 
-
-
 };
 
 /**

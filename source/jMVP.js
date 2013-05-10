@@ -76,7 +76,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 
 		for (sKey in vData) {
 
-			if (vData.hasOwnProperty(sKey)) {
+			if (vData[sKey]) {
 				fCallback.apply(oContext, [sKey, vData[sKey]]);
 			}
 		}

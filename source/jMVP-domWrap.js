@@ -32,6 +32,37 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 };
 
 /**
+ * Return a getElementsByClassName compatible with the browser used
+ */
+jMVP.dom.getElementsByClassName = (function(div) {
+
+    if (div.querySelectorAll) {
+        return function(sSelector, context) {
+            return context.querySelector('.' + sSelector);
+        };
+    } else {
+        return function(sSelector, context) {
+            var aResult = [];
+            jMVP.dom(context.getElementsByTagName('*')).each(function() {
+               if (this.className.indexOf(sSelector) !== -1)
+               aResult.push(this);
+            });
+            return aResult;
+        };
+    }
+
+})(document.createElement('div'));
+
+/**
+ * Return a single element by class name
+ * @param sClassName
+ * @returns {Node}
+ */
+jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
+    return jMVP.dom.getElementsByClassName(sClassName, this.aNodes[0]);
+};
+
+/**
  * Add a CSS class name to element(s)
  * @param sClassName
  */
@@ -55,7 +86,7 @@ jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
  * Store property to use depending on the browser
  * @type {string}
  */
-jMVP.dom.Wrap.TEXT = ('innerText' in document.createElement('div')) ? 'innerText' : 'textContent';
+jMVP.dom.INNER_TEXT = ('innerText' in document.createElement('div')) ? 'innerText' : 'textContent';
 
 /**
  * Update the TEXT value of nodes
@@ -63,7 +94,7 @@ jMVP.dom.Wrap.TEXT = ('innerText' in document.createElement('div')) ? 'innerText
  */
 jMVP.dom.Wrap.prototype.text = function(sValue) {
 	return this.each(function() {
-		this[jMVP.dom.Wrap.TEXT] = sValue;
+		this[jMVP.dom.INNER_TEXT] = sValue;
 	});
 };
 
