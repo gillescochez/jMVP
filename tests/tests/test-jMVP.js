@@ -270,13 +270,6 @@ test('View hooks', function() {
 	oView.update('hideTitle', oModel.hideTitle);
 
 	equal(div.innerHTML, updatedHtml, 'text and html hooks');
-
-//	document.body.appendChild(div);
-//
-//	setInterval(function() {
-//		oModel.hideTitle = !oModel.hideTitle;
-//		oView.update('hideTitle', oModel.hideTitle);
-//	}, 1000);
 });
 
 module('jMVP.dom');
@@ -304,6 +297,7 @@ test('dom helper / Wrap class - basic / functional', function() {
     ok(jMVP.dom.getElementsByClassName, '.dom.getElementsByClassName exists');
     equal(typeof jMVP.dom.getElementsByClassName, 'function', '.dom.getElementsByClassName is a function');
 
+    ok(jMVP.dom.DIV, 'DIV constant exists');
     ok(jMVP.dom.INNER_TEXT, 'INNER_TEXT constant exists');
 
 	aMethods.forEach(function(sMethod) {
@@ -351,6 +345,17 @@ test('dom helper / Wrap class - basic / functional', function() {
             else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
         }
 	});
+
+    ok(jMVP.dom.on, 'on exists');
+    equal(typeof jMVP.dom.on, 'function', 'on is a function');
+    equal(jMVP.dom.on.length, 3, 'on expects 2 arguments');
+    equal(typeof divDom.on, 'undefined', 'on is static');
+
+    ok(jMVP.dom.off, 'off exists');
+    equal(typeof jMVP.dom.off, 'function', 'off is a function');
+    equal(jMVP.dom.off.length, 3, 'off expects 2 arguments');
+    equal(typeof divDom.off, 'undefined', 'off is static');
+
 
 });
 

@@ -32,28 +32,6 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 };
 
 /**
- * Return a getElementsByClassName compatible with the browser used
- */
-jMVP.dom.getElementsByClassName = (function(div) {
-
-    if (div.querySelectorAll) {
-        return function(sSelector, context) {
-            return context.querySelector('.' + sSelector);
-        };
-    } else {
-        return function(sSelector, context) {
-            var aResult = [];
-            jMVP.dom(context.getElementsByTagName('*')).each(function() {
-               if (this.className.indexOf(sSelector) !== -1)
-               aResult.push(this);
-            });
-            return aResult[0];
-        };
-    }
-
-})(document.createElement('div'));
-
-/**
  * Return a single element by class name
  * @param sClassName
  * @returns {Node}
@@ -81,12 +59,6 @@ jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 		this.className = this.className !== undefined ? this.className.replace(new RegExp(' ' + sClassName, 'gi'), '') : '';
 	});
 };
-
-/**
- * Store property to use depending on the browser
- * @type {string}
- */
-jMVP.dom.INNER_TEXT = ('innerText' in document.createElement('div')) ? 'innerText' : 'textContent';
 
 /**
  * Update the TEXT value of nodes
@@ -128,3 +100,62 @@ jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 		this.removeAttribute(sAttrKey);
 	});
 };
+
+
+/**
+ * Constants
+ */
+
+/**
+ * Store property to use depending on the browser
+ * @type {string}
+ */
+jMVP.dom.DIV = document.createElement('div');
+jMVP.dom.INNER_TEXT = ('innerText' in jMVP.dom.DIV) ? 'innerText' : 'textContent';
+
+
+/**
+ * Static methods
+ */
+
+/**
+ * Return a on (event bind) function compatible with the browser used
+ * @type {Function}
+ */
+jMVP.dom.on =  jMVP.dom.DIV.addEventListener
+    ? function(eNode, sEventType, fCallback) {
+        eNode.addEventListener(sEventType, fCallback, false);
+    }
+    : function(eNode, sEventType, fCallback) {
+        eNode.attachEvent('on' + sEventType, fCallback);
+    };
+
+/**
+ * Return a off (event unbind) function compatible with the browser used
+ * @type {Function}
+ */
+jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
+    ? function(eNode, sEventType, fCallback) {
+        eNode.removeEventListener(sEventType, fCallback);
+    }
+    : function(eNode, sEventType, fCallback) {
+        eNode.detachEvent('on' + sEventType, fCallback);
+    };
+
+/**
+ * Return a getElementsByClassName compatible with the browser used
+ * @type {Function}
+ */
+jMVP.dom.getElementsByClassName = jMVP.dom.DIV.querySelector
+    ? function(sSelector, context) {
+        return context.querySelector('.' + sSelector);
+    }
+    : function(sSelector, context) {
+            var aResult = [];
+        jMVP.dom(context.getElementsByTagName('*')).each(function() {
+            if (this.className.indexOf(sSelector) !== -1)
+                aResult.push(this);
+        });
+        return aResult[0];
+    };
+
