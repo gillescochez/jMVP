@@ -29,9 +29,9 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
         var eNode = jMVP.dom(this.oView.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
-//        jMVP.dom(eNode).on(sEventType, function(oEvent) {
-//            fHandler.apply(eNode, [oEvent, oModel, oView]);
-//        });
+        jMVP.dom(eNode).on(sEventType, function(oEvent) {
+            fHandler.apply(eNode, [oEvent, oModel, oView]);
+        });
     }, this);
 };
 

@@ -41,6 +41,30 @@ jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
 };
 
 /**
+ * Bind a handler to the first element
+ * @param sEventType
+ * @param fCallback
+ * @returns {Function}
+ */
+jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
+    return this.each(function() {
+        jMVP.dom.on(this, sEventType, fCallback);
+    });
+};
+
+/**
+ * Unbind a handler to the first element
+ * @param sEventType
+ * @param fCallback
+ * @returns {Function}
+ */
+jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
+    return this.each(function() {
+        jMVP.dom.off(this, sEventType, fCallback);
+    });
+};
+
+/**
  * Add a CSS class name to element(s)
  * @param sClassName
  */
@@ -148,8 +172,6 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
  */
 jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
     ? function(sSelector, context) {
-
-    console.log(sSelector, context.querySelector('.' + sSelector));
         return context.querySelector('.' + sSelector);
     }
     : function(sSelector, context) {

@@ -352,14 +352,19 @@ test('dom helper / Wrap class - basic / functional', function() {
     ok(jMVP.dom.on, 'on exists');
     equal(typeof jMVP.dom.on, 'function', 'on is a function');
     equal(jMVP.dom.on.length, 3, 'on expects 2 arguments');
-    equal(typeof divDom.on, 'undefined', 'on is static');
 
     ok(jMVP.dom.off, 'off exists');
     equal(typeof jMVP.dom.off, 'function', 'off is a function');
-    equal(jMVP.dom.off.length, 3, 'off expects 2 arguments');
-    equal(typeof divDom.off, 'undefined', 'off is static');
+    equal(jMVP.dom.off.length, 3, 'off expects 3 arguments');
 
+    // tests on/off are inherited (1 argument less)
+    ok(divDom.on, 'on exists');
+    equal(typeof divDom.on, 'function', 'on is a function');
+    equal(divDom.on.length, 2, 'on expects 2 arguments');
 
+    ok(divDom.off, 'off exists');
+    equal(typeof divDom.off, 'function', 'off is a function');
+    equal(divDom.off.length, 2, 'off expects 2 arguments');
 });
 
 module('jMVP.Presenter');
@@ -377,6 +382,7 @@ test('Presenter instance - basic / functional', function() {
         handlers = {
 			test: {
 				click: function() {
+                    console.log(arguments);
                     clicked = true;
 				}
 			}
@@ -415,6 +421,4 @@ test('Presenter instance - basic / functional', function() {
     ok(presenter.oModel, 'Model is stored');
     deepEqual(presenter.oView.constructor, jMVP.View, 'View object stored is jMVP.View instance');
     deepEqual(presenter.oModel.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
-
-
 });
