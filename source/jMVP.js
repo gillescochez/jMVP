@@ -8,12 +8,14 @@ var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
 
 };
 
+jMVP.CSS_PREFIX = 'jmvp-';
+
 /**
  * Load resources and return a jMVP instance using those resources
  * @param sReference
  * @param fCallback
  */
-jMVP.import = function(sReference, fCallback) {
+jMVP.load = function(sReference, fCallback) {
 
 };
 

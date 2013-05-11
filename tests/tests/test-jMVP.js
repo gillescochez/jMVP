@@ -9,15 +9,18 @@ test('Objects / Static methods - basic', function(){
 	equal(typeof jMVP, 'function', 'jMVP is a function');
 	equal(jMVP.length, 3, 'jMVP expect 3 arguments');
 
+    ok(jMVP.CSS_PREFIX, 'CSS_PREFIX exists');
+    equal(jMVP.CSS_PREFIX, 'jmvp-', 'CSS_PREFIX is "jmvp-"');
+
 	ok(jMVP.each, 'jMVP.each exists');
 	equal(typeof jMVP.each, 'function', 'jMVP.each is a function');
 	equal(jMVP.each && jMVP.prototype.each === undefined, true, 'jMVP.each is static');
 	equal(jMVP.each.length, 3, 'jMVP.each expect 3 arguments');
 
-	ok(jMVP.import, 'jMVP.import exists');
-	equal(typeof jMVP.import, 'function', 'jMVP.import is a function');
-	equal(jMVP.import && jMVP.prototype.import === undefined, true, 'jMVP.import is static');
-	equal(jMVP.import.length, 2, 'jMVP.import expect 2 arguments');
+	ok(jMVP.load, 'jMVP.load exists');
+	equal(typeof jMVP.load, 'function', 'jMVP.load is a function');
+	equal(jMVP.load && jMVP.prototype.load === undefined, true, 'jMVP.load is static');
+	equal(jMVP.load.length, 2, 'jMVP.load expect 2 arguments');
 
     /**
      * Object Declaration API
@@ -200,7 +203,7 @@ test('View / Template / Element instances - functional', function() {
 
 	oView.render(div);
 
-	equal(div.innerHTML, '<div><div class="jmvp-test"></div></div>', 'View rendered properly');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="jmvp-test"></div></div>', 'View rendered properly');
 
 	ok(oView.update, 'update exists');
 	equal(typeof oView.update, 'function', 'update is a function');
@@ -208,7 +211,7 @@ test('View / Template / Element instances - functional', function() {
 
 	oView.update('foo', oModel.foo);
 
-	equal(div.innerHTML, '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
 });
 test('View hooks', function() {
 
@@ -258,18 +261,18 @@ test('View hooks', function() {
 		},
 		oView = new jMVP.View(oTmpl),
 		div = document.createElement('div'),
-		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title visible" title="test">test</h1><div class="jmvp-article" title="test"><p>Bla bla bla</p></div></div></div></div>',
+		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title visible" title="test">test</h1><div class="jmvp-article" title="test"><p>bla bla bla</p></div></div></div></div>',
 		emptyHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title"></h1><div class="jmvp-article"></div></div></div></div>';
 
 	oView.render(div);
 
-	equal(div.innerHTML, emptyHtml, 'Complex view markup');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), emptyHtml, 'Complex view markup');
 
 	oView.update('pagetitle', oModel.pagetitle);
 	oView.update('pagecontent', oModel.pagecontent);
 	oView.update('hideTitle', oModel.hideTitle);
 
-	equal(div.innerHTML, updatedHtml, 'text and html hooks');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), updatedHtml, 'text and html hooks');
 });
 
 module('jMVP.dom');
@@ -294,8 +297,8 @@ test('dom helper / Wrap class - basic / functional', function() {
 	ok(jMVP.dom.Wrap, '.dom.Wrap exists');
 	equal(typeof jMVP.dom.Wrap, 'function', '.dom.Wrap is a function');
 
-    ok(jMVP.dom.getElementsByClassName, '.dom.getElementsByClassName exists');
-    equal(typeof jMVP.dom.getElementsByClassName, 'function', '.dom.getElementsByClassName is a function');
+    ok(jMVP.dom.getElementByClassName, '.dom.getElementByClassName exists');
+    equal(typeof jMVP.dom.getElementByClassName, 'function', '.dom.getElementByClassName is a function');
 
     ok(jMVP.dom.DIV, 'DIV constant exists');
     ok(jMVP.dom.INNER_TEXT, 'INNER_TEXT constant exists');
@@ -393,9 +396,13 @@ test('Presenter instance - basic / functional', function() {
     deepEqual(presenter.oMap, handlers, 'data stored properly');
     deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
 
-	ok(presenter.routeEvent, 'trigger exists');
-	equal(typeof presenter.routeEvent, 'function', 'trigger is a function');
-	equal(presenter.routeEvent.length, 1, 'trigger expects 1 arguments');
+    ok(presenter.routeEvent, 'trigger exists');
+    equal(typeof presenter.routeEvent, 'function', 'trigger is a function');
+    equal(presenter.routeEvent.length, 1, 'trigger expects 1 arguments');
+
+    ok(presenter.bindToView, 'trigger exists');
+    equal(typeof presenter.bindToView, 'function', 'trigger is a function');
+    equal(presenter.bindToView.length, 1, 'trigger expects 1 arguments');
 
     presenter.routeEvent(mockEvent);
     equal(clicked, true, 'click event handler executed');

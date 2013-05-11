@@ -5,17 +5,34 @@
  * @param [oModel]
  * @constructor
  */
-// TODO add oView, oModel as optional arguments and store them is present
 jMVP.Presenter = function(oConfig, oView, oModel) {
 
 	this.oMap = {};
-    this.oView = oView;
-    this.oModel = oModel;
+    this.oView = oView || null;
+    this.oModel = oModel || null;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
 		this.oMap[sReference] = oHandlers;
+        this.oView && this.bindToView(sReference);
 	}, this);
 
+};
+
+/**
+ * Bind element in a view with the handler matching its reference
+ * @param sReference
+ */
+jMVP.Presenter.prototype.bindToView = function(sReference) {
+
+    var oView = this.oView,
+        oModel = this.oModel;
+
+    jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
+        var eNode = jMVP.dom(this.oView.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
+//        jMVP.dom(eNode).on(sEventType, function(oEvent) {
+//            fHandler.apply(eNode, [oEvent, oModel, oView]);
+//        });
+    }, this);
 };
 
 /**

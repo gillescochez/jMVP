@@ -34,10 +34,10 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 /**
  * Return a single element by class name
  * @param sClassName
- * @returns {Node}
+ * @returns {*}
  */
 jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
-    return jMVP.dom.getElementsByClassName(sClassName, this.aNodes[0]);
+    return jMVP.dom.getElementByClassName(sClassName, this.aNodes[0]);
 };
 
 /**
@@ -143,19 +143,25 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
     };
 
 /**
- * Return a getElementsByClassName compatible with the browser used
+ * Return a getElementByClassName compatible with the browser used
  * @type {Function}
  */
-jMVP.dom.getElementsByClassName = jMVP.dom.DIV.querySelector
+jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
     ? function(sSelector, context) {
+
+    console.log(sSelector, context.querySelector('.' + sSelector));
         return context.querySelector('.' + sSelector);
     }
     : function(sSelector, context) {
-            var aResult = [];
+        var aResult = [];
+
         jMVP.dom(context.getElementsByTagName('*')).each(function() {
-            if (this.className.indexOf(sSelector) !== -1)
+            if (this.className.indexOf(sSelector) !== -1) {
                 aResult.push(this);
+                return;
+            }
         });
+
         return aResult[0];
     };
 

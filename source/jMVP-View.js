@@ -113,7 +113,7 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 		var eNode = document.createElement(vValue.tag || 'div');
 
 		// good idea?
-		eNode.className = 'jmvp-' + sKey;
+		eNode.className = jMVP.CSS_PREFIX + sKey;
 
 		// TODO is this needed? Think so if Hooks set on view object's root
 //		if (jMVP.View.hooks[sKey]) {
