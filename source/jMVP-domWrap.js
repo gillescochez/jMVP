@@ -47,7 +47,7 @@ jMVP.dom.getElementsByClassName = (function(div) {
                if (this.className.indexOf(sSelector) !== -1)
                aResult.push(this);
             });
-            return aResult;
+            return aResult[0];
         };
     }
 
