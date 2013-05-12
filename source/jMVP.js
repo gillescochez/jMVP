@@ -98,8 +98,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 
 	} else if (typeof vData === "string" || vData instanceof Array) {
 
-		// TODO write a Array.prototype.forEach shim
-        (typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
+		(typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});
 	}
