@@ -381,8 +381,8 @@ test('Presenter instance - basic / functional', function() {
         },
         handlers = {
 			test: {
-				click: function() {
-                    console.log(arguments);
+				click: function(oEvent) {
+                    deepEqual(oEvent, mockEvent, 'Event object returned');
                     clicked = true;
 				}
 			}
