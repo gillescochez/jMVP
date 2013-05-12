@@ -70,9 +70,6 @@ jMVP.View.hooks = {
 		jMVP.dom(aNodes).html(sValue);
 	},
 
-	// TODO leave in view?
-	visible: function(aNodes, bValue) {},
-
 	/**
 	 * Attributes update hook
 	 * @param aNodes

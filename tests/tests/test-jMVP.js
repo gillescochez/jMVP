@@ -144,6 +144,34 @@ test('jMVP.each static method - functional', function() {
 
 	equal(count, 2, 'each with array');
 });
+test('jMVP instance', function() {
+    var presenter = {
+            test: {
+                click: function(oEvent) {
+                    deepEqual(oEvent, mockEvent, 'Event object returned');
+                    clicked = true;
+                }
+            }
+        },
+        view = {
+            test: {
+                text: 'foo'
+            }
+        },
+        model = {
+            foo: 'foo'
+        },
+        jmvp = new jMVP(model, view, presenter);
+
+    ok(jmvp.oModel, 'oModel exists');
+    ok(jmvp.oView, 'oView exists');
+    ok(jmvp.oPresenter, 'oPresenter exists');
+
+    deepEqual(jmvp.oModel, new jMVP.Model(model), 'oModel instance of jMVP.Model');
+    deepEqual(jmvp.oView, new jMVP.View(view), 'oView instance of jMVP.View');
+    deepEqual(jmvp.oPresenter, new jMVP.Presenter(presenter, jmvp.oView, jmvp.oModel), 'oPresenter instance of jMVP.Presenter');
+
+});
 
 module('jMVP.Model');
 test('Model / Data instances - functional', function() {
@@ -219,7 +247,7 @@ test('View hooks', function() {
 	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
 	equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
 
-	'text,html,visible,attributes,classNames'.split(',').forEach(function(hook) {
+	'text,html,attributes,classNames'.split(',').forEach(function(hook) {
 
 		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
 		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');

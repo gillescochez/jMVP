@@ -1,10 +1,14 @@
 /**
  * Create a new jMVP instance
- * @param oMVPModel
- * @param oMVPView
- * @param oMVPPresenter
+ * @param oRawModel
+ * @param oRawView
+ * @param oRawPresenter
  */
-var jMVP = function(oMVPModel, oMVPView, oMVPPresenter) {
+function jMVP(oRawModel, oRawView, oRawPresenter) {
+
+    this.oModel = new jMVP.Model(oRawModel);
+    this.oView = new jMVP.View(oRawView);
+    this.oPresenter = new jMVP.Presenter(oRawPresenter, this.oView, this.oModel);
 
 };
 
@@ -16,7 +20,7 @@ jMVP.CSS_PREFIX = 'jmvp-';
  * @param fCallback
  */
 jMVP.load = function(sReference, fCallback) {
-
+    console.log(sReference, fCallback);
 };
 
 /**
@@ -31,7 +35,7 @@ jMVP.oViews = {};
  * @param oView
  */
 jMVP.view = function(sReference, oView){
-
+    jMVP.oViews[sReference] = oView;
 };
 
 /**
@@ -46,7 +50,7 @@ jMVP.oModels = {};
  * @param oModel
  */
 jMVP.model = function(sReference, oModel){
-
+    jMVP.oModels[sReference] = oModel;
 };
 
 /**
@@ -61,7 +65,7 @@ jMVP.oPresenters = {};
  * @param oPresenter
  */
 jMVP.presenter = function(sReference, oPresenter){
-
+    jMVP.oPresenters[sReference] = oPresenter;
 };
 
 /**

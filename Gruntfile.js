@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-    var aSources = ['source/*.js' ];
+    var aSources = ['source/<%= pkg.name %>.js', 'source/*.js' ];
 
     // config
     grunt.initConfig({
