@@ -85,7 +85,7 @@ jMVP.presenter = function(sReference, oPresenter){
  */
 jMVP.each = function(vData, fCallback, oContext) {
 
-	var aData, sKey;
+	var sKey;
 
 	if (vData.constructor === Object && vData.constructor !== Array) {
 
@@ -98,14 +98,8 @@ jMVP.each = function(vData, fCallback, oContext) {
 
 	} else if (typeof vData === "string" || vData instanceof Array) {
 
-		if (typeof vData === "string") {
-			aData = vData.split("");
-		} else {
-			aData = vData;
-		};
-
 		// TODO write a Array.prototype.forEach shim
-		aData.forEach(function(vValue, nIdx) {
+        (typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});
 	}
