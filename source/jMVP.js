@@ -6,10 +6,19 @@
  */
 function jMVP(oRawModel, oRawView, oRawPresenter) {
 
-    this.oModel = new jMVP.Model(oRawModel);
-    this.oView = new jMVP.View(oRawView);
-    this.oPresenter = new jMVP.Presenter(oRawPresenter, this.oView, this.oModel);
+    var oSelf = this;
 
+    this.oRawModel = oRawModel;
+    this.oRawView = oRawView;
+    this.oRawPresenter = oRawPresenter;
+
+    this.model = new jMVP.Model(oRawModel);
+    this.view = new jMVP.View(oRawView);
+    this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
+
+    this.model.onModelUpdated = function(sKey, vValue) {
+        oSelf.view.update(sKey, vValue);
+    };
 };
 
 jMVP.CSS_PREFIX = 'jmvp-';

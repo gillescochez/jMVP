@@ -147,9 +147,8 @@ test('jMVP.each static method - functional', function() {
 test('jMVP instance', function() {
     var presenter = {
             test: {
-                click: function(oEvent) {
-                    deepEqual(oEvent, mockEvent, 'Event object returned');
-                    clicked = true;
+                click: function(oEvent, oModel, oView) {
+
                 }
             }
         },
@@ -163,13 +162,20 @@ test('jMVP instance', function() {
         },
         jmvp = new jMVP(model, view, presenter);
 
-    ok(jmvp.oModel, 'oModel exists');
-    ok(jmvp.oView, 'oView exists');
-    ok(jmvp.oPresenter, 'oPresenter exists');
+    ok(jmvp.oRawModel, 'oRawModel exists');
+    ok(jmvp.oRawView, 'oRawView exists');
+    ok(jmvp.oRawPresenter, 'oRawPresenter exists');
 
-    deepEqual(jmvp.oModel, new jMVP.Model(model), 'oModel instance of jMVP.Model');
-    deepEqual(jmvp.oView, new jMVP.View(view), 'oView instance of jMVP.View');
-    deepEqual(jmvp.oPresenter, new jMVP.Presenter(presenter, jmvp.oView, jmvp.oModel), 'oPresenter instance of jMVP.Presenter');
+    ok(jmvp.model, 'model exists');
+    ok(jmvp.view, 'view exists');
+    ok(jmvp.presenter, 'presenter exists');
+
+    deepEqual(jmvp.model, new jMVP.Model(model), 'model instance of jMVP.Model');
+    deepEqual(jmvp.view, new jMVP.View(view), 'view instance of jMVP.View');
+    deepEqual(jmvp.presenter, new jMVP.Presenter(presenter, jmvp.view, jmvp.model), 'presenter instance of jMVP.Presenter');
+
+    jmvp.model.foo.setValue('FOO');
+    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
 
 });
 
@@ -203,6 +209,9 @@ test('Model / Data instances - functional', function() {
 	oModel.foo.setValue('FOO');
 	equal(oRawData.foo, 'FOO', 'original data update');
 	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
+
+    ok(oModel.onModelUpdated, 'onModelUpdated exists');
+    equal(typeof oModel.onModelUpdated, 'function', 'onModelUpdated is a function');
 });
 
 module('jMVP.View');
@@ -445,8 +454,8 @@ test('Presenter instance - basic / functional', function() {
         handlers, new jMVP.View(view), new jMVP.Model(model)
     );
 
-    ok(presenter.oView, 'View is stored');
-    ok(presenter.oModel, 'Model is stored');
-    deepEqual(presenter.oView.constructor, jMVP.View, 'View object stored is jMVP.View instance');
-    deepEqual(presenter.oModel.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
+    ok(presenter.view, 'View is stored');
+    ok(presenter.model, 'Model is stored');
+    deepEqual(presenter.view.constructor, jMVP.View, 'View object stored is jMVP.View instance');
+    deepEqual(presenter.model.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
 });

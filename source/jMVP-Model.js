@@ -11,6 +11,13 @@ jMVP.Model = function(oModel) {
 };
 
 /**
+ * Get called when a data object get updated
+ * @param sKey
+ * @param vValue
+ */
+jMVP.Model.prototype.onModelUpdated = function(sKey, vValue) {};
+
+/**
  * Create the setter/getter API and keep the raw data sync
  * @param oInstance
  * @param oModel
@@ -20,6 +27,7 @@ jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
 	oInstance[sKey].onValueUpdated = function(vValue) {
 		oModel[sKey] = vValue;
+        oInstance.onModelUpdated.apply(oInstance, [sKey, vValue]);
 	};
 };
 

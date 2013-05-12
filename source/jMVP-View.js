@@ -49,7 +49,6 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  * Hooks storage for special view binding
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
-// TODO add cross-browser support
 jMVP.View.hooks = {
 
 	/**

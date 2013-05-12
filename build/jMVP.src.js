@@ -6,10 +6,19 @@
  */
 function jMVP(oRawModel, oRawView, oRawPresenter) {
 
-    this.oModel = new jMVP.Model(oRawModel);
-    this.oView = new jMVP.View(oRawView);
-    this.oPresenter = new jMVP.Presenter(oRawPresenter, this.oView, this.oModel);
+    var oSelf = this;
 
+    this.oRawModel = oRawModel;
+    this.oRawView = oRawView;
+    this.oRawPresenter = oRawPresenter;
+
+    this.model = new jMVP.Model(oRawModel);
+    this.view = new jMVP.View(oRawView);
+    this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
+
+    this.model.onModelUpdated = function(sKey, vValue) {
+        oSelf.view.update(sKey, vValue);
+    };
 };
 
 jMVP.CSS_PREFIX = 'jmvp-';
@@ -114,6 +123,13 @@ jMVP.Model = function(oModel) {
 };
 
 /**
+ * Get called when a data object get updated
+ * @param sKey
+ * @param vValue
+ */
+jMVP.Model.prototype.onModelUpdated = function(sKey, vValue) {};
+
+/**
  * Create the setter/getter API and keep the raw data sync
  * @param oInstance
  * @param oModel
@@ -123,6 +139,7 @@ jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
 	oInstance[sKey].onValueUpdated = function(vValue) {
 		oModel[sKey] = vValue;
+        oInstance.onModelUpdated.apply(oInstance, [sKey, vValue]);
 	};
 };
 
@@ -167,12 +184,12 @@ jMVP.Data.prototype.onValueUpdated = function(vValue){};
 jMVP.Presenter = function(oConfig, oView, oModel) {
 
 	this.oMap = {};
-    this.oView = oView || null;
-    this.oModel = oModel || null;
+    this.view = oView || null;
+    this.model = oModel || null;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
 		this.oMap[sReference] = oHandlers;
-        this.oView && this.bindToView(sReference);
+        this.view && this.bindToView(sReference);
 	}, this);
 
 };
@@ -183,11 +200,11 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
  */
 jMVP.Presenter.prototype.bindToView = function(sReference) {
 
-    var oView = this.oView,
-        oModel = this.oModel;
+    var oView = this.view,
+        oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = jMVP.dom(this.oView.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
+        var eNode = jMVP.dom(this.view.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
@@ -213,7 +230,7 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
 				if (this.oMap[sReference].hasOwnProperty(oDOMEvent.type)) {
 					// TODO What to use as context?
-                    this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.oView, this.oModel])
+                    this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.view, this.model])
 				}
 			}
 		}
@@ -270,7 +287,6 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  * Hooks storage for special view binding
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
-// TODO add cross-browser support
 jMVP.View.hooks = {
 
 	/**
@@ -290,9 +306,6 @@ jMVP.View.hooks = {
 	html: function(aNodes, sValue) {
 		jMVP.dom(aNodes).html(sValue);
 	},
-
-	// TODO leave in view?
-	visible: function(aNodes, bValue) {},
 
 	/**
 	 * Attributes update hook

@@ -8,12 +8,12 @@
 jMVP.Presenter = function(oConfig, oView, oModel) {
 
 	this.oMap = {};
-    this.oView = oView || null;
-    this.oModel = oModel || null;
+    this.view = oView || null;
+    this.model = oModel || null;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
 		this.oMap[sReference] = oHandlers;
-        this.oView && this.bindToView(sReference);
+        this.view && this.bindToView(sReference);
 	}, this);
 
 };
@@ -24,11 +24,11 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
  */
 jMVP.Presenter.prototype.bindToView = function(sReference) {
 
-    var oView = this.oView,
-        oModel = this.oModel;
+    var oView = this.view,
+        oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = jMVP.dom(this.oView.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
+        var eNode = jMVP.dom(this.view.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
@@ -54,7 +54,7 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
 				if (this.oMap[sReference].hasOwnProperty(oDOMEvent.type)) {
 					// TODO What to use as context?
-                    this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.oView, this.oModel])
+                    this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.view, this.model])
 				}
 			}
 		}
