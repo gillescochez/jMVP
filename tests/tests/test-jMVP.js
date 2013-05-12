@@ -107,6 +107,22 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.Presenter.length, 3, 'jMVP.Presenter expect 3 argument');
 
 });
+test('Declarative statics', function() {
+    var model = {model:true},
+        view = {view:true},
+        presenter = {presenter:true};
+
+    jMVP.model('model', model);
+    jMVP.view('view', view);
+    jMVP.presenter('presenter', presenter);
+
+    deepEqual(jMVP.oModels['model'], model, 'model declared properly');
+    deepEqual(jMVP.oViews['view'], view, 'view declared properly');
+    deepEqual(jMVP.oPresenters['presenter'], presenter, 'presenter declared properly');
+
+    // reset for now
+    jMVP.oModels = jMVP.oViews = jMVP.oPresenters = {};
+});
 test('jMVP.each static method - functional', function() {
 
 	var oData = {
