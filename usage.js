@@ -1,3 +1,4 @@
+// Data only model
 var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
@@ -6,6 +7,7 @@ var model = {
 	isRed: true
 };
 
+// view as an object, no html to bundle!
 var view = {
 	header: {
 		logo: {
@@ -33,6 +35,7 @@ var view = {
 	}
 };
 
+// presenter static object (performance!) to handle event from the view
 var presenter = {
 
 	title: {
@@ -43,7 +46,11 @@ var presenter = {
 	}
 };
 
-
+// mix it all together
 var jmvp = jMVP(model, view, presenter);
 
+// render to the document
 jmvp.render(document.body);
+
+// let's update our model (view is updated automatically)
+jmvp.model.sitetitle.setValue('New site title');
