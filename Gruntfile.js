@@ -10,6 +10,9 @@ module.exports = function(grunt) {
     // config
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        qunit: {
+            all: ['tests/index.html']
+        },
         concat: {
             build: {
                 src: aSources,
@@ -25,9 +28,10 @@ module.exports = function(grunt) {
     });
 
     // Load the plugins
+    grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'uglify']);
+    grunt.registerTask('default', ['qunit', 'concat', 'uglify']);
 }

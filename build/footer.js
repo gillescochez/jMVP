@@ -1,4 +1,4 @@
 
-    window.jMVP = jMVP;
+window.jMVP = jMVP;
 
 })();
