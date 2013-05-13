@@ -160,40 +160,6 @@ test('jMVP.each static method - functional', function() {
 
 	equal(count, 2, 'each with array');
 });
-test('jMVP instance', function() {
-    var presenter = {
-            test: {
-                click: function(oEvent, oModel, oView) {
-
-                }
-            }
-        },
-        view = {
-            test: {
-                text: 'foo'
-            }
-        },
-        model = {
-            foo: 'foo'
-        },
-        jmvp = new jMVP(model, view, presenter);
-
-    ok(jmvp.oRawModel, 'oRawModel exists');
-    ok(jmvp.oRawView, 'oRawView exists');
-    ok(jmvp.oRawPresenter, 'oRawPresenter exists');
-
-    ok(jmvp.model, 'model exists');
-    ok(jmvp.view, 'view exists');
-    ok(jmvp.presenter, 'presenter exists');
-
-    deepEqual(jmvp.model.constructor, jMVP.Model, 'model instance of jMVP.Model');
-    deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
-    deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
-
-    jmvp.model.foo.setValue('FOO');
-    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
-
-});
 
 module('jMVP.Model');
 test('Model / Data instances - functional', function() {
@@ -483,4 +449,40 @@ test('Presenter instance - basic / functional', function() {
     ok(presenter.model, 'Model is stored');
     deepEqual(presenter.view.constructor, jMVP.View, 'View object stored is jMVP.View instance');
     deepEqual(presenter.model.constructor, jMVP.Model, 'Model object stored is jMVP.Model instance');
+});
+
+module('jMVP');
+test('jMVP instance - functional', function() {
+    var presenter = {
+            test: {
+                click: function(oEvent, oModel, oView) {
+
+                }
+            }
+        },
+        view = {
+            test: {
+                text: 'foo'
+            }
+        },
+        model = {
+            foo: 'foo'
+        },
+        jmvp = new jMVP(model, view, presenter);
+
+    ok(jmvp.oRawModel, 'oRawModel exists');
+    ok(jmvp.oRawView, 'oRawView exists');
+    ok(jmvp.oRawPresenter, 'oRawPresenter exists');
+
+    ok(jmvp.model, 'model exists');
+    ok(jmvp.view, 'view exists');
+    ok(jmvp.presenter, 'presenter exists');
+
+    deepEqual(jmvp.model.constructor, jMVP.Model, 'model instance of jMVP.Model');
+    deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
+    deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
+
+    jmvp.model.foo.setValue('FOO');
+    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
+
 });
