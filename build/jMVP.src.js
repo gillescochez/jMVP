@@ -1,3 +1,4 @@
+(function() {
 /**
  * Create a new jMVP instance
  * @param oRawModel
@@ -622,3 +623,7 @@ if (!('bind' in Function.prototype)) {
         return fBound;
     };
 };
+
+    window.jMVP = jMVP;
+
+})();

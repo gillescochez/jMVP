@@ -1,6 +1,11 @@
 module.exports = function(grunt) {
 
-    var aSources = ['source/<%= pkg.name %>.js', 'source/*.js' ];
+    var aSources = [
+        'build/header.js',
+        'source/<%= pkg.name %>.js',
+        'source/*.js',
+        'build/footer.js'
+    ];
 
     // config
     grunt.initConfig({
@@ -13,7 +18,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             build: {
-                src: aSources,
+                src: ['build/<%= pkg.name %>.src.js'],
                 dest: 'build/<%= pkg.name %>.min.js'
             }
         }
