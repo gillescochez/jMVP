@@ -7,7 +7,7 @@ Javascript Model View Presenter
 
 ```javascript
 
-// Data only model
+// Data ONLY model
 var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
@@ -16,7 +16,7 @@ var model = {
 	isRed: true
 };
 
-// view as an object, no html to bundle!
+// view as an object, NO HTML to bundle!
 var view = {
 	header: {
 		logo: {
@@ -44,25 +44,26 @@ var view = {
 	}
 };
 
-// presenter static object (performance!) to handle event from the view
+// presenter to handle DOM events
 var presenter = {
 
 	title: {
 		click: function(oDOMEvent, oModel, oView) {
+            console.log(arguments);
 			oModel.isRed.setValue(!oModel.isRed.getValue());
-		},
-		mouseover: function(oDOMEvent, oModel, oView) {}
+		}
 	}
 };
 
 // mix it all together
-var jmvp = jMVP(model, view, presenter);
+var jmvp = new jMVP(model, view, presenter);
 
 // render to the document
-jmvp.render(document.body);
+jmvp.view.render(document.body);
 
 // let's update our model (view is updated automatically)
 jmvp.model.sitetitle.setValue('New site title');
+jmvp.model.pagetitle.setValue('Page title');
 
 
 ```

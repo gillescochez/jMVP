@@ -6,6 +6,7 @@
  */
 function jMVP(oRawModel, oRawView, oRawPresenter) {
 
+    // TODO do we actually need these?
     this.oRawModel = oRawModel;
     this.oRawView = oRawView;
     this.oRawPresenter = oRawPresenter;
@@ -19,7 +20,37 @@ function jMVP(oRawModel, oRawView, oRawPresenter) {
     }.bind(this);
 }
 
+/**
+ * Render the DOM view to the given target
+ * @param eTarget
+ */
+jMVP.prototype.render = function(eTarget) {
+    eTarget.appendChild(this.view.eDomView);
+};
+
+/**
+ * CSS Prefix used when creating new elements
+ * @type {string}
+ */
 jMVP.CSS_PREFIX = 'jmvp-';
+
+/**
+ * Used to store models declared using jMVP
+ * @type {{}}
+ */
+jMVP.oModels = {};
+
+/**
+ * Used to stored views declared using jMVP
+ * @type {{}}
+ */
+jMVP.oViews = {};
+
+/**
+ * Used to store presenters declared using jMVP
+ * @type {{}}
+ */
+jMVP.oPresenters = {};
 
 /**
  * Load resources and return a jMVP instance using those resources
@@ -31,12 +62,6 @@ jMVP.load = function(sReference, fCallback) {
 };
 
 /**
- * Used to stored views declared using jMVP
- * @type {{}}
- */
-jMVP.oViews = {};
-
-/**
  * Declare a new jMVP static view object
  * @param sReference
  * @param oView
@@ -46,12 +71,6 @@ jMVP.view = function(sReference, oView){
 };
 
 /**
- * Used to store models declared using jMVP
- * @type {{}}
- */
-jMVP.oModels = {};
-
-/**
  * Declare a new jMVP static model object
  * @param sReference
  * @param oModel
@@ -59,12 +78,6 @@ jMVP.oModels = {};
 jMVP.model = function(sReference, oModel){
     jMVP.oModels[sReference] = oModel;
 };
-
-/**
- * Used to store presenters declared using jMVP
- * @type {{}}
- */
-jMVP.oPresenters = {};
 
 /**
  * Declare a new jMVP static presenter object

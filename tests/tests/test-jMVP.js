@@ -455,9 +455,7 @@ module('jMVP');
 test('jMVP instance - functional', function() {
     var presenter = {
             test: {
-                click: function(oEvent, oModel, oView) {
-
-                }
+                click: function(oEvent, oModel, oView) {}
             }
         },
         view = {
@@ -484,5 +482,4 @@ test('jMVP instance - functional', function() {
 
     jmvp.model.foo.setValue('FOO');
     equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
-
 });
