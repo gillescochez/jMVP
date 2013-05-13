@@ -14,11 +14,9 @@ function jMVP(oRawModel, oRawView, oRawPresenter) {
     this.view = new jMVP.View(oRawView);
     this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
 
-    (function(oThis) {
-        oThis.model.onModelUpdated = function(sKey, vValue) {
-            oThis.view.update(sKey, vValue);
-        };
-    })(this);
+    this.model.onModelUpdated = function(sKey, vValue) {
+        this.view.update(sKey, vValue);
+    }.bind(this);
 };
 
 jMVP.CSS_PREFIX = 'jmvp-';
@@ -98,8 +96,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 
 	} else if (typeof vData === "string" || vData instanceof Array) {
 
-		// TODO write a Array.prototype.forEach shim
-        (typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
+		(typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});
 	}
@@ -595,5 +592,33 @@ if (!('forEach' in Array.prototype)) {
                 action.call(that, this[i], i, this);
             }
         }
+    };
+};
+
+/**
+ * Function.prototype.bind
+ * from https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
+ */
+if (!('bind' in Function.prototype)) {
+    Function.prototype.bind = function (oThis) {
+        if (typeof this !== "function") {
+            // closest thing possible to the ECMAScript 5 internal IsCallable function
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+        }
+
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP = function () {},
+            fBound = function () {
+                return fToBind.apply(this instanceof fNOP && oThis
+                    ? this
+                    : oThis,
+                    aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
+
+        fNOP.prototype = this.prototype;
+        fBound.prototype = new fNOP();
+
+        return fBound;
     };
 };

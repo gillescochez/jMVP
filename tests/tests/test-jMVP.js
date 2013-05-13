@@ -185,10 +185,11 @@ test('jMVP instance', function() {
     ok(jmvp.model, 'model exists');
     ok(jmvp.view, 'view exists');
     ok(jmvp.presenter, 'presenter exists');
-console.log(jmvp.view, new jMVP.View(view));
-    deepEqual(jmvp.model, new jMVP.Model(model), 'model instance of jMVP.Model');
-    deepEqual(jmvp.view, new jMVP.View(view), 'view instance of jMVP.View');
-    deepEqual(jmvp.presenter, new jMVP.Presenter(presenter, jmvp.view, jmvp.model), 'presenter instance of jMVP.Presenter');
+
+
+    deepEqual(jmvp.model.constructor, jMVP.Model, 'model instance of jMVP.Model');
+    deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
+    deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
 
     jmvp.model.foo.setValue('FOO');
     equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
