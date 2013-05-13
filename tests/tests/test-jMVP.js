@@ -185,7 +185,7 @@ test('jMVP instance', function() {
     ok(jmvp.model, 'model exists');
     ok(jmvp.view, 'view exists');
     ok(jmvp.presenter, 'presenter exists');
-
+console.log(jmvp.view, new jMVP.View(view));
     deepEqual(jmvp.model, new jMVP.Model(model), 'model instance of jMVP.Model');
     deepEqual(jmvp.view, new jMVP.View(view), 'view instance of jMVP.View');
     deepEqual(jmvp.presenter, new jMVP.Presenter(presenter, jmvp.view, jmvp.model), 'presenter instance of jMVP.Presenter');
