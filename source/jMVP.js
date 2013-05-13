@@ -17,7 +17,7 @@ function jMVP(oRawModel, oRawView, oRawPresenter) {
     this.model.onModelUpdated = function(sKey, vValue) {
         this.view.update(sKey, vValue);
     }.bind(this);
-};
+}
 
 jMVP.CSS_PREFIX = 'jmvp-';
 

@@ -186,7 +186,6 @@ test('jMVP instance', function() {
     ok(jmvp.view, 'view exists');
     ok(jmvp.presenter, 'presenter exists');
 
-
     deepEqual(jmvp.model.constructor, jMVP.Model, 'model instance of jMVP.Model');
     deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
     deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
@@ -205,7 +204,8 @@ test('Model / Data instances - functional', function() {
 		},
 		oModel = new jMVP.Model(oRawData),
 		oData = new jMVP.Data('a'),
-		valueFromOnValueUpdated;
+		valueFromOnValueUpdated,
+        valueFromOnModelUpdated = {};
 
 	ok(oData.vValue, 'value property');
 	equal(oData.vValue, 'a', 'value is correct');
@@ -229,6 +229,14 @@ test('Model / Data instances - functional', function() {
 
     ok(oModel.onModelUpdated, 'onModelUpdated exists');
     equal(typeof oModel.onModelUpdated, 'function', 'onModelUpdated is a function');
+
+    oModel.onModelUpdated = function(sKey, vValue) {
+        valueFromOnModelUpdated.key = sKey;
+        valueFromOnModelUpdated.value = vValue;
+    };
+    oModel.foo.setValue('FOOO');
+    equal(valueFromOnModelUpdated.key, 'foo', 'onModelUpdated return key');
+    equal(valueFromOnModelUpdated.value, 'FOOO', 'onModelUpdated return updated value');
 });
 
 module('jMVP.View');
