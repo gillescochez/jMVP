@@ -16,19 +16,23 @@ var model = {
 	isRed: true
 };
 
+// partial template made easy =)
+var viewHeader = {
+    logo: {
+        text: 'sitetitle'
+    },
+    search: {
+        tag: 'input',
+        attributes: {
+            value: 'pagetitle',
+            type: 'search'
+        }
+    }
+};
+
 // view as an object, NO HTML to bundle!
 var view = {
-	header: {
-		logo: {
-			text: 'sitetitle'
-		},
-		search: {
-			tag: 'input',
-			attributes: {
-				type: 'search'
-			}
-		}
-	},
+	header: viewHeader, // partial template =)
 	page: {
 		title: {
 			tag: 'h1',
@@ -48,11 +52,22 @@ var view = {
 var presenter = {
 
 	title: {
-		click: function(oDOMEvent, oModel, oView) {
-            console.log(arguments);
+		click: function(oDOMEvent, oModel) {
 			oModel.isRed.setValue(!oModel.isRed.getValue());
 		}
-	}
+	},
+
+    search: {
+        blur: updatePageTitle,
+        keyup: updatePageTitle
+    }
+};
+
+function updatePageTitle(oDOMEvent, oModel) {
+    var sValue = oDOMEvent.target.value;
+    if (oModel.pagetitle.getValue() != sValue) {
+        oModel.pagetitle.setValue(sValue);
+    }
 };
 
 // mix it all together
@@ -64,6 +79,5 @@ jmvp.view.render(document.body);
 // let's update our model (view is updated automatically)
 jmvp.model.sitetitle.setValue('New site title');
 jmvp.model.pagetitle.setValue('Page title');
-
 
 ```
