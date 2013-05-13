@@ -24,6 +24,14 @@ module.exports = function(grunt) {
                 src: ['build/<%= pkg.name %>.src.js'],
                 dest: 'build/<%= pkg.name %>.min.js'
             }
+        },
+        jsdoc: {
+            dist: {
+                src: ['build/<%= pkg.name %>.src.js'],
+                options: {
+                    destination: 'api-doc'
+                }
+            }
         }
     });
 
@@ -31,7 +39,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     // Default task(s).
-    grunt.registerTask('default', ['qunit', 'concat', 'uglify']);
+    grunt.registerTask('default', ['qunit', 'concat', 'uglify', 'jsdoc']);
 }
