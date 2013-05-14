@@ -27,7 +27,7 @@ module.exports = function(grunt) {
         },
         jsdoc: {
             dist: {
-                src: ['build/<%= pkg.name %>.src.js'],
+                src: ['source/*.js'],
                 options: {
                     destination: 'api-doc'
                 }
