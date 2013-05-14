@@ -1,10 +1,42 @@
 /**
  * Create a new jMVP instance
- * @param oRawModel
- * @param oRawView
- * @param oRawPresenter
+ *
+ * @prop oRawModel {Object} The original model confi object
+ * @prop oRawView {Object} The original model confi object
+ * @prop oRawPresenter {Object} The original model confi object
+ * @prop model {Object} Instance of jMVP.Model
+ * @prop view {Object} Instance of jMVP.View
+ * @prop presenter {Object} Instance of jMVP.Presenter
+ *
+ * @param oRawModel {Object} The original model object
+ * @param oRawView {Object} The view configuration object
+ * @param oRawPresenter {Object} The presenter configuration object
+ *
+ * @example
+ * var oModel = {
+ *      hello: 'Hellow World'
+ * };
+ *
+ * var oView = {
+ *      foo: {
+ *          text: 'hello'
+ *      }
+ * };
+ *
+ * var oPresenter = {
+ *      foo: {
+ *          click: function(oDOMEvent, oModel, oView) {
+ *
+ *          }
+ *      }
+ * };
+ *
+ * var oJmvp = new jMVP(oModel, oView, oPresenter);
+ *
+ *
+ * @constructor
  */
-function jMVP(oRawModel, oRawView, oRawPresenter) {
+var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 
     // TODO do we actually need these?
     this.oRawModel = oRawModel;
@@ -18,14 +50,6 @@ function jMVP(oRawModel, oRawView, oRawPresenter) {
     this.model.onModelUpdated = function(sKey, vValue) {
         this.view.update(sKey, vValue);
     }.bind(this);
-}
-
-/**
- * Render the DOM view to the given target
- * @param eTarget
- */
-jMVP.prototype.render = function(eTarget) {
-    eTarget.appendChild(this.view.eDomView);
 };
 
 /**
@@ -54,35 +78,35 @@ jMVP.oPresenters = {};
 
 /**
  * Load resources and return a jMVP instance using those resources
- * @param sReference
- * @param fCallback
+ * @param sReference {String} The name of the jvmp package to load
+ * @param fCallback {Function} The callback function
  */
 jMVP.load = function(sReference, fCallback) {
     console.log(sReference, fCallback);
 };
 
 /**
- * Declare a new jMVP static view object
- * @param sReference
- * @param oView
- */
-jMVP.view = function(sReference, oView){
-    jMVP.oViews[sReference] = oView;
-};
-
-/**
  * Declare a new jMVP static model object
- * @param sReference
- * @param oModel
+ * @param sReference {String} The model name/reference
+ * @param oModel {Object} The actual model configuration object
  */
 jMVP.model = function(sReference, oModel){
     jMVP.oModels[sReference] = oModel;
 };
 
 /**
+ * Declare a new jMVP static view object
+ * @param sReference {String} The view name/reference
+ * @param oView {Object} The actual view configuration object
+ */
+jMVP.view = function(sReference, oView){
+    jMVP.oViews[sReference] = oView;
+};
+
+/**
  * Declare a new jMVP static presenter object
- * @param sReference
- * @param oPresenter
+ * @param sReference {String} The presenter name/reference
+ * @param oPresenter {Object} The actual presenter configuration object
  */
 jMVP.presenter = function(sReference, oPresenter){
     jMVP.oPresenters[sReference] = oPresenter;
@@ -90,9 +114,9 @@ jMVP.presenter = function(sReference, oPresenter){
 
 /**
  * Iterate over object, string and arrays and run a give function on each iteration
- * @param vData
- * @param fCallback
- * @param [oContext]
+ * @param vData {*} The data to iterate over
+ * @param fCallback {Function} The callback function
+ * @param [oContext] {{}} The object context used to run the callback in
  */
 jMVP.each = function(vData, fCallback, oContext) {
 

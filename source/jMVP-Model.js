@@ -1,6 +1,6 @@
 /**
  * jMVP Model object constructor
- * @param oModel
+ * @param oModel {{}} Model data object
  * @constructor
  */
 jMVP.Model = function(oModel) {
@@ -33,7 +33,18 @@ jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 
 /**
  * jMVP Data object constructor
- * @param vValue
+ * @param vValue {*} Original value to store
+ *
+ * @example
+ *
+ * var oData = new jMVP.Data('foo');
+ *
+ * oData.onValueUpdated = function(sValue) {
+ *      // do something
+ * };
+ *
+ * oData.setValue('FOO');
+ *
  * @constructor
  */
 jMVP.Data = function(vValue) {
@@ -42,7 +53,7 @@ jMVP.Data = function(vValue) {
 
 /**
  * Set the new value for the Data object
- * @param vValue
+ * @param vValue {*} The new data for the current instance
  */
 jMVP.Data.prototype.setValue = function(vValue) {
 	this.vValue = vValue;
@@ -51,7 +62,7 @@ jMVP.Data.prototype.setValue = function(vValue) {
 
 /**
  * Return the current value stored in the data object
- * @returns {*}
+ * @returns {*} The currently stored value
  */
 jMVP.Data.prototype.getValue = function() {
 	return this.vValue;
@@ -59,6 +70,6 @@ jMVP.Data.prototype.getValue = function() {
 
 /**
  * Callback function of the setter, the updated value is passed as argument
- * @param vValue
+ * @param vValue {*} The model updated value
  */
 jMVP.Data.prototype.onValueUpdated = function(vValue){};

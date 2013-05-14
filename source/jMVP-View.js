@@ -1,6 +1,21 @@
 /**
  * jMVP View object constructor
- * @param oView Object representation of the view and its binding
+ *
+ * @prop oRawView {Object} Original view object configuration
+ * @prop oMap {Object} Map of elements which depends on hooks/data update
+ * @prop eDomView {Node} The DOM representation of the view
+ *
+ * @param oView {Object} Representation of the view and its binding
+ *
+ * @example
+ * var oViewConfig = {
+ *      header: {
+ *          text: 'Hello'
+ *      }
+ * };
+ *
+ * var oView = new jMVP.View(oViewConfig);
+ *
  * @constructor
  */
 jMVP.View = function(oView) {
@@ -15,7 +30,7 @@ jMVP.View = function(oView) {
 
 /**
  * Render the DOM view to a target DOM element
- * @param eTarget
+ * @param eTarget {Node} The DOM element targeted
  */
 jMVP.View.prototype.render = function(eTarget) {
 	eTarget.appendChild(this.eDomView);
@@ -24,8 +39,8 @@ jMVP.View.prototype.render = function(eTarget) {
 
 /**
  * Update elements which are affected by the value change
- * @param sReference
- * @param vValue
+ * @param sReference {String} Model key
+ * @param vValue {*} Value to be used in hooks
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
@@ -47,6 +62,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 
 /**
  * Hooks storage for special view binding
+ * @namespace
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
 jMVP.View.hooks = {

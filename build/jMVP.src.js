@@ -2,11 +2,43 @@
 
 /**
  * Create a new jMVP instance
- * @param oRawModel
- * @param oRawView
- * @param oRawPresenter
+ *
+ * @prop oRawModel {Object} The original model confi object
+ * @prop oRawView {Object} The original model confi object
+ * @prop oRawPresenter {Object} The original model confi object
+ * @prop model {Object} Instance of jMVP.Model
+ * @prop view {Object} Instance of jMVP.View
+ * @prop presenter {Object} Instance of jMVP.Presenter
+ *
+ * @param oRawModel {Object} The original model object
+ * @param oRawView {Object} The view configuration object
+ * @param oRawPresenter {Object} The presenter configuration object
+ *
+ * @example
+ * var oModel = {
+ *      hello: 'Hellow World'
+ * };
+ *
+ * var oView = {
+ *      foo: {
+ *          text: 'hello'
+ *      }
+ * };
+ *
+ * var oPresenter = {
+ *      foo: {
+ *          click: function(oDOMEvent, oModel, oView) {
+ *
+ *          }
+ *      }
+ * };
+ *
+ * var oJmvp = new jMVP(oModel, oView, oPresenter);
+ *
+ *
+ * @constructor
  */
-function jMVP(oRawModel, oRawView, oRawPresenter) {
+var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 
     // TODO do we actually need these?
     this.oRawModel = oRawModel;
@@ -20,14 +52,6 @@ function jMVP(oRawModel, oRawView, oRawPresenter) {
     this.model.onModelUpdated = function(sKey, vValue) {
         this.view.update(sKey, vValue);
     }.bind(this);
-}
-
-/**
- * Render the DOM view to the given target
- * @param eTarget
- */
-jMVP.prototype.render = function(eTarget) {
-    eTarget.appendChild(this.view.eDomView);
 };
 
 /**
@@ -56,35 +80,35 @@ jMVP.oPresenters = {};
 
 /**
  * Load resources and return a jMVP instance using those resources
- * @param sReference
- * @param fCallback
+ * @param sReference {String} The name of the jvmp package to load
+ * @param fCallback {Function} The callback function
  */
 jMVP.load = function(sReference, fCallback) {
     console.log(sReference, fCallback);
 };
 
 /**
- * Declare a new jMVP static view object
- * @param sReference
- * @param oView
- */
-jMVP.view = function(sReference, oView){
-    jMVP.oViews[sReference] = oView;
-};
-
-/**
  * Declare a new jMVP static model object
- * @param sReference
- * @param oModel
+ * @param sReference {String} The model name/reference
+ * @param oModel {Object} The actual model configuration object
  */
 jMVP.model = function(sReference, oModel){
     jMVP.oModels[sReference] = oModel;
 };
 
 /**
+ * Declare a new jMVP static view object
+ * @param sReference {String} The view name/reference
+ * @param oView {Object} The actual view configuration object
+ */
+jMVP.view = function(sReference, oView){
+    jMVP.oViews[sReference] = oView;
+};
+
+/**
  * Declare a new jMVP static presenter object
- * @param sReference
- * @param oPresenter
+ * @param sReference {String} The presenter name/reference
+ * @param oPresenter {Object} The actual presenter configuration object
  */
 jMVP.presenter = function(sReference, oPresenter){
     jMVP.oPresenters[sReference] = oPresenter;
@@ -92,9 +116,9 @@ jMVP.presenter = function(sReference, oPresenter){
 
 /**
  * Iterate over object, string and arrays and run a give function on each iteration
- * @param vData
- * @param fCallback
- * @param [oContext]
+ * @param vData {*} The data to iterate over
+ * @param fCallback {Function} The callback function
+ * @param [oContext] {{}} The object context used to run the callback in
  */
 jMVP.each = function(vData, fCallback, oContext) {
 
@@ -118,7 +142,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 };
 /**
  * jMVP Model object constructor
- * @param oModel
+ * @param oModel {{}} Model data object
  * @constructor
  */
 jMVP.Model = function(oModel) {
@@ -151,7 +175,18 @@ jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 
 /**
  * jMVP Data object constructor
- * @param vValue
+ * @param vValue {*} Original value to store
+ *
+ * @example
+ *
+ * var oData = new jMVP.Data('foo');
+ *
+ * oData.onValueUpdated = function(sValue) {
+ *      // do something
+ * };
+ *
+ * oData.setValue('FOO');
+ *
  * @constructor
  */
 jMVP.Data = function(vValue) {
@@ -160,7 +195,7 @@ jMVP.Data = function(vValue) {
 
 /**
  * Set the new value for the Data object
- * @param vValue
+ * @param vValue {*} The new data for the current instance
  */
 jMVP.Data.prototype.setValue = function(vValue) {
 	this.vValue = vValue;
@@ -169,7 +204,7 @@ jMVP.Data.prototype.setValue = function(vValue) {
 
 /**
  * Return the current value stored in the data object
- * @returns {*}
+ * @returns {*} The currently stored value
  */
 jMVP.Data.prototype.getValue = function() {
 	return this.vValue;
@@ -177,14 +212,20 @@ jMVP.Data.prototype.getValue = function() {
 
 /**
  * Callback function of the setter, the updated value is passed as argument
- * @param vValue
+ * @param vValue {*} The model updated value
  */
 jMVP.Data.prototype.onValueUpdated = function(vValue){};
 /**
  * jMVP Presenter object constructor
- * @param oConfig
- * @param [oView]
- * @param [oModel]
+ *
+ * @prop oMap {{}} View reference based map of handler objects
+ * @prop view {{}} Store the jMVP.View instance if any passed
+ * @prop model {{}} Store the jMVP.Model instance if any passed
+ *
+ * @param oConfig {{}} Presenter configuration object
+ * @param [oView] {{}} jMVP.View instance object
+ * @param [oModel] {{}} jMVP.Model instance object
+ *
  * @constructor
  */
 jMVP.Presenter = function(oConfig, oView, oModel) {
@@ -244,7 +285,22 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 };
 /**
  * jMVP View object constructor
- * @param oView Object representation of the view and its binding
+ *
+ * @prop oRawView {Object} Original view object configuration
+ * @prop oMap {Object} Map of elements which depends on hooks/data update
+ * @prop eDomView {Node} The DOM representation of the view
+ *
+ * @param oView {Object} Representation of the view and its binding
+ *
+ * @example
+ * var oViewConfig = {
+ *      header: {
+ *          text: 'Hello'
+ *      }
+ * };
+ *
+ * var oView = new jMVP.View(oViewConfig);
+ *
  * @constructor
  */
 jMVP.View = function(oView) {
@@ -259,7 +315,7 @@ jMVP.View = function(oView) {
 
 /**
  * Render the DOM view to a target DOM element
- * @param eTarget
+ * @param eTarget {Node} The DOM element targeted
  */
 jMVP.View.prototype.render = function(eTarget) {
 	eTarget.appendChild(this.eDomView);
@@ -268,8 +324,8 @@ jMVP.View.prototype.render = function(eTarget) {
 
 /**
  * Update elements which are affected by the value change
- * @param sReference
- * @param vValue
+ * @param sReference {String} Model key
+ * @param vValue {*} Value to be used in hooks
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
@@ -291,6 +347,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 
 /**
  * Hooks storage for special view binding
+ * @namespace
  * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
  */
 jMVP.View.hooks = {
@@ -408,30 +465,43 @@ jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
 	return bReturn;
 };
 /**
- * Helper function which return a new instance of jMVP.dom.Wrap
- * @param eNodes
+ * Helper function which return a new instance of jMVP.dom.Wrap which allow chained method calls.
+ *
+ * @example
+ *
+ * var eNode = document.createElement('div');
+ *
+ * jMVP.dom(eNode).addClass('foo').on('click', function(oEvent) {
+ *      // do something
+ * });
+ *
+ * document.body.appendChild(eNode);
+ *
+ * @param vNodes {NodeList|Array} NodeList or array of nodes
  * @returns {jMVP.dom.Wrap}
  */
-jMVP.dom = function(eNodes) {
-	return new jMVP.dom.Wrap(eNodes);
+jMVP.dom = function(vNodes) {
+	return new jMVP.dom.Wrap(vNodes);
 };
 
 /**
- * Node/Node list wrapper class to simplify DOM manipulation
- * @param eNodes
- * @returns {*}
+ * Node/Node list wrapper class to simplify DOM manipulation. It returns itself so that methods can be chained.
+ * @param vNodes {NodeList|Array} NodeList or array of nodes
+ * @prop aNodes {Array} Stored the nodes as an array
+ * @returns {{}} Returns itself to allow chaining
  * @constructor
  */
-jMVP.dom.Wrap = function(eNodes) {
-	if (!eNodes) throw "jMVP.dom.Wrap requires a node or node list object";
-	this.aNodes = eNodes[1] ? Array.prototype.slice.call(eNodes) : (eNodes[0] ? eNodes : [eNodes]);
+jMVP.dom.Wrap = function(vNodes) {
+	if (!vNodes) throw "jMVP.dom.Wrap requires a node or node list object";
+	this.aNodes = vNodes[1] ? Array.prototype.slice.call(vNodes) : (vNodes[0] ? vNodes : [vNodes]);
 	return this;
 };
 
 /**
  * Iterate over the array of node store and run a callback function using the node as context
  * so "this" in the callback is the node
- * @param fCallback
+ * @param fCallback {Function} Function to be called on each iteration
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.each = function(fCallback) {
 	jMVP.each(this.aNodes, function(eNode) {
@@ -442,7 +512,7 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 
 /**
  * Return a single element by class name
- * @param sClassName
+ * @param sClassName {String} CSS class reference
  * @returns {*}
  */
 jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
@@ -451,9 +521,9 @@ jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
 
 /**
  * Bind a handler to the first element
- * @param sEventType
- * @param fCallback
- * @returns {Function}
+ * @param sEventType {String} The event type
+ * @param fCallback {Function} Function to be called when the event is triggered
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
     return this.each(function() {
@@ -465,7 +535,7 @@ jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
  * Unbind a handler to the first element
  * @param sEventType
  * @param fCallback
- * @returns {Function}
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
     return this.each(function() {
@@ -476,6 +546,7 @@ jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
 /**
  * Add a CSS class name to element(s)
  * @param sClassName
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 	return this.each(function() {
@@ -486,6 +557,7 @@ jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 /**
  * Remove a CSS class name to element(s)
  * @param sClassName
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 	return this.each(function() {
@@ -496,6 +568,7 @@ jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 /**
  * Update the TEXT value of nodes
  * @param sValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.text = function(sValue) {
 	return this.each(function() {
@@ -506,6 +579,7 @@ jMVP.dom.Wrap.prototype.text = function(sValue) {
 /**
  * Update the innerHTML of nodes
  * @param sValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.html = function(sValue) {
 	return this.each(function() {
@@ -517,6 +591,7 @@ jMVP.dom.Wrap.prototype.html = function(sValue) {
  * Set/Update attribute key/value pair on nodes
  * @param sAttrKey
  * @param sAttrValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
 	return this.each(function() {
@@ -527,6 +602,7 @@ jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
 /**
  * Remove a given attribute from nodes
  * @param sAttrKey
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 	return this.each(function() {

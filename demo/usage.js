@@ -3,7 +3,11 @@ var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
 	pagecontent: '<p>Welcome to a jMVP powered website</p>',
-	isBig: true,
+    demoObject: {
+      foo:'FOO'
+    },
+    items: ['a','b','c'],
+    isBig: true,
 	isRed: true
 };
 
@@ -37,6 +41,27 @@ var view = {
 			html: 'pagecontent'
 		}
 	}
+};
+
+// New format on partial view, handles looping too
+var list = {
+    tag: 'ul',
+    jmvp: {
+        form: {
+            name: 'contact'
+        },
+        loop: {
+            data: 'model.items',
+            template: {
+                item: {
+                    tag: 'li',
+                    label: {
+                        text: '$value'
+                    }
+                }
+            }
+        }
+    }
 };
 
 // presenter to handle DOM events

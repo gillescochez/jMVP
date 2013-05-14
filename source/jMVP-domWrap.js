@@ -1,28 +1,41 @@
 /**
- * Helper function which return a new instance of jMVP.dom.Wrap
- * @param eNodes
+ * Helper function which return a new instance of jMVP.dom.Wrap which allow chained method calls.
+ *
+ * @example
+ *
+ * var eNode = document.createElement('div');
+ *
+ * jMVP.dom(eNode).addClass('foo').on('click', function(oEvent) {
+ *      // do something
+ * });
+ *
+ * document.body.appendChild(eNode);
+ *
+ * @param vNodes {NodeList|Array} NodeList or array of nodes
  * @returns {jMVP.dom.Wrap}
  */
-jMVP.dom = function(eNodes) {
-	return new jMVP.dom.Wrap(eNodes);
+jMVP.dom = function(vNodes) {
+	return new jMVP.dom.Wrap(vNodes);
 };
 
 /**
- * Node/Node list wrapper class to simplify DOM manipulation
- * @param eNodes
- * @returns {*}
+ * Node/Node list wrapper class to simplify DOM manipulation. It returns itself so that methods can be chained.
+ * @param vNodes {NodeList|Array} NodeList or array of nodes
+ * @prop aNodes {Array} Stored the nodes as an array
+ * @returns {{}} Returns itself to allow chaining
  * @constructor
  */
-jMVP.dom.Wrap = function(eNodes) {
-	if (!eNodes) throw "jMVP.dom.Wrap requires a node or node list object";
-	this.aNodes = eNodes[1] ? Array.prototype.slice.call(eNodes) : (eNodes[0] ? eNodes : [eNodes]);
+jMVP.dom.Wrap = function(vNodes) {
+	if (!vNodes) throw "jMVP.dom.Wrap requires a node or node list object";
+	this.aNodes = vNodes[1] ? Array.prototype.slice.call(vNodes) : (vNodes[0] ? vNodes : [vNodes]);
 	return this;
 };
 
 /**
  * Iterate over the array of node store and run a callback function using the node as context
  * so "this" in the callback is the node
- * @param fCallback
+ * @param fCallback {Function} Function to be called on each iteration
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.each = function(fCallback) {
 	jMVP.each(this.aNodes, function(eNode) {
@@ -33,7 +46,7 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 
 /**
  * Return a single element by class name
- * @param sClassName
+ * @param sClassName {String} CSS class reference
  * @returns {*}
  */
 jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
@@ -42,9 +55,9 @@ jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
 
 /**
  * Bind a handler to the first element
- * @param sEventType
- * @param fCallback
- * @returns {Function}
+ * @param sEventType {String} The event type
+ * @param fCallback {Function} Function to be called when the event is triggered
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
     return this.each(function() {
@@ -56,7 +69,7 @@ jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
  * Unbind a handler to the first element
  * @param sEventType
  * @param fCallback
- * @returns {Function}
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
     return this.each(function() {
@@ -67,6 +80,7 @@ jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
 /**
  * Add a CSS class name to element(s)
  * @param sClassName
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 	return this.each(function() {
@@ -77,6 +91,7 @@ jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 /**
  * Remove a CSS class name to element(s)
  * @param sClassName
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 	return this.each(function() {
@@ -87,6 +102,7 @@ jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 /**
  * Update the TEXT value of nodes
  * @param sValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.text = function(sValue) {
 	return this.each(function() {
@@ -97,6 +113,7 @@ jMVP.dom.Wrap.prototype.text = function(sValue) {
 /**
  * Update the innerHTML of nodes
  * @param sValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.html = function(sValue) {
 	return this.each(function() {
@@ -108,6 +125,7 @@ jMVP.dom.Wrap.prototype.html = function(sValue) {
  * Set/Update attribute key/value pair on nodes
  * @param sAttrKey
  * @param sAttrValue
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
 	return this.each(function() {
@@ -118,6 +136,7 @@ jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
 /**
  * Remove a given attribute from nodes
  * @param sAttrKey
+ * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 	return this.each(function() {

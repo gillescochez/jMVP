@@ -1,8 +1,14 @@
 /**
  * jMVP Presenter object constructor
- * @param oConfig
- * @param [oView]
- * @param [oModel]
+ *
+ * @prop oMap {{}} View reference based map of handler objects
+ * @prop view {{}} Store the jMVP.View instance if any passed
+ * @prop model {{}} Store the jMVP.Model instance if any passed
+ *
+ * @param oConfig {{}} Presenter configuration object
+ * @param [oView] {{}} jMVP.View instance object
+ * @param [oModel] {{}} jMVP.Model instance object
+ *
  * @constructor
  */
 jMVP.Presenter = function(oConfig, oView, oModel) {

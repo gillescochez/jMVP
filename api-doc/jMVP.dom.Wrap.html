@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="global.html#jMVP">jMVP</a><a href="global.html#jMVP#dom">.dom</a>.</span>
+        <span class="ancestors"><a href="jMVP.html">jMVP</a><a href="jMVP.html#dom">.dom</a>.</span>
     
     Wrap
     </h2>
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Wrap"><span class="type-signature"></span>new Wrap<span class="signature">(eNodes)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id="Wrap"><span class="type-signature"></span>new Wrap<span class="signature">(vNodes)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -49,7 +49,7 @@
     
     
     <div class="description">
-        Node/Node list wrapper class to simplify DOM manipulation
+        Node/Node list wrapper class to simplify DOM manipulation. It returns itself so that methods can be chained.
     </div>
     
 
@@ -83,10 +83,18 @@
 	
         <tr>
             
-                <td class="name"><code>eNodes</code></td>
+                <td class="name"><code>vNodes</code></td>
             
             
             <td class="type">
+            
+                
+<span class="param-type">NodeList</span>
+|
+
+<span class="param-type">Array</span>
+
+
             
             </td>
             
@@ -94,7 +102,7 @@
             
             
             
-            <td class="description last"></td>
+            <td class="description last">NodeList or array of nodes</td>
         </tr>
 	
 	
@@ -104,6 +112,57 @@
     
     
 <dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>aNodes</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Stored the nodes as an array</td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
     
         
     
@@ -125,7 +184,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 16
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 28
     </li></ul></dd>
     
     
@@ -145,6 +204,10 @@
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    Returns itself to allow chaining
+</div>
+
 
 
 <dl>
@@ -153,7 +216,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">*</span>
+<span class="param-type">Object</span>
 
 
 	</dd>
@@ -185,7 +248,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="addClass"><span class="type-signature"></span>addClass<span class="signature">(sClassName)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addClass"><span class="type-signature"></span>addClass<span class="signature">(sClassName)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -269,7 +332,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 71
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 85
     </li></ul></dd>
     
     
@@ -286,6 +349,28 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -293,7 +378,7 @@
         
             
 <dt>
-    <h4 class="name" id="each"><span class="type-signature"></span>each<span class="signature">(fCallback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="each"><span class="type-signature"></span>each<span class="signature">(fCallback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -341,13 +426,18 @@ so "this" in the callback is the node
             
             <td class="type">
             
+                
+<span class="param-type">Function</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">Function to be called on each iteration</td>
         </tr>
 	
 	
@@ -378,7 +468,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 27
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 40
     </li></ul></dd>
     
     
@@ -395,6 +485,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -449,13 +561,18 @@ so "this" in the callback is the node
             
             <td class="type">
             
+                
+<span class="param-type">String</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">CSS class reference</td>
         </tr>
 	
 	
@@ -486,7 +603,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 39
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 52
     </li></ul></dd>
     
     
@@ -528,7 +645,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="html"><span class="type-signature"></span>html<span class="signature">(sValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="html"><span class="type-signature"></span>html<span class="signature">(sValue)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -612,7 +729,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 101
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 118
     </li></ul></dd>
     
     
@@ -629,6 +746,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -636,7 +775,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="off"><span class="type-signature"></span>off<span class="signature">(sEventType, fCallback)</span><span class="type-signature"> &rarr; {Function}</span></h4>
+    <h4 class="name" id="off"><span class="type-signature"></span>off<span class="signature">(sEventType, fCallback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -738,7 +877,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 61
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 74
     </li></ul></dd>
     
     
@@ -758,6 +897,10 @@ so "this" in the callback is the node
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
 
 
 <dl>
@@ -766,7 +909,7 @@ so "this" in the callback is the node
 	</dt>
 	<dd>
 		
-<span class="param-type">Function</span>
+<span class="param-type">Object</span>
 
 
 	</dd>
@@ -780,7 +923,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(sEventType, fCallback)</span><span class="type-signature"> &rarr; {Function}</span></h4>
+    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(sEventType, fCallback)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -827,13 +970,18 @@ so "this" in the callback is the node
             
             <td class="type">
             
+                
+<span class="param-type">String</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">The event type</td>
         </tr>
 	
 	
@@ -845,13 +993,18 @@ so "this" in the callback is the node
             
             <td class="type">
             
+                
+<span class="param-type">Function</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">Function to be called when the event is triggered</td>
         </tr>
 	
 	
@@ -882,7 +1035,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 49
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 62
     </li></ul></dd>
     
     
@@ -902,6 +1055,10 @@ so "this" in the callback is the node
     <h5>Returns:</h5>
     
             
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
 
 
 <dl>
@@ -910,7 +1067,7 @@ so "this" in the callback is the node
 	</dt>
 	<dd>
 		
-<span class="param-type">Function</span>
+<span class="param-type">Object</span>
 
 
 	</dd>
@@ -924,7 +1081,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="removeClass"><span class="type-signature"></span>removeClass<span class="signature">(sClassName)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeClass"><span class="type-signature"></span>removeClass<span class="signature">(sClassName)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -1008,7 +1165,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 81
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 96
     </li></ul></dd>
     
     
@@ -1025,6 +1182,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1032,7 +1211,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="rmAttr"><span class="type-signature"></span>rmAttr<span class="signature">(sAttrKey)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="rmAttr"><span class="type-signature"></span>rmAttr<span class="signature">(sAttrKey)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -1116,7 +1295,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 122
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 141
     </li></ul></dd>
     
     
@@ -1133,6 +1312,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1140,7 +1341,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="setAttr"><span class="type-signature"></span>setAttr<span class="signature">(sAttrKey, sAttrValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setAttr"><span class="type-signature"></span>setAttr<span class="signature">(sAttrKey, sAttrValue)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -1242,7 +1443,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 112
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 130
     </li></ul></dd>
     
     
@@ -1259,6 +1460,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1266,7 +1489,7 @@ so "this" in the callback is the node
         
             
 <dt>
-    <h4 class="name" id="text"><span class="type-signature"></span>text<span class="signature">(sValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="text"><span class="type-signature"></span>text<span class="signature">(sValue)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
     
 </dt>
@@ -1350,7 +1573,7 @@ so "this" in the callback is the node
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 91
+        <a href="jMVP-domWrap.js.html">jMVP-domWrap.js</a>, line 107
     </li></ul></dd>
     
     
@@ -1367,6 +1590,28 @@ so "this" in the callback is the node
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Return itself for chaining
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1387,13 +1632,13 @@ so "this" in the callback is the node
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jMVP.Data.html">Data</a></li><li><a href="jMVP.dom.Wrap.html">Wrap</a></li><li><a href="jMVP.Model.html">Model</a></li><li><a href="jMVP.Presenter.html">Presenter</a></li><li><a href="jMVP.View.html">View</a></li></ul><h3>Global</h3><ul><li><a href="global.html#jMVP">jMVP</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jMVP.html">jMVP</a></li><li><a href="jMVP.Data.html">Data</a></li><li><a href="jMVP.dom.Wrap.html">Wrap</a></li><li><a href="jMVP.Model.html">Model</a></li><li><a href="jMVP.Presenter.html">Presenter</a></li><li><a href="jMVP.View.html">View</a></li></ul><h3>Namespaces</h3><ul><li><a href="jMVP.View.hooks.html">hooks</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 14 2013 13:01:50 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 14 2013 23:40:58 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

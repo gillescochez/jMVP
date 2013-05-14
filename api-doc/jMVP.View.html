@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-        <span class="ancestors"><a href="global.html#jMVP">jMVP</a>.</span>
+        <span class="ancestors"><a href="jMVP.html">jMVP</a>.</span>
     
     View
     </h2>
@@ -88,13 +88,18 @@
             
             <td class="type">
             
+                
+<span class="param-type">Object</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last">Object representation of the view and its binding</td>
+            <td class="description last">Representation of the view and its binding</td>
         </tr>
 	
 	
@@ -106,78 +111,101 @@
 <dl class="details">
     
         
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 6
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
+        <h5 class="subsection-title">Properties:</h5>
         
         <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
             
-<dt>
-    <h4 class="name" id="hooks"><span class="type-signature">&lt;static> </span>hooks<span class="type-signature"> :Object</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Hooks storage for special view binding
-    </div>
-    
-    
-    
-<dl class="details">
+                <td class="name"><code>oRawView</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Original view object configuration</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>oMap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Map of elements which depends on hooks/data update</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>eDomView</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Node</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The DOM representation of the view</td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
     
         
     
@@ -199,7 +227,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 52
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 21
     </li></ul></dd>
     
     
@@ -212,9 +240,45 @@
 
     
     
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var oViewConfig = {
+     header: {
+         text: 'Hello'
+     }
+};
+
+var oView = new jMVP.View(oViewConfig);</code></pre>
+
+    
 </dd>
 
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Namespaces</h3>
+        
+        <dl>
+            <dt><a href="namespaces.html#jMVP.View.hooks"><a href="jMVP.View.hooks.html">hooks</a></a></dt>
+            <dd></dd>
         </dl>
+    
+    
     
     
     
@@ -371,7 +435,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 102
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 118
     </li></ul></dd>
     
     
@@ -497,7 +561,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 156
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 172
     </li></ul></dd>
     
     
@@ -586,13 +650,18 @@
             
             <td class="type">
             
+                
+<span class="param-type">Node</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">The DOM element targeted</td>
         </tr>
 	
 	
@@ -623,7 +692,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 20
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 35
     </li></ul></dd>
     
     
@@ -694,13 +763,18 @@
             
             <td class="type">
             
+                
+<span class="param-type">String</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">Model key</td>
         </tr>
 	
 	
@@ -712,13 +786,18 @@
             
             <td class="type">
             
+                
+<span class="param-type">*</span>
+
+
+            
             </td>
             
             
             
             
             
-            <td class="description last"></td>
+            <td class="description last">Value to be used in hooks</td>
         </tr>
 	
 	
@@ -749,7 +828,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 30
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 45
     </li></ul></dd>
     
     
@@ -786,13 +865,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jMVP.Data.html">Data</a></li><li><a href="jMVP.dom.Wrap.html">Wrap</a></li><li><a href="jMVP.Model.html">Model</a></li><li><a href="jMVP.Presenter.html">Presenter</a></li><li><a href="jMVP.View.html">View</a></li></ul><h3>Global</h3><ul><li><a href="global.html#jMVP">jMVP</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="jMVP.html">jMVP</a></li><li><a href="jMVP.Data.html">Data</a></li><li><a href="jMVP.dom.Wrap.html">Wrap</a></li><li><a href="jMVP.Model.html">Model</a></li><li><a href="jMVP.Presenter.html">Presenter</a></li><li><a href="jMVP.View.html">View</a></li></ul><h3>Namespaces</h3><ul><li><a href="jMVP.View.hooks.html">hooks</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 14 2013 13:01:50 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue May 14 2013 23:40:58 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
