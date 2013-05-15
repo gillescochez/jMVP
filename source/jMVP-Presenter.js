@@ -36,7 +36,7 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
 
 /**
  * Bind element in a view with the handler matching its reference
- * @param sReference
+ * @param sReference {String} View element reference name
  */
 jMVP.Presenter.prototype.bindToView = function(sReference) {
 
@@ -53,7 +53,7 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
 
 /**
  * route DOM Event to the right handler in the handlers Map
- * @param oDOMEvent
+ * @param oDOMEvent {Object} The event object given by the DOM
  */
 jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 

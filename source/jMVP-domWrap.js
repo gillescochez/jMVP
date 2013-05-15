@@ -48,7 +48,7 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 /**
  * Return a single element by class name
  * @param sClassName {String} CSS class reference
- * @returns {*}
+ * @returns {*} Collection of DOM element(s)
  */
 jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
     return jMVP.dom.getElementByClassName(sClassName, this.aNodes[0]);
@@ -145,22 +145,17 @@ jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 	});
 };
 
-
 /**
- * Constants
- */
-
-/**
- * Properties to simplify feature detection
- * @type {string}
+ * HTML Element used to do feature detection
+ * @type {Node}
  */
 jMVP.dom.DIV = document.createElement('div');
-jMVP.dom.INNER_TEXT = ('innerText' in jMVP.dom.DIV) ? 'innerText' : 'textContent';
-
 
 /**
- * Static methods
+ * Return the supported insert text method by the browser as a string
+ * @type {string}
  */
+jMVP.dom.INNER_TEXT = ('innerText' in jMVP.dom.DIV) ? 'innerText' : 'textContent';
 
 /**
  * Return a on (event bind) function compatible with the browser used
@@ -175,7 +170,7 @@ jMVP.dom.on =  jMVP.dom.DIV.addEventListener
     };
 
 /**
- * Return a off (event unbind) function compatible with the browser used
+ * Event unbinding function compatible with the browser used
  * @type {Function}
  */
 jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
@@ -187,7 +182,7 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
     };
 
 /**
- * Return a getElementByClassName compatible with the browser used
+ * getElementByClassName compatible with the browser used
  * @type {Function}
  */
 jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
@@ -200,7 +195,6 @@ jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
         jMVP.dom(context.getElementsByTagName('*')).each(function() {
             if (this.className.indexOf(sSelector) !== -1) {
                 aResult.push(this);
-                return;
             }
         });
 

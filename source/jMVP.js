@@ -53,7 +53,7 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 
 /**
  * CSS Prefix used when creating new elements
- * @type {string}
+ * @type {String}
  */
 jMVP.CSS_PREFIX = 'jmvp-';
 

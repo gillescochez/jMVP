@@ -167,7 +167,7 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 /**
  * Check a portion of a view object for children
  * @param oViewFragment
- * @returns {boolean}
+ * @returns {boolean} true if children found
  */
 jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
 

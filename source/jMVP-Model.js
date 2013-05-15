@@ -22,16 +22,16 @@ jMVP.Model = function(oModel) {
 
 /**
  * Get called when a data object get updated
- * @param sKey
- * @param vValue
+ * @param sKey {String} Model key which has its value updated
+ * @param vValue {*} The updated value
  */
 jMVP.Model.prototype.onModelUpdated = function(sKey, vValue) {};
 
 /**
  * Create the setter/getter API and keep the raw data sync
- * @param oInstance
- * @param oModel
- * @param sKey
+ * @param oInstance {Object} jMVP.Model object instance
+ * @param oModel {Object} Raw model object
+ * @param sKey {String} The string being bind
  */
 jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
