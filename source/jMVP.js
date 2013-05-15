@@ -33,7 +33,6 @@
  *
  * var oJmvp = new jMVP(oModel, oView, oPresenter);
  *
- *
  * @constructor
  */
 var jMVP = function(oRawModel, oRawView, oRawPresenter) {

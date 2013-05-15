@@ -9,6 +9,16 @@
  * @param [oView] {{}} jMVP.View instance object
  * @param [oModel] {{}} jMVP.Model instance object
  *
+ * @example
+ *
+ * var oPresenterConfig = {
+ *      foo: {
+ *          click: function() {}
+ *      }
+ * };
+ *
+ * var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);
+ *
  * @constructor
  */
 jMVP.Presenter = function(oConfig, oView, oModel) {

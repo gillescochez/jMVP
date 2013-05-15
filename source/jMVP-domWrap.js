@@ -12,7 +12,8 @@
  * document.body.appendChild(eNode);
  *
  * @param vNodes {NodeList|Array} NodeList or array of nodes
- * @returns {jMVP.dom.Wrap}
+ * @returns {jMVP.dom.Wrap} Class instance containing the nodes
+ * @namespace
  */
 jMVP.dom = function(vNodes) {
 	return new jMVP.dom.Wrap(vNodes);
@@ -54,7 +55,7 @@ jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
 };
 
 /**
- * Bind a handler to the first element
+ * Bind a handler to elements
  * @param sEventType {String} The event type
  * @param fCallback {Function} Function to be called when the event is triggered
  * @returns {Object} Return itself for chaining
@@ -67,8 +68,8 @@ jMVP.dom.Wrap.prototype.on = function(sEventType, fCallback) {
 
 /**
  * Unbind a handler to the first element
- * @param sEventType
- * @param fCallback
+ * @param sEventType {String} The type of the DOM event
+ * @param fCallback {Function} Handling function for the event type
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
@@ -79,7 +80,7 @@ jMVP.dom.Wrap.prototype.off = function(sEventType, fCallback) {
 
 /**
  * Add a CSS class name to element(s)
- * @param sClassName
+ * @param sClassName {String} The class name to be added
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
@@ -90,7 +91,7 @@ jMVP.dom.Wrap.prototype.addClass = function(sClassName) {
 
 /**
  * Remove a CSS class name to element(s)
- * @param sClassName
+ * @param sClassName {String} The class name to be removed
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
@@ -101,7 +102,7 @@ jMVP.dom.Wrap.prototype.removeClass = function(sClassName) {
 
 /**
  * Update the TEXT value of nodes
- * @param sValue
+ * @param sValue {String} The TEXT string used to update elements
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.text = function(sValue) {
@@ -112,7 +113,7 @@ jMVP.dom.Wrap.prototype.text = function(sValue) {
 
 /**
  * Update the innerHTML of nodes
- * @param sValue
+ * @param sValue {String}  The HTML string used to update elements
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.html = function(sValue) {
@@ -123,8 +124,8 @@ jMVP.dom.Wrap.prototype.html = function(sValue) {
 
 /**
  * Set/Update attribute key/value pair on nodes
- * @param sAttrKey
- * @param sAttrValue
+ * @param sAttrKey {String} Attribute key
+ * @param sAttrValue {String} Attribute value
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
@@ -135,7 +136,7 @@ jMVP.dom.Wrap.prototype.setAttr = function(sAttrKey, sAttrValue) {
 
 /**
  * Remove a given attribute from nodes
- * @param sAttrKey
+ * @param sAttrKey {String} Attribute key
  * @returns {Object} Return itself for chaining
  */
 jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
@@ -150,7 +151,7 @@ jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
  */
 
 /**
- * Store property to use depending on the browser
+ * Properties to simplify feature detection
  * @type {string}
  */
 jMVP.dom.DIV = document.createElement('div');

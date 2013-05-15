@@ -1,6 +1,16 @@
 /**
  * jMVP Model object constructor
  * @param oModel {{}} Model data object
+ *
+ * @example
+ *
+ * var oModel = new jJVM.Model({
+ *      foo: 'foo',
+ *      isEnabled: false,
+ *      list: ['a', 'b'],
+ *      obj: {a:true, b:false}
+ * });
+ *
  * @constructor
  */
 jMVP.Model = function(oModel) {
