@@ -480,6 +480,5 @@ test('jMVP instance - functional', function() {
     deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
     deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
 
-    jmvp.model.foo.setValue('FOO');
     equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
 });

@@ -14,7 +14,7 @@
  *
  * @example
  * var oModel = {
- *      hello: 'Hellow World'
+ *      hello: 'Hello World'
  * };
  *
  * var oView = {
@@ -49,6 +49,10 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
     this.model.onModelUpdated = function(sKey, vValue) {
         this.view.update(sKey, vValue);
     }.bind(this);
+
+    jMVP.each(oRawModel, function(sKey, vValue) {
+        this.view.update(sKey, vValue);
+    }, this);
 };
 
 /**

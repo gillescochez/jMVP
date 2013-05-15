@@ -16,7 +16,7 @@
  *
  * @example
  * var oModel = {
- *      hello: 'Hellow World'
+ *      hello: 'Hello World'
  * };
  *
  * var oView = {
@@ -51,11 +51,15 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
     this.model.onModelUpdated = function(sKey, vValue) {
         this.view.update(sKey, vValue);
     }.bind(this);
+
+    jMVP.each(oRawModel, function(sKey, vValue) {
+        this.view.update(sKey, vValue);
+    }, this);
 };
 
 /**
  * CSS Prefix used when creating new elements
- * @type {string}
+ * @type {String}
  */
 jMVP.CSS_PREFIX = 'jmvp-';
 
@@ -163,16 +167,16 @@ jMVP.Model = function(oModel) {
 
 /**
  * Get called when a data object get updated
- * @param sKey
- * @param vValue
+ * @param sKey {String} Model key which has its value updated
+ * @param vValue {*} The updated value
  */
 jMVP.Model.prototype.onModelUpdated = function(sKey, vValue) {};
 
 /**
  * Create the setter/getter API and keep the raw data sync
- * @param oInstance
- * @param oModel
- * @param sKey
+ * @param oInstance {Object} jMVP.Model object instance
+ * @param oModel {Object} Raw model object
+ * @param sKey {String} The string being bind
  */
 jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
 	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
@@ -262,7 +266,7 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
 
 /**
  * Bind element in a view with the handler matching its reference
- * @param sReference
+ * @param sReference {String} View element reference name
  */
 jMVP.Presenter.prototype.bindToView = function(sReference) {
 
@@ -279,7 +283,7 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
 
 /**
  * route DOM Event to the right handler in the handlers Map
- * @param oDOMEvent
+ * @param oDOMEvent {Object} The event object given by the DOM
  */
 jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
@@ -471,7 +475,7 @@ jMVP.View.objectToElement = function(oRawView, oMap, eParentFragment) {
 /**
  * Check a portion of a view object for children
  * @param oViewFragment
- * @returns {boolean}
+ * @returns {boolean} true if children found
  */
 jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
 
@@ -533,7 +537,7 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 /**
  * Return a single element by class name
  * @param sClassName {String} CSS class reference
- * @returns {*}
+ * @returns {*} Collection of DOM element(s)
  */
 jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
     return jMVP.dom.getElementByClassName(sClassName, this.aNodes[0]);
@@ -630,22 +634,17 @@ jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 	});
 };
 
-
 /**
- * Constants
- */
-
-/**
- * Properties to simplify feature detection
- * @type {string}
+ * HTML Element used to do feature detection
+ * @type {Node}
  */
 jMVP.dom.DIV = document.createElement('div');
-jMVP.dom.INNER_TEXT = ('innerText' in jMVP.dom.DIV) ? 'innerText' : 'textContent';
-
 
 /**
- * Static methods
+ * Return the supported insert text method by the browser as a string
+ * @type {string}
  */
+jMVP.dom.INNER_TEXT = ('innerText' in jMVP.dom.DIV) ? 'innerText' : 'textContent';
 
 /**
  * Return a on (event bind) function compatible with the browser used
@@ -660,7 +659,7 @@ jMVP.dom.on =  jMVP.dom.DIV.addEventListener
     };
 
 /**
- * Return a off (event unbind) function compatible with the browser used
+ * Event unbinding function compatible with the browser used
  * @type {Function}
  */
 jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
@@ -672,7 +671,7 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
     };
 
 /**
- * Return a getElementByClassName compatible with the browser used
+ * getElementByClassName compatible with the browser used
  * @type {Function}
  */
 jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
@@ -685,7 +684,6 @@ jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
         jMVP.dom(context.getElementsByTagName('*')).each(function() {
             if (this.className.indexOf(sSelector) !== -1) {
                 aResult.push(this);
-                return;
             }
         });
 
