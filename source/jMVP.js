@@ -38,7 +38,6 @@
  */
 var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 
-    // TODO do we actually need these?
     this.oRawModel = oRawModel;
     this.oRawView = oRawView;
     this.oRawPresenter = oRawPresenter;
@@ -47,15 +46,8 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
     this.view = new jMVP.View(oRawView);
     this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
 
-    // TODO Move into a method
-    this.model.onModelUpdated = function(sKey, vValue) {
-        this.view.update(sKey, vValue);
-    }.bind(this);
-
-    // TODO Move into a method
-    jMVP.each(oRawModel, function(sKey, vValue) {
-        this.view.update(sKey, vValue);
-    }, this);
+    this.addModelListener();
+    this.applyModelToView();
 };
 
 /**
@@ -81,6 +73,48 @@ jMVP.oViews = {};
  * @type {{}}
  */
 jMVP.oPresenters = {};
+
+/**
+ * Set the onModelUpdated listener
+ */
+jMVP.prototype.addModelListener = function() {
+    this.model.onModelUpdated = function(sKey, vValue) {
+        this.view.update(sKey, vValue);
+    }.bind(this);
+};
+
+/**
+ * Loop through all original data and update the view accordingly
+ */
+jMVP.prototype.applyModelToView = function() {
+    jMVP.each(this.oRawModel, function(sKey, vValue) {
+        this.view.update(sKey, vValue);
+    }, this);
+};
+
+/**
+ * Getter for the original model configuration object
+ * @returns {Object}
+ */
+jMVP.prototype.getRawModel = function(){
+    return this.oRawModel;
+};
+
+/**
+ * Getter for the original view configuration object
+ * @returns {Object}
+ */
+jMVP.prototype.getRawView = function(){
+    return this.oRawView;
+};
+
+/**
+ * Getter for the original presenter configuration object
+ * @returns {Object}
+ */
+jMVP.prototype.getRawPresenter = function(){
+    return this.oRawPresenter;
+};
 
 /**
  * Load resources and return a jMVP instance built using those resources
@@ -112,6 +146,34 @@ jMVP.load = function(sReference, fCallback) {
  */
 jMVP.model = function(sReference, oModel){
     jMVP.oModels[sReference] = oModel;
+};
+
+/**
+ * Return a raw object model declared using jMVP
+ * @param sReference
+ * @returns {*|null}
+ */
+jMVP.getModel = function(sReference) {
+    return jMVP.oModels[sReference] || null;
+};
+
+/**
+ * Reurn a raw object view declared using jMPV
+ * @param sReference
+ * @returns {*|null}
+ */
+jMVP.getView = function(sReference) {
+    return jMVP.oViews[sReference] || null;
+};
+
+
+/**
+ * Reurn a raw object presenter declared using jMPV
+ * @param sReference
+ * @returns {*|null}
+ */
+jMVP.getPresenter = function(sReference) {
+    return jMVP.oPresenters[sReference] || null;
 };
 
 /**
