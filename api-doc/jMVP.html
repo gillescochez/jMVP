@@ -340,7 +340,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 38
+        <a href="jMVP.js.html">jMVP.js</a>, line 39
     </li></ul></dd>
     
     
@@ -460,7 +460,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 62
+        <a href="jMVP.js.html">jMVP.js</a>, line 65
     </li></ul></dd>
     
     
@@ -512,7 +512,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 68
+        <a href="jMVP.js.html">jMVP.js</a>, line 71
     </li></ul></dd>
     
     
@@ -564,7 +564,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 80
+        <a href="jMVP.js.html">jMVP.js</a>, line 83
     </li></ul></dd>
     
     
@@ -616,7 +616,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 74
+        <a href="jMVP.js.html">jMVP.js</a>, line 77
     </li></ul></dd>
     
     
@@ -803,7 +803,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 124
+        <a href="jMVP.js.html">jMVP.js</a>, line 182
     </li></ul></dd>
     
     
@@ -822,6 +822,26 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// Basic usage
+jMVP.each(['a', 'b'], function(sValue, nIdx) {
+     console.log(sValue);
+});</code></pre>
+
+    <pre class="prettyprint"><code>// Using the context parameter
+function foo() {
+
+     this.log = function(sValue) {
+         console.log(sValue);
+     }
+
+     jMVP.each(['a', 'b'], function(sValue) {
+         this.log(sValue);
+     }, this);
+}</code></pre>
+
+    
 </dd>
 
         
@@ -835,7 +855,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     <div class="description">
-        Load resources and return a jMVP instance using those resources
+        Load resources and return a jMVP instance built using those resources
     </div>
     
 
@@ -939,7 +959,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 87
+        <a href="jMVP.js.html">jMVP.js</a>, line 97
     </li></ul></dd>
     
     
@@ -957,6 +977,13 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>jMVP.load('random', function(oJMVP) {
+     oJMVP.model.foo.setValue('boo');
+});</code></pre>
+
     
 </dd>
 
@@ -1075,7 +1102,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 96
+        <a href="jMVP.js.html">jMVP.js</a>, line 113
     </li></ul></dd>
     
     
@@ -1093,6 +1120,13 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>jMVP.model('random', {
+     foo: 'bla'
+});</code></pre>
+
     
 </dd>
 
@@ -1211,7 +1245,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 114
+        <a href="jMVP.js.html">jMVP.js</a>, line 150
     </li></ul></dd>
     
     
@@ -1229,6 +1263,17 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>jMVP.presenter('random', {
+     test: {
+         click: function() {
+             alert('clicked');
+         }
+     }
+});</code></pre>
+
     
 </dd>
 
@@ -1347,7 +1392,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP.js.html">jMVP.js</a>, line 105
+        <a href="jMVP.js.html">jMVP.js</a>, line 131
     </li></ul></dd>
     
     
@@ -1365,6 +1410,15 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>jMVP.view('random', {
+     test: {
+         text: 'foo'
+     }
+});</code></pre>
+
     
 </dd>
 
@@ -1390,7 +1444,7 @@ var oJmvp = new jMVP(oModel, oView, oPresenter);</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Wed May 15 2013 22:45:43 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu May 16 2013 08:19:46 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

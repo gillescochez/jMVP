@@ -1,7 +1,7 @@
 /**
  * Array.prototype.forEach
  */
-if (!('forEach' in Array.prototype)) {
+if (!Array.prototype.forEach) {
     Array.prototype.forEach = function(action, that) {
         for (var i = 0, n = this.length; i < n; i++) {
             if (i in this) {
@@ -15,7 +15,7 @@ if (!('forEach' in Array.prototype)) {
  * Function.prototype.bind
  * from https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind
  */
-if (!('bind' in Function.prototype)) {
+if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
         if (typeof this !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
