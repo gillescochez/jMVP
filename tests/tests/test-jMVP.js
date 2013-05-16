@@ -65,11 +65,17 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
 
-	ok(jMVP.View.objectToElement, 'jMVP.View.objectToElement exists');
-	equal(typeof jMVP.View.objectToElement, 'function', 'jMVP.View.objectToElement is a function');
-	equal(jMVP.View.objectToElement && jMVP.View.prototype.objectToElement === undefined, true,
-		'jMVP.View.objectToElement is static');
-	equal(jMVP.View.objectToElement.length, 3, 'jMVP.View.objectToElement expect 3 arguments');
+    ok(jMVP.View.parseObject, 'jMVP.View.parseObject exists');
+    equal(typeof jMVP.View.parseObject, 'function', 'jMVP.View.parseObject is a function');
+    equal(jMVP.View.parseObject && jMVP.View.prototype.parseObject === undefined, true,
+        'jMVP.View.parseObject is static');
+    equal(jMVP.View.parseObject.length, 3, 'jMVP.View.parseObject expect 3 arguments');
+
+    ok(jMVP.View.parseHooks, 'jMVP.View.parseHooks exists');
+    equal(typeof jMVP.View.parseHooks, 'function', 'jMVP.View.parseHooks is a function');
+    equal(jMVP.View.parseHooks && jMVP.View.prototype.parseHooks === undefined, true,
+        'jMVP.View.parseHooks is static');
+    equal(jMVP.View.parseHooks.length, 4, 'jMVP.View.parseHooks expect 3 arguments');
 
 	ok(jMVP.View.viewFragmentHasChildren, 'jMVP.View.viewFragmentHasChildren exists');
 	equal(typeof jMVP.View.viewFragmentHasChildren, 'function', 'jMVP.View.viewFragmentHasChildren is a function');
