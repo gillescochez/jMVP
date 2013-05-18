@@ -115,9 +115,3 @@ jMVP.prototype.getRawView = function(){
 jMVP.prototype.getRawPresenter = function(){
     return this.oRawPresenter;
 };
-
-/**
- * CSS Prefix used when creating new elements
- * @type {String}
- */
-jMVP.CSS_PREFIX = 'jmvp-';

@@ -22,9 +22,10 @@ jMVP.View = function(oConfig) {
 
 	this.oConfig = oConfig;
 	this.oMap = {};
+    this.oNodesMap = {};
 
 	this.eDomView = jMVP.View.parseObject(
-		this.oConfig, this.oMap
+		this.oConfig, this.oMap, this.oNodesMap
 	);
 };
 
@@ -75,19 +76,26 @@ jMVP.View.prototype.getMap = function() {
 };
 
 /**
- * DOM getter
- */
-jMVP.View.prototype.getDOM = function() {
-    return this.eDomView;
-};
-
-/**
  * Check if a key is in the map
  * @param sKey
  * @returns {boolean}
  */
 jMVP.View.prototype.isInMap = function(sKey) {
     return this.oMap[sKey] ? true : false;
+};
+
+/**
+ * DOM getter
+ */
+jMVP.View.prototype.getElement = function(sKey) {
+    return this.oNodesMap[sKey] || null;
+};
+
+/**
+ * DOM getter
+ */
+jMVP.View.prototype.getDOM = function() {
+    return this.eDomView;
 };
 
 /**
@@ -141,10 +149,11 @@ jMVP.View.hooks = {
  * Convert an view object into DOM
  * @param oRawView
  * @param oMap
+ * @param oNodesMap
  * @param [eParentFragment]
  * @returns {DocumentFragment}
  */
-jMVP.View.parseObject = function(oRawView, oMap, eParentFragment) {
+jMVP.View.parseObject = function(oRawView, oMap, oNodesMap, eParentFragment) {
 
 	// TODO try documentFragment approach - extra div is ugly :(
 	var eView = eParentFragment || document.createElement('div');
@@ -153,11 +162,13 @@ jMVP.View.parseObject = function(oRawView, oMap, eParentFragment) {
 
 		var eNode = document.createElement(vValue.tag || 'div');
 
-		eNode.className = jMVP.CSS_PREFIX + sKey;
+        oNodesMap[sKey] = eNode;
+
+		eNode.className = sKey;
 
         jMVP.View.parseHooks(oMap, sKey, vValue, eNode);
 
-		vValue.children && jMVP.View.parseObject(vValue.children, oMap, eNode);
+		vValue.children && jMVP.View.parseObject(vValue.children, oMap, oNodesMap, eNode);
 
 		eView.appendChild(eNode);
 	});

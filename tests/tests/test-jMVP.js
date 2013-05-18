@@ -9,9 +9,6 @@ test('Objects / Static methods - basic', function(){
 	equal(typeof jMVP, 'function', 'jMVP is a function');
 	equal(jMVP.length, 3, 'jMVP expect 3 arguments');
 
-    ok(jMVP.CSS_PREFIX, 'CSS_PREFIX exists');
-    equal(jMVP.CSS_PREFIX, 'jmvp-', 'CSS_PREFIX is "jmvp-"');
-
 	ok(jMVP.each, 'jMVP.each exists');
 	equal(typeof jMVP.each, 'function', 'jMVP.each is a function');
 	equal(jMVP.each && jMVP.prototype.each === undefined, true, 'jMVP.each is static');
@@ -35,7 +32,7 @@ test('Objects / Static methods - basic', function(){
     equal(typeof jMVP.View.parseObject, 'function', 'jMVP.View.parseObject is a function');
     equal(jMVP.View.parseObject && jMVP.View.prototype.parseObject === undefined, true,
         'jMVP.View.parseObject is static');
-    equal(jMVP.View.parseObject.length, 3, 'jMVP.View.parseObject expect 3 arguments');
+    equal(jMVP.View.parseObject.length, 4, 'jMVP.View.parseObject expect 3 arguments');
 
     ok(jMVP.View.parseHooks, 'jMVP.View.parseHooks exists');
     equal(typeof jMVP.View.parseHooks, 'function', 'jMVP.View.parseHooks is a function');
@@ -185,13 +182,16 @@ test('View / Template / Element instances - functional', function() {
 
 	ok(oView.eDomView, 'eDomView exists');
 
-	ok(oView.oMap, 'oMap exists');
-	equal(typeof oView.oMap, 'object', 'oMap is an object');
+    ok(oView.oMap, 'oMap exists');
+    equal(typeof oView.oMap, 'object', 'oMap is an object');
 
-    'getMap,getConfig,isInMap,getDOM'.split(',').forEach(function(method) {
+    ok(oView.oNodesMap, 'oNodesMap exists');
+    equal(typeof oView.oNodesMap, 'object', 'oNodesMap is an object');
+
+    'getMap,getConfig,isInMap,getDOM,getElement'.split(',').forEach(function(method) {
         ok(oView[method], method + ' exists');
         equal(typeof oView[method], 'function', method + ' is a function');
-        if (method == 'isInMap') {
+        if (method == 'isInMap' || method == 'getElement') {
             equal(oView[method].length, 1, method + ' expects 1 argument');
         } else {
             equal(oView[method].length, 0, method + ' expects 0 argument');
@@ -203,13 +203,15 @@ test('View / Template / Element instances - functional', function() {
     deepEqual(oView.getDOM(), oView.eDomView, '.getDOM() === oView.eDomView');
     equal(oView.isInMap('foo'), true, 'is in map');
     equal(oView.isInMap('aaa'), false, 'is not in map');
+    deepEqual(oView.getElement('test'), oView.eDomView.querySelector('.test'), 'getElement gets');
+    equal(oView.getElement('aaa'), null, 'getElement null');
 
 	ok(oView.render, 'render exists');
 	equal(typeof oView.render, 'function', 'render is a functgion');
 
 	oView.render(div);
 
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="jmvp-test"></div></div>', 'View rendered properly');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="test"></div></div>', 'View rendered properly');
 
 	ok(oView.update, 'update exists');
 	equal(typeof oView.update, 'function', 'update is a function');
@@ -217,7 +219,7 @@ test('View / Template / Element instances - functional', function() {
 
 	oView.update('foo', oModel.foo);
 
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
+	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="test">foo</div></div>', 'Basic hook test');
 });
 test('View hooks - functional', function() {
 
@@ -271,8 +273,8 @@ test('View hooks - functional', function() {
 		},
 		oView = new jMVP.View(oTmpl),
 		div = document.createElement('div'),
-		updatedHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title visible" title="test">test</h1><div class="jmvp-article" title="test"><p>bla bla bla</p></div></div></div></div>',
-		emptyHtml = '<div><div class="jmvp-header"></div><div class="jmvp-content"><div class="jmvp-side"></div><div class="jmvp-main"><h1 class="jmvp-title"></h1><div class="jmvp-article"></div></div></div></div>';
+		updatedHtml = '<div><div class="header"></div><div class="content"><div class="side"></div><div class="main"><h1 class="title visible" title="test">test</h1><div class="article" title="test"><p>bla bla bla</p></div></div></div></div>',
+		emptyHtml = '<div><div class="header"></div><div class="content"><div class="side"></div><div class="main"><h1 class="title"></h1><div class="article"></div></div></div></div>';
 
 	oView.render(div);
 
@@ -479,7 +481,7 @@ test('Instance - functional', function() {
     deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
     deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
 
-    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="jmvp-test">foo</div>', 'Setting new value on the model update the view');
+    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="test">foo</div>', 'Setting new value on the model update the view');
 
     ok(jmvp.addModelListener, 'addModelListener exists');
     equal(typeof jmvp.addModelListener, 'function', 'addModelListener is a function');
