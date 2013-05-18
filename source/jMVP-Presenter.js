@@ -45,7 +45,7 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
         oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = jMVP.dom(this.view.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
+        var eNode = jMVP.dom(this.view.getDOM()).getByClass(jMVP.CSS_PREFIX + sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
@@ -69,7 +69,7 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
 			if (this.oMap.hasOwnProperty(sReference)) {
 
-				if (this.oMap[sReference].hasOwnProperty(oDOMEvent.type)) {
+				if (this.oMap[sReference][oDOMEvent.type]) {
 					// TODO What to use as context?
                     this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.view, this.model])
 				}

@@ -66,7 +66,7 @@ jMVP.prototype.addModelListener = function() {
  */
 jMVP.prototype.applyModelToView = function() {
     jMVP.each(this.oRawModel, function(sKey, vValue) {
-        this.view.oMap[sKey] && this.view.update(sKey, vValue);
+        this.view.isInMap(sKey) && this.view.update(sKey, vValue);
     }, this);
 };
 
@@ -123,68 +123,6 @@ jMVP.prototype.getRawPresenter = function(){
  * @type {String}
  */
 jMVP.CSS_PREFIX = 'jmvp-';
-
-/**
- * Iterate over object, string and arrays and run a give function on each iteration
- * @param vData {*} The data to iterate over
- * @param fCallback {Function} The callback function
- * @param [oContext] {{}} The object context used to run the callback in
- *
- * @example
- *
- * // Basic usage
- * jMVP.each(['a', 'b'], function(sValue, nIdx) {
- *      console.log(sValue);
- * });
- *
- * @example
- *
- * // Using the context parameter
- * function foo() {
- *
- *      this.log = function(sValue) {
- *          console.log(sValue);
- *      }
- *
- *      jMVP.each(['a', 'b'], function(sValue) {
- *          this.log(sValue);
- *      }, this);
- * }
- *
- */
-jMVP.each = function(vData, fCallback, oContext) {
-
-	var sKey;
-
-	if (vData.constructor === Object && vData.constructor !== Array) {
-
-		for (sKey in vData) {
-
-			if (vData[sKey]) {
-				fCallback.apply(oContext, [sKey, vData[sKey]]);
-			}
-		}
-
-	} else if (typeof vData === "string" || vData instanceof Array) {
-
-		(typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
-			fCallback.apply(oContext, [vValue, nIdx]);
-		});
-	}
-};
-
-/**
- * Send a error message out
- * @param sMessage {String} Error message
- * @param nType {Interger} Error type
- */
-jMVP.error = function(sMessage, nType) {
-    if (window.console && console.error) {
-        console.error(sMessage, nType);
-    } else {
-        throw sMessage + '' + nType;
-    }
-};
 /**
  * jMVP Model object constructor
  * @param oModel {{}} Model data object
@@ -317,7 +255,7 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
         oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = jMVP.dom(this.view.eDomView).getByClass(jMVP.CSS_PREFIX + sReference);
+        var eNode = jMVP.dom(this.view.getDOM()).getByClass(jMVP.CSS_PREFIX + sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
@@ -341,7 +279,7 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
 			if (this.oMap.hasOwnProperty(sReference)) {
 
-				if (this.oMap[sReference].hasOwnProperty(oDOMEvent.type)) {
+				if (this.oMap[sReference][oDOMEvent.type]) {
 					// TODO What to use as context?
                     this.oMap[sReference][oDOMEvent.type].apply(eNode, [oDOMEvent, this.view, this.model])
 				}
@@ -460,6 +398,13 @@ jMVP.View.prototype.getConfig = function() {
  */
 jMVP.View.prototype.getMap = function() {
     return this.oMap;
+};
+
+/**
+ * DOM getter
+ */
+jMVP.View.prototype.getDOM = function() {
+    return this.eDomView;
 };
 
 /**
@@ -782,6 +727,67 @@ jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
     };
 
 
+/**
+ * Iterate over object, string and arrays and run a give function on each iteration
+ * @param vData {*} The data to iterate over
+ * @param fCallback {Function} The callback function
+ * @param [oContext] {{}} The object context used to run the callback in
+ *
+ * @example
+ *
+ * // Basic usage
+ * jMVP.each(['a', 'b'], function(sValue, nIdx) {
+ *      console.log(sValue);
+ * });
+ *
+ * @example
+ *
+ * // Using the context parameter
+ * function foo() {
+ *
+ *      this.log = function(sValue) {
+ *          console.log(sValue);
+ *      }
+ *
+ *      jMVP.each(['a', 'b'], function(sValue) {
+ *          this.log(sValue);
+ *      }, this);
+ * }
+ *
+ */
+jMVP.each = function(vData, fCallback, oContext) {
+
+    var sKey;
+
+    if (vData.constructor === Object && vData.constructor !== Array) {
+
+        for (sKey in vData) {
+
+            if (vData[sKey]) {
+                fCallback.apply(oContext, [sKey, vData[sKey]]);
+            }
+        }
+
+    } else if (typeof vData === "string" || vData instanceof Array) {
+
+        (typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
+            fCallback.apply(oContext, [vValue, nIdx]);
+        });
+    }
+};
+
+/**
+ * Send a error message out
+ * @param sMessage {String} Error message
+ * @param nType {Interger} Error type
+ */
+jMVP.error = function(sMessage, nType) {
+    if (window.console && console.error) {
+        console.error(sMessage, nType);
+    } else {
+        throw sMessage + '' + nType;
+    }
+};
 /**
  * Array.prototype.forEach
  */

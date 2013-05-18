@@ -75,6 +75,13 @@ jMVP.View.prototype.getMap = function() {
 };
 
 /**
+ * DOM getter
+ */
+jMVP.View.prototype.getDOM = function() {
+    return this.eDomView;
+};
+
+/**
  * Check if a key is in the map
  * @param sKey
  * @returns {boolean}

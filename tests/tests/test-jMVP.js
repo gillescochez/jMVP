@@ -188,7 +188,7 @@ test('View / Template / Element instances - functional', function() {
 	ok(oView.oMap, 'oMap exists');
 	equal(typeof oView.oMap, 'object', 'oMap is an object');
 
-    'getMap,getConfig,isInMap'.split(',').forEach(function(method) {
+    'getMap,getConfig,isInMap,getDOM'.split(',').forEach(function(method) {
         ok(oView[method], method + ' exists');
         equal(typeof oView[method], 'function', method + ' is a function');
         if (method == 'isInMap') {
@@ -200,6 +200,7 @@ test('View / Template / Element instances - functional', function() {
 
     deepEqual(oView.getConfig(), oTmpl, '.getConfig() === oTmpl');
     deepEqual(oView.getMap(), oView.oMap, '.getMap() === oView.oMap');
+    deepEqual(oView.getDOM(), oView.eDomView, '.getDOM() === oView.eDomView');
     equal(oView.isInMap('foo'), true, 'is in map');
     equal(oView.isInMap('aaa'), false, 'is not in map');
 
@@ -462,11 +463,7 @@ test('Instance - functional', function() {
             }
         },
         model = {
-            foo: 'foo',
-            arr: ['a', 'b'],
-            obj: {
-                c: 'd'
-            }
+            foo: 'foo'
         },
         jmvp = new jMVP(model, view, presenter);
 
@@ -502,5 +499,40 @@ test('Instance - functional', function() {
     deepEqual(jmvp.getModel(), jmvp.model, 'getModel works');
     deepEqual(jmvp.getView(), jmvp.view, 'getView works');
     deepEqual(jmvp.getPresenter(), jmvp.presenter, 'getPresenter works');
+
+});
+test('Complex view/model structure', function() {
+   var model = {
+           title: 'Titre',
+           subtitle: 'Sous Titre',
+           categories: ['action','adventure','sci-fi']
+       },
+       view = {
+            article: {
+                children: {
+                    header: {
+                        text: 'title'
+                    },
+                    subheader: {
+                        text: 'subtitle'
+                    },
+                    genres: {
+                        tag: 'ul',
+                        loop: {
+                            source: 'categories',
+                            template: {
+                                item: {
+                                    tag: 'li',
+                                    text: '$value'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+       },
+       presenter = {},
+       jmvp = new jMVP(model, view, presenter);
+
 
 });
