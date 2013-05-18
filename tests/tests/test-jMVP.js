@@ -17,10 +17,15 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.each && jMVP.prototype.each === undefined, true, 'jMVP.each is static');
 	equal(jMVP.each.length, 3, 'jMVP.each expect 3 arguments');
 
-	ok(jMVP.load, 'jMVP.load exists');
-	equal(typeof jMVP.load, 'function', 'jMVP.load is a function');
-	equal(jMVP.load && jMVP.prototype.load === undefined, true, 'jMVP.load is static');
-	equal(jMVP.load.length, 2, 'jMVP.load expect 2 arguments');
+    ok(jMVP.load, 'jMVP.load exists');
+    equal(typeof jMVP.load, 'function', 'jMVP.load is a function');
+    equal(jMVP.load && jMVP.prototype.load === undefined, true, 'jMVP.load is static');
+    equal(jMVP.load.length, 2, 'jMVP.load expect 2 arguments');
+
+    ok(jMVP.error, 'jMVP.error exists');
+    equal(typeof jMVP.error, 'function', 'jMVP.error is a function');
+    equal(jMVP.error && jMVP.prototype.load === undefined, true, 'jMVP.error is static');
+    equal(jMVP.error.length, 2, 'jMVP.error expect 2 arguments');
 
     /**
      * Object Declaration API

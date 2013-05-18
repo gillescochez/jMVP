@@ -32,6 +32,12 @@ module.exports = function(grunt) {
                     destination: 'api-doc'
                 }
             }
+        },
+        copy: {
+            main: {
+                src: ['build/jsdoc.css'],
+                dest: 'api-doc/styles/jsdoc-default.css'
+            }
         }
     });
 
@@ -39,9 +45,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-jsdoc');
 
     // Default task(s).
     grunt.registerTask('default', ['qunit', 'concat', 'uglify']);
-    grunt.registerTask('doc', ['jsdoc']);
+    grunt.registerTask('doc', ['jsdoc', 'copy']);
 }
