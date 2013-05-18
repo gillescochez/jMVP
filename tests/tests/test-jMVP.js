@@ -290,7 +290,7 @@ test('View hooks - functional', function() {
 module('jMVP.dom');
 test('dom helper / Wrap class - basic / functional', function() {
 
-	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr,getByClass'.split(','),
+	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
 		div = document.createElement('div'),
 		divDom,
 		aDiv = [
@@ -308,9 +308,6 @@ test('dom helper / Wrap class - basic / functional', function() {
 
 	ok(jMVP.dom.Wrap, '.dom.Wrap exists');
 	equal(typeof jMVP.dom.Wrap, 'function', '.dom.Wrap is a function');
-
-    ok(jMVP.dom.getElementByClassName, '.dom.getElementByClassName exists');
-    equal(typeof jMVP.dom.getElementByClassName, 'function', '.dom.getElementByClassName is a function');
 
     ok(jMVP.dom.DIV, 'DIV constant exists');
     ok(jMVP.dom.INNER_TEXT, 'INNER_TEXT constant exists');
@@ -349,16 +346,12 @@ test('dom helper / Wrap class - basic / functional', function() {
     span.className = 'test';
     div.appendChild(span);
 
-    deepEqual(jMVP.dom(div).getByClass('test'), span, 'dom.getByClass works');
-
     // reset divDom before chain test as can affect test above
     divDom = jMVP.dom(document.createElement('div'));
 	aMethods.forEach(function(sMethod) {
-        // skip getByClass as returning an array
-        if (sMethod != 'getByClass') {
-            if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
-            else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
-        }
+        if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
+        else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
+
 	});
 
     ok(jMVP.dom.on, 'on exists');

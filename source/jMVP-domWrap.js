@@ -46,15 +46,6 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 };
 
 /**
- * Return a single element by class name
- * @param sClassName {String} CSS class reference
- * @returns {*} Collection of DOM element(s)
- */
-jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
-    return jMVP.dom.getElementByClassName(sClassName, this.aNodes[0]);
-};
-
-/**
  * Bind a handler to elements
  * @param sEventType {String} The event type
  * @param fCallback {Function} Function to be called when the event is triggered
@@ -180,24 +171,3 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
     : function(eNode, sEventType, fCallback) {
         eNode.detachEvent('on' + sEventType, fCallback);
     };
-
-/**
- * getElementByClassName compatible with the browser used
- * @type {Function}
- */
-jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
-    ? function(sSelector, context) {
-        return context.querySelector('.' + sSelector);
-    }
-    : function(sSelector, context) {
-        var aResult = [];
-
-        jMVP.dom(context.getElementsByTagName('*')).each(function() {
-            if (this.className.indexOf(sSelector) !== -1) {
-                aResult.push(this);
-            }
-        });
-
-        return aResult[0];
-    };
-
