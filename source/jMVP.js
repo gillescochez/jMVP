@@ -51,30 +51,6 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 };
 
 /**
- * CSS Prefix used when creating new elements
- * @type {String}
- */
-jMVP.CSS_PREFIX = 'jmvp-';
-
-/**
- * Used to store models declared using jMVP
- * @type {{}}
- */
-jMVP.oModels = {};
-
-/**
- * Used to stored views declared using jMVP
- * @type {{}}
- */
-jMVP.oViews = {};
-
-/**
- * Used to store presenters declared using jMVP
- * @type {{}}
- */
-jMVP.oPresenters = {};
-
-/**
  * Set the onModelUpdated listener
  */
 jMVP.prototype.addModelListener = function() {
@@ -88,7 +64,7 @@ jMVP.prototype.addModelListener = function() {
  */
 jMVP.prototype.applyModelToView = function() {
     jMVP.each(this.oRawModel, function(sKey, vValue) {
-        this.view.update(sKey, vValue);
+        this.view.oMap[sKey] && this.view.update(sKey, vValue);
     }, this);
 };
 
@@ -115,6 +91,30 @@ jMVP.prototype.getRawView = function(){
 jMVP.prototype.getRawPresenter = function(){
     return this.oRawPresenter;
 };
+
+/**
+ * CSS Prefix used when creating new elements
+ * @type {String}
+ */
+jMVP.CSS_PREFIX = 'jmvp-';
+
+/**
+ * Used to store models declared using jMVP
+ * @type {{}}
+ */
+jMVP.oModels = {};
+
+/**
+ * Used to stored views declared using jMVP
+ * @type {{}}
+ */
+jMVP.oViews = {};
+
+/**
+ * Used to store presenters declared using jMVP
+ * @type {{}}
+ */
+jMVP.oPresenters = {};
 
 /**
  * Load resources and return a jMVP instance built using those resources

@@ -44,7 +44,7 @@ jMVP.View.prototype.render = function(eTarget) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-	jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
+    jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 

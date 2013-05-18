@@ -131,7 +131,7 @@ test('Declarative statics', function() {
     // reset for now
     jMVP.oModels = jMVP.oViews = jMVP.oPresenters = {};
 });
-test('jMVP.each static method - functional', function() {
+test('.each static method - functional', function() {
 
 	var oData = {
 			a: 'a',
@@ -174,13 +174,18 @@ test('Model / Data instances - functional', function() {
 
 	var oRawData = {
 			foo: 'foo',
-			boo:'boo'
+			boo:'boo',
+            arr: ['a', 'b'],
+            obj: {c:'d'}
 		},
 		oModel = new jMVP.Model(oRawData),
 		oData = new jMVP.Data('a'),
 		valueFromOnValueUpdated,
         valueFromOnModelUpdated = {};
 
+    /**
+     * jMVP.Data
+     */
 	ok(oData.vValue, 'value property');
 	equal(oData.vValue, 'a', 'value is correct');
 
@@ -195,7 +200,11 @@ test('Model / Data instances - functional', function() {
 	};
 	oData.setValue('A');
 	equal(valueFromOnValueUpdated, 'A', 'onValueUpdated return updated data');
+    equal(oData.getValue(), 'A', 'data updated returned properly');
 
+    /**
+     * jMVP.Model
+     */
 	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
 	oModel.foo.setValue('FOO');
 	equal(oRawData.foo, 'FOO', 'original data update');
@@ -249,7 +258,7 @@ test('View / Template / Element instances - functional', function() {
 
 	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="jmvp-test">foo</div></div>', 'Basic hook test');
 });
-test('View hooks', function() {
+test('View hooks - functional', function() {
 
 	ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
 	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
@@ -435,27 +444,43 @@ test('Presenter instance - basic / functional', function() {
         model = {
             foo: 'foo'
         },
-		presenter = new jMVP.Presenter(handlers);
+		presenter = new jMVP.Presenter(handlers),
+        oModel = new jMVP.Model(model),
+        oView = new jMVP.View(view);
+
+        /**
+     * With Presenter config object only
+     */
 
 	ok(presenter.oMap, 'Map exists');
 	ok(presenter.oMap.test, 'data stored in map');
     deepEqual(presenter.oMap, handlers, 'data stored properly');
     deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
 
-    ok(presenter.routeEvent, 'trigger exists');
-    equal(typeof presenter.routeEvent, 'function', 'trigger is a function');
-    equal(presenter.routeEvent.length, 1, 'trigger expects 1 arguments');
-
-    ok(presenter.bindToView, 'trigger exists');
-    equal(typeof presenter.bindToView, 'function', 'trigger is a function');
-    equal(presenter.bindToView.length, 1, 'trigger expects 1 arguments');
+    'getMap,getView,getModel,isInMap,routeEvent,bindToView'.split(',').forEach(function(method) {
+        ok(presenter[method], method + ' exists');
+        equal(typeof presenter[method], 'function', method + ' is a function');
+        if (method == 'isInMap' || method == 'routeEvent' || method == 'bindToView') {
+            equal(presenter[method].length, 1, method + ' expects 1 argument');
+        } else {
+            equal(presenter[method].length, 0, method + ' expects 0 argument');
+        }
+    });
 
     presenter.routeEvent(mockEvent);
     equal(clicked, true, 'click event handler executed');
 
+    /**
+     * View jMVP.View and jMVP.Data
+     * @type {jMVP.Presenter}
+     */
     presenter = new jMVP.Presenter(
-        handlers, new jMVP.View(view), new jMVP.Model(model)
+        handlers, oView, oModel
     );
+
+    deepEqual(presenter.getMap(), presenter.oMap, 'getMap');
+    deepEqual(presenter.getModel(), oModel, 'getModel');
+    deepEqual(presenter.getView(), oView, 'getView');
 
     ok(presenter.view, 'View is stored');
     ok(presenter.model, 'Model is stored');
@@ -464,7 +489,7 @@ test('Presenter instance - basic / functional', function() {
 });
 
 module('jMVP');
-test('jMVP instance - functional', function() {
+test('Instance - functional', function() {
     var presenter = {
             test: {
                 click: function(oEvent, oModel, oView) {}
@@ -476,7 +501,11 @@ test('jMVP instance - functional', function() {
             }
         },
         model = {
-            foo: 'foo'
+            foo: 'foo',
+            arr: ['a', 'b'],
+            obj: {
+                c: 'd'
+            }
         },
         jmvp = new jMVP(model, view, presenter);
 

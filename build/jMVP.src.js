@@ -53,30 +53,6 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
 };
 
 /**
- * CSS Prefix used when creating new elements
- * @type {String}
- */
-jMVP.CSS_PREFIX = 'jmvp-';
-
-/**
- * Used to store models declared using jMVP
- * @type {{}}
- */
-jMVP.oModels = {};
-
-/**
- * Used to stored views declared using jMVP
- * @type {{}}
- */
-jMVP.oViews = {};
-
-/**
- * Used to store presenters declared using jMVP
- * @type {{}}
- */
-jMVP.oPresenters = {};
-
-/**
  * Set the onModelUpdated listener
  */
 jMVP.prototype.addModelListener = function() {
@@ -90,7 +66,7 @@ jMVP.prototype.addModelListener = function() {
  */
 jMVP.prototype.applyModelToView = function() {
     jMVP.each(this.oRawModel, function(sKey, vValue) {
-        this.view.update(sKey, vValue);
+        this.view.oMap[sKey] && this.view.update(sKey, vValue);
     }, this);
 };
 
@@ -117,6 +93,30 @@ jMVP.prototype.getRawView = function(){
 jMVP.prototype.getRawPresenter = function(){
     return this.oRawPresenter;
 };
+
+/**
+ * CSS Prefix used when creating new elements
+ * @type {String}
+ */
+jMVP.CSS_PREFIX = 'jmvp-';
+
+/**
+ * Used to store models declared using jMVP
+ * @type {{}}
+ */
+jMVP.oModels = {};
+
+/**
+ * Used to stored views declared using jMVP
+ * @type {{}}
+ */
+jMVP.oViews = {};
+
+/**
+ * Used to store presenters declared using jMVP
+ * @type {{}}
+ */
+jMVP.oPresenters = {};
 
 /**
  * Load resources and return a jMVP instance built using those resources
@@ -262,6 +262,18 @@ jMVP.each = function(vData, fCallback, oContext) {
 			fCallback.apply(oContext, [vValue, nIdx]);
 		});
 	}
+};
+/**
+ * Send a error message out
+ * @param sMessage {String} Error message
+ * @param nType {Interger} Error type
+ */
+jMVP.error = function(sMessage, nType) {
+    if (window.console && console.error) {
+        console.error(sMessage, nType);
+    } else {
+        throw sMessage + '' + nType;
+    }
 };
 /**
  * jMVP Model object constructor
@@ -426,6 +438,34 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 		}
 	}, this);
 };
+
+/**
+ * Map object getter
+ */
+jMVP.Presenter.prototype.getMap = function() {
+    return this.oMap;
+};
+
+/**
+ * Check if a key is in the map
+ */
+jMVP.Presenter.prototype.isInMap = function(sKey) {
+    return this.oMap[sKey] ? true : false;
+};
+
+/**
+ * Model instance object getter
+ */
+jMVP.Presenter.prototype.getModel = function() {
+    return this.model;
+};
+
+/**
+ * View instance object getter
+ */
+jMVP.Presenter.prototype.getView = function() {
+    return this.view;
+};
 /**
  * jMVP View object constructor
  *
@@ -472,7 +512,7 @@ jMVP.View.prototype.render = function(eTarget) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-	jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
+    jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
 		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 

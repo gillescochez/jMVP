@@ -76,3 +76,31 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 		}
 	}, this);
 };
+
+/**
+ * Map object getter
+ */
+jMVP.Presenter.prototype.getMap = function() {
+    return this.oMap;
+};
+
+/**
+ * Check if a key is in the map
+ */
+jMVP.Presenter.prototype.isInMap = function(sKey) {
+    return this.oMap[sKey] ? true : false;
+};
+
+/**
+ * Model instance object getter
+ */
+jMVP.Presenter.prototype.getModel = function() {
+    return this.model;
+};
+
+/**
+ * View instance object getter
+ */
+jMVP.Presenter.prototype.getView = function() {
+    return this.view;
+};
