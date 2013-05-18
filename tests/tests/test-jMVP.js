@@ -17,49 +17,10 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.each && jMVP.prototype.each === undefined, true, 'jMVP.each is static');
 	equal(jMVP.each.length, 3, 'jMVP.each expect 3 arguments');
 
-    ok(jMVP.load, 'jMVP.load exists');
-    equal(typeof jMVP.load, 'function', 'jMVP.load is a function');
-    equal(jMVP.load && jMVP.prototype.load === undefined, true, 'jMVP.load is static');
-    equal(jMVP.load.length, 2, 'jMVP.load expect 2 arguments');
-
     ok(jMVP.error, 'jMVP.error exists');
     equal(typeof jMVP.error, 'function', 'jMVP.error is a function');
-    equal(jMVP.error && jMVP.prototype.load === undefined, true, 'jMVP.error is static');
+    equal(jMVP.error && jMVP.prototype.error === undefined, true, 'jMVP.error is static');
     equal(jMVP.error.length, 2, 'jMVP.error expect 2 arguments');
-
-    /**
-     * Object Declaration API
-     */
-
-	ok(jMVP.oModels, 'jMVP.oModels exists');
-	equal(typeof jMVP.oModels, 'object', 'jMVP.oModels is an object');
-	equal(jMVP.oModels && jMVP.prototype.oModels === undefined, true, 'jMVP.oModels is static');
-
-	ok(jMVP.oViews, 'jMVP.oViews exists');
-	equal(typeof jMVP.oViews, 'object', 'jMVP.oViews is an object');
-	equal(jMVP.oViews && jMVP.prototype.oViews === undefined, true, 'jMVP.oViews is static');
-
-	ok(jMVP.oPresenters, 'jMVP.oPresenters exists');
-	equal(typeof jMVP.oPresenters, 'object', 'jMVP.oPresenters is an object');
-	equal(jMVP.oPresenters && jMVP.prototype.oPresenters === undefined, true, 'jMVP.oPresenters is static');
-
-
-    'Model,View,Presenter'.split(',').forEach(function(sKey) {
-
-        var sLowerKey = sKey.toLowerCase();
-
-        // setter
-        ok(jMVP[sLowerKey], 'jMVP.' + sLowerKey + ' exists');
-        equal(typeof jMVP[sLowerKey], 'function', 'jMVP.' + sLowerKey + ' is a function');
-        equal(jMVP[sLowerKey] && jMVP.prototype[sLowerKey] === undefined, true, 'jMVP.' + sLowerKey + ' is static');
-        equal(jMVP[sLowerKey].length, 2, 'jMVP.' + sLowerKey + ' expect 2 arguments');
-
-        // getter
-        ok(jMVP['get' + sKey], 'jMVP.get' + sKey + ' exists');
-        equal(typeof jMVP['get' + sKey], 'function', 'jMVP.get' + sKey + ' is a function');
-        equal(jMVP['get' + sKey] && jMVP.prototype['get' + sKey] === undefined, true, 'jMVP.get' + sKey + ' is static');
-        equal(jMVP['get' + sKey].length, 1, 'jMVP.get' + sKey + ' expect 1 arguments');
-    });
 
     /**
 	 * jMVP View object
@@ -114,22 +75,6 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
 	equal(jMVP.Presenter.length, 3, 'jMVP.Presenter expect 3 argument');
 
-});
-test('Declarative statics', function() {
-    var model = {model:true},
-        view = {view:true},
-        presenter = {presenter:true};
-
-    jMVP.model('model', model);
-    jMVP.view('view', view);
-    jMVP.presenter('presenter', presenter);
-
-    deepEqual(jMVP.oModels['model'], model, 'model declared properly');
-    deepEqual(jMVP.oViews['view'], view, 'view declared properly');
-    deepEqual(jMVP.oPresenters['presenter'], presenter, 'presenter declared properly');
-
-    // reset for now
-    jMVP.oModels = jMVP.oViews = jMVP.oPresenters = {};
 });
 test('.each static method - functional', function() {
 
@@ -545,9 +490,7 @@ test('Instance - functional', function() {
     equal(typeof jmvp.applyModelToView, 'function', 'applyModelToView is a fucntion');
 
     // getter/setter for raw data
-    'RawModel,RawView,RawPresenter'.split(',').forEach(function(sValue) {
-//        ok(jmvp['set' + sValue], sValue + ' exists');
-//        equal(typeof jmvp['set' + sValue], 'function', sValue + ' is a function');
+    'RawModel,RawView,RawPresenter,Model,View,Presenter'.split(',').forEach(function(sValue) {
         ok(jmvp['get' + sValue], sValue + ' exists');
         equal(typeof jmvp['get' + sValue], 'function', sValue + ' is a function');
     });
@@ -555,5 +498,9 @@ test('Instance - functional', function() {
     deepEqual(jmvp.getRawModel(), model, 'getRawModel works');
     deepEqual(jmvp.getRawView(), view, 'getRawModel works');
     deepEqual(jmvp.getRawPresenter(), presenter, 'getRawModel works');
+
+    deepEqual(jmvp.getModel(), jmvp.model, 'getModel works');
+    deepEqual(jmvp.getView(), jmvp.view, 'getView works');
+    deepEqual(jmvp.getPresenter(), jmvp.presenter, 'getPresenter works');
 
 });
