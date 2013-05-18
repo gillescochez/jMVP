@@ -235,13 +235,28 @@ test('View / Template / Element instances - functional', function() {
 	/**
 	 * jMVP.View instance
 	 */
-	ok(oView.oRawView, 'oRawView exists');
-	deepEqual(oView.oRawView, oTmpl, 'oRawView === oTmpl');
+	ok(oView.oConfig, 'oRawView exists');
+	deepEqual(oView.oConfig, oTmpl, 'oRawView === oTmpl');
 
 	ok(oView.eDomView, 'eDomView exists');
 
 	ok(oView.oMap, 'oMap exists');
 	equal(typeof oView.oMap, 'object', 'oMap is an object');
+
+    'getMap,getConfig,isInMap'.split(',').forEach(function(method) {
+        ok(oView[method], method + ' exists');
+        equal(typeof oView[method], 'function', method + ' is a function');
+        if (method == 'isInMap') {
+            equal(oView[method].length, 1, method + ' expects 1 argument');
+        } else {
+            equal(oView[method].length, 0, method + ' expects 0 argument');
+        }
+    });
+
+    deepEqual(oView.getConfig(), oTmpl, '.getConfig() === oTmpl');
+    deepEqual(oView.getMap(), oView.oMap, '.getMap() === oView.oMap');
+    equal(oView.isInMap('foo'), true, 'is in map');
+    equal(oView.isInMap('aaa'), false, 'is not in map');
 
 	ok(oView.render, 'render exists');
 	equal(typeof oView.render, 'function', 'render is a functgion');
@@ -457,7 +472,7 @@ test('Presenter instance - basic / functional', function() {
     deepEqual(presenter.oMap, handlers, 'data stored properly');
     deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
 
-    'getMap,getView,getModel,isInMap,routeEvent,bindToView'.split(',').forEach(function(method) {
+    'getMap,getView,getModel,getConfig,isInMap,routeEvent,bindToView'.split(',').forEach(function(method) {
         ok(presenter[method], method + ' exists');
         equal(typeof presenter[method], 'function', method + ' is a function');
         if (method == 'isInMap' || method == 'routeEvent' || method == 'bindToView') {
@@ -481,6 +496,7 @@ test('Presenter instance - basic / functional', function() {
     deepEqual(presenter.getMap(), presenter.oMap, 'getMap');
     deepEqual(presenter.getModel(), oModel, 'getModel');
     deepEqual(presenter.getView(), oView, 'getView');
+    deepEqual(presenter.getConfig(), handlers, 'getView');
 
     ok(presenter.view, 'View is stored');
     ok(presenter.model, 'Model is stored');

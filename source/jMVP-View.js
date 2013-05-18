@@ -1,11 +1,11 @@
 /**
  * jMVP View object constructor
  *
- * @prop oRawView {Object} Original view object configuration
+ * @prop oConfig {Object} Original view object configuration
  * @prop oMap {Object} Map of elements which depends on hooks/data update
  * @prop eDomView {Node} The DOM representation of the view
  *
- * @param oView {Object} Representation of the view and its binding
+ * @param oConfig {Object} Representation of the view and its binding
  *
  * @example
  * var oViewConfig = {
@@ -18,13 +18,13 @@
  *
  * @constructor
  */
-jMVP.View = function(oView) {
+jMVP.View = function(oConfig) {
 
-	this.oRawView = oView;
+	this.oConfig = oConfig;
 	this.oMap = {};
 
 	this.eDomView = jMVP.View.parseObject(
-		this.oRawView, this.oMap
+		this.oConfig, this.oMap
 	);
 };
 
@@ -58,6 +58,29 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 		}
 
 	}, this);
+};
+
+/**
+ * Config object getter
+ */
+jMVP.View.prototype.getConfig = function() {
+    return this.oConfig;
+};
+
+/**
+ * Map object getter
+ */
+jMVP.View.prototype.getMap = function() {
+    return this.oMap;
+};
+
+/**
+ * Check if a key is in the map
+ * @param sKey
+ * @returns {boolean}
+ */
+jMVP.View.prototype.isInMap = function(sKey) {
+    return this.oMap[sKey] ? true : false;
 };
 
 /**

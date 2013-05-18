@@ -26,6 +26,7 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
 	this.oMap = {};
     this.view = oView || null;
     this.model = oModel || null;
+    this.oConfig = oConfig;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
 		this.oMap[sReference] = oHandlers;
@@ -78,6 +79,13 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 };
 
 /**
+ * Config object getter
+ */
+jMVP.Presenter.prototype.getConfig = function() {
+    return this.oConfig;
+};
+
+/**
  * Map object getter
  */
 jMVP.Presenter.prototype.getMap = function() {
@@ -86,6 +94,8 @@ jMVP.Presenter.prototype.getMap = function() {
 
 /**
  * Check if a key is in the map
+ * @param sKey
+ * @returns {boolean}
  */
 jMVP.Presenter.prototype.isInMap = function(sKey) {
     return this.oMap[sKey] ? true : false;
