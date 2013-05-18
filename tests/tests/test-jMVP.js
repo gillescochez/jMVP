@@ -77,12 +77,6 @@ test('Objects / Static methods - basic', function(){
         'jMVP.View.parseHooks is static');
     equal(jMVP.View.parseHooks.length, 4, 'jMVP.View.parseHooks expect 3 arguments');
 
-	ok(jMVP.View.viewFragmentHasChildren, 'jMVP.View.viewFragmentHasChildren exists');
-	equal(typeof jMVP.View.viewFragmentHasChildren, 'function', 'jMVP.View.viewFragmentHasChildren is a function');
-	equal(jMVP.View.viewFragmentHasChildren && jMVP.View.prototype.viewFragmentHasChildren === undefined, true,
-		'jMVP.View.viewFragmentHasChildren is static');
-	equal(jMVP.View.viewFragmentHasChildren.length, 1, 'jMVP.View.viewFragmentHasChildren expect 1 arguments');
-
 	/**
 	 * jMVP Data object
 	 */
@@ -275,25 +269,29 @@ test('View hooks', function() {
 		oTmpl = {
 			header: {},
 			content: {
-				side: {},
-				main: {
-					title: {
-						tag: 'h1',
-						text: 'pagetitle',
-						attributes: {
-							title: 'pagetitle'
-						},
-						classNames: {
-							visible: 'hideTitle'
-						}
-					},
-					article: {
-						html: 'pagecontent',
-						attributes: {
-							title: 'pagetitle'
-						}
-					}
-				}
+                children: {
+                    side: {},
+                    main: {
+                        children:{
+                            title: {
+                                tag: 'h1',
+                                text: 'pagetitle',
+                                attributes: {
+                                    title: 'pagetitle'
+                                },
+                                classNames: {
+                                    visible: 'hideTitle'
+                                }
+                            },
+                            article: {
+                                html: 'pagecontent',
+                                attributes: {
+                                    title: 'pagetitle'
+                                }
+                            }
+                        }
+                    }
+                }
 			}
 		},
 		oView = new jMVP.View(oTmpl),

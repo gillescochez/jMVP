@@ -127,7 +127,7 @@ jMVP.View.parseObject = function(oRawView, oMap, eParentFragment) {
 
         jMVP.View.parseHooks(oMap, sKey, vValue, eNode);
 
-		jMVP.View.viewFragmentHasChildren(vValue) && jMVP.View.parseObject(vValue, oMap, eNode);
+		vValue.children && jMVP.View.parseObject(vValue.children, oMap, eNode);
 
 		eView.appendChild(eNode);
 	});
@@ -166,20 +166,4 @@ jMVP.View.parseHooks = function(oMap, sKey, oConfig, oNode) {
             }
         }
     });
-};
-
-/**
- * Check a portion of a view object for children
- * @param oViewFragment
- * @returns {boolean} true if children found
- */
-jMVP.View.viewFragmentHasChildren = function(oViewFragment) {
-
-	var bReturn = false;
-
-	jMVP.each(oViewFragment, function(sKey) {
-		bReturn = !(jMVP.View.hooks[sKey] || sKey === 'tag');
-	});
-
-	return bReturn;
 };

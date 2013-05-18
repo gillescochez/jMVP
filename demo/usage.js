@@ -3,24 +3,22 @@ var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
 	pagecontent: '<p>Welcome to a jMVP powered website</p>',
-//    demoObject: {
-//      foo:'FOO'
-//    },
-//    items: ['a','b','c'],
     isBig: true,
 	isRed: true
 };
 
 // partial template made easy =)
 var viewHeader = {
-    logo: {
-        text: 'sitetitle'
-    },
-    search: {
-        tag: 'input',
-        attributes: {
-            value: 'pagetitle',
-            type: 'search'
+    children: {
+        logo: {
+            text: 'sitetitle'
+        },
+        search: {
+            tag: 'input',
+            attributes: {
+                value: 'pagetitle',
+                type: 'search'
+            }
         }
     }
 };
@@ -29,36 +27,20 @@ var viewHeader = {
 var view = {
 	header: viewHeader, // partial template =)
 	page: {
-		title: {
-			tag: 'h1',
-			text: 'pagetitle',
-			classNames: {
-				red: 'isRed',
-				big: 'isBig'
-			}
-		},
-		content: {
-			html: 'pagecontent'
-		}
-	}
-};
-
-// New format on partial view, handles looping too
-var list = {
-    jmvp: {
-        tag: 'ul',
-        loop: {
-            data: 'model.items',
-            template: {
-                item: {
-                    tag: 'li',
-                    label: {
-                        text: '$value'
-                    }
+        children: {
+            title: {
+                tag: 'h1',
+                text: 'pagetitle',
+                classNames: {
+                    red: 'isRed',
+                    big: 'isBig'
                 }
+            },
+            content: {
+                html: 'pagecontent'
             }
         }
-    }
+	}
 };
 
 // presenter to handle DOM events

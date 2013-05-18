@@ -12,20 +12,22 @@ var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
 	pagecontent: '<p>Welcome to a jMVP powered website</p>',
-	isBig: true,
+    isBig: true,
 	isRed: true
 };
 
 // partial template made easy =)
 var viewHeader = {
-    logo: {
-        text: 'sitetitle'
-    },
-    search: {
-        tag: 'input',
-        attributes: {
-            value: 'pagetitle',
-            type: 'search'
+    children: {
+        logo: {
+            text: 'sitetitle'
+        },
+        search: {
+            tag: 'input',
+            attributes: {
+                value: 'pagetitle',
+                type: 'search'
+            }
         }
     }
 };
@@ -34,17 +36,19 @@ var viewHeader = {
 var view = {
 	header: viewHeader, // partial template =)
 	page: {
-		title: {
-			tag: 'h1',
-			text: 'pagetitle',
-			classNames: {
-				red: 'isRed',
-				big: 'isBig'
-			}
-		},
-		content: {
-			html: 'pagecontent'
-		}
+        children: {
+            title: {
+                tag: 'h1',
+                text: 'pagetitle',
+                classNames: {
+                    red: 'isRed',
+                    big: 'isBig'
+                }
+            },
+            content: {
+                html: 'pagecontent'
+            }
+        }
 	}
 };
 
