@@ -117,12 +117,6 @@ jMVP.prototype.getRawView = function(){
 jMVP.prototype.getRawPresenter = function(){
     return this.oRawPresenter;
 };
-
-/**
- * CSS Prefix used when creating new elements
- * @type {String}
- */
-jMVP.CSS_PREFIX = 'jmvp-';
 /**
  * jMVP Model object constructor
  * @param oModel {{}} Model data object
@@ -255,7 +249,7 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
         oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = jMVP.dom(this.view.getDOM()).getByClass(jMVP.CSS_PREFIX + sReference);
+        var eNode = this.view.getElement(sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
@@ -348,9 +342,10 @@ jMVP.View = function(oConfig) {
 
 	this.oConfig = oConfig;
 	this.oMap = {};
+    this.oNodesMap = {};
 
 	this.eDomView = jMVP.View.parseObject(
-		this.oConfig, this.oMap
+		this.oConfig, this.oMap, this.oNodesMap
 	);
 };
 
@@ -401,19 +396,26 @@ jMVP.View.prototype.getMap = function() {
 };
 
 /**
- * DOM getter
- */
-jMVP.View.prototype.getDOM = function() {
-    return this.eDomView;
-};
-
-/**
  * Check if a key is in the map
  * @param sKey
  * @returns {boolean}
  */
 jMVP.View.prototype.isInMap = function(sKey) {
     return this.oMap[sKey] ? true : false;
+};
+
+/**
+ * DOM getter
+ */
+jMVP.View.prototype.getElement = function(sKey) {
+    return this.oNodesMap[sKey] || null;
+};
+
+/**
+ * DOM getter
+ */
+jMVP.View.prototype.getDOM = function() {
+    return this.eDomView;
 };
 
 /**
@@ -467,10 +469,11 @@ jMVP.View.hooks = {
  * Convert an view object into DOM
  * @param oRawView
  * @param oMap
+ * @param oNodesMap
  * @param [eParentFragment]
  * @returns {DocumentFragment}
  */
-jMVP.View.parseObject = function(oRawView, oMap, eParentFragment) {
+jMVP.View.parseObject = function(oRawView, oMap, oNodesMap, eParentFragment) {
 
 	// TODO try documentFragment approach - extra div is ugly :(
 	var eView = eParentFragment || document.createElement('div');
@@ -479,11 +482,13 @@ jMVP.View.parseObject = function(oRawView, oMap, eParentFragment) {
 
 		var eNode = document.createElement(vValue.tag || 'div');
 
-		eNode.className = jMVP.CSS_PREFIX + sKey;
+        oNodesMap[sKey] = eNode;
+
+		eNode.className = sKey;
 
         jMVP.View.parseHooks(oMap, sKey, vValue, eNode);
 
-		vValue.children && jMVP.View.parseObject(vValue.children, oMap, eNode);
+		vValue.children && jMVP.View.parseObject(vValue.children, oMap, oNodesMap, eNode);
 
 		eView.appendChild(eNode);
 	});
@@ -568,15 +573,6 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 		fCallback.apply(eNode);
 	});
 	return this;
-};
-
-/**
- * Return a single element by class name
- * @param sClassName {String} CSS class reference
- * @returns {*} Collection of DOM element(s)
- */
-jMVP.dom.Wrap.prototype.getByClass = function(sClassName) {
-    return jMVP.dom.getElementByClassName(sClassName, this.aNodes[0]);
 };
 
 /**
@@ -705,28 +701,6 @@ jMVP.dom.off =  jMVP.dom.DIV.removeEventListener
     : function(eNode, sEventType, fCallback) {
         eNode.detachEvent('on' + sEventType, fCallback);
     };
-
-/**
- * getElementByClassName compatible with the browser used
- * @type {Function}
- */
-jMVP.dom.getElementByClassName = jMVP.dom.DIV.querySelector
-    ? function(sSelector, context) {
-        return context.querySelector('.' + sSelector);
-    }
-    : function(sSelector, context) {
-        var aResult = [];
-
-        jMVP.dom(context.getElementsByTagName('*')).each(function() {
-            if (this.className.indexOf(sSelector) !== -1) {
-                aResult.push(this);
-            }
-        });
-
-        return aResult[0];
-    };
-
-
 /**
  * Iterate over object, string and arrays and run a give function on each iteration
  * @param vData {*} The data to iterate over
