@@ -74,6 +74,30 @@ jMVP.prototype.applyModelToView = function() {
  * Getter for the original model configuration object
  * @returns {Object}
  */
+jMVP.prototype.getModel = function(){
+    return this.model;
+};
+
+/**
+ * Getter for the original view configuration object
+ * @returns {Object}
+ */
+jMVP.prototype.getView = function(){
+    return this.view;
+};
+
+/**
+ * Getter for the original presenter configuration object
+ * @returns {Object}
+ */
+jMVP.prototype.getPresenter = function(){
+    return this.presenter;
+};
+
+/**
+ * Getter for the original model configuration object
+ * @returns {Object}
+ */
 jMVP.prototype.getRawModel = function(){
     return this.oRawModel;
 };
@@ -99,121 +123,6 @@ jMVP.prototype.getRawPresenter = function(){
  * @type {String}
  */
 jMVP.CSS_PREFIX = 'jmvp-';
-
-/**
- * Used to store models declared using jMVP
- * @type {{}}
- */
-jMVP.oModels = {};
-
-/**
- * Used to stored views declared using jMVP
- * @type {{}}
- */
-jMVP.oViews = {};
-
-/**
- * Used to store presenters declared using jMVP
- * @type {{}}
- */
-jMVP.oPresenters = {};
-
-/**
- * Load resources and return a jMVP instance built using those resources
- * @param sReference {String} The name of the jvmp package to load
- * @param fCallback {Function} The callback function
- *
- * @example
- *
- * jMVP.load('random', function(oJMVP) {
- *      oJMVP.model.foo.setValue('boo');
- * });
- *
- */
-jMVP.load = function(sReference, fCallback) {
-    console.log(sReference, fCallback);
-};
-
-/**
- * Declare a new jMVP static model object
- * @param sReference {String} The model name/reference
- * @param oModel {Object} The actual model configuration object
- *
- * @example
- *
- * jMVP.model('random', {
- *      foo: 'bla'
- * });
- *
- */
-jMVP.model = function(sReference, oModel){
-    jMVP.oModels[sReference] = oModel;
-};
-
-/**
- * Return a raw object model declared using jMVP
- * @param sReference
- * @returns {*|null}
- */
-jMVP.getModel = function(sReference) {
-    return jMVP.oModels[sReference] || null;
-};
-
-/**
- * Reurn a raw object view declared using jMPV
- * @param sReference
- * @returns {*|null}
- */
-jMVP.getView = function(sReference) {
-    return jMVP.oViews[sReference] || null;
-};
-
-
-/**
- * Reurn a raw object presenter declared using jMPV
- * @param sReference
- * @returns {*|null}
- */
-jMVP.getPresenter = function(sReference) {
-    return jMVP.oPresenters[sReference] || null;
-};
-
-/**
- * Declare a new jMVP static view object
- * @param sReference {String} The view name/reference
- * @param oView {Object} The actual view configuration object
- *
- * @example
- *
- * jMVP.view('random', {
- *      test: {
- *          text: 'foo'
- *      }
- * });
- *
- */
-jMVP.view = function(sReference, oView){
-    jMVP.oViews[sReference] = oView;
-};
-
-/**
- * Declare a new jMVP static presenter object
- * @param sReference {String} The presenter name/reference
- * @param oPresenter {Object} The actual presenter configuration object
- *
- * @example
- *
- * jMVP.presenter('random', {
- *      test: {
- *          click: function() {
- *              alert('clicked');
- *          }
- *      }
- * });
- */
-jMVP.presenter = function(sReference, oPresenter){
-    jMVP.oPresenters[sReference] = oPresenter;
-};
 
 /**
  * Iterate over object, string and arrays and run a give function on each iteration
@@ -263,6 +172,7 @@ jMVP.each = function(vData, fCallback, oContext) {
 		});
 	}
 };
+
 /**
  * Send a error message out
  * @param sMessage {String} Error message
