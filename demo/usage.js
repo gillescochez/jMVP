@@ -3,6 +3,7 @@ var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
 	pagecontent: '<p>Welcome to a jMVP powered website</p>',
+    items: ['option1','option2','option3'],
     isBig: true,
 	isRed: true
 };
@@ -18,6 +19,18 @@ var viewHeader = {
             attributes: {
                 value: 'pagetitle',
                 type: 'search'
+            }
+        },
+        select: {
+            tag: 'select',
+            loop: {
+                source: 'items',
+                template: {
+                    item: {
+                        tag: 'option',
+                        text: 'items'
+                    }
+                }
             }
         }
     }

@@ -41,10 +41,10 @@ test('Objects / Static methods - basic', function(){
 	 * jMVP Model object
 	 */
 
-	ok(jMVP.Model, 'jMVP.Model exists');
-	equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
-	equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
-	equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 argument');
+    ok(jMVP.Model, 'jMVP.Model exists');
+    equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
+    equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
+    equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 argument');
 
 	ok(jMVP.Model.dataBind, 'jMVP.Model.dataBind exists');
 	equal(typeof jMVP.Model.dataBind, 'function', 'jMVP.Model.dataBind is a function');
@@ -194,8 +194,14 @@ test('View / Template / Element instances - functional', function() {
     deepEqual(oView.getElement('test'), oView.eDomView.querySelector('.test'), 'getElement gets');
     equal(oView.getElement('aaa'), null, 'getElement null');
 
-	ok(oView.render, 'render exists');
-	equal(typeof oView.render, 'function', 'render is a functgion');
+    ok(oView.render, 'render exists');
+    equal(typeof oView.render, 'function', 'render is a functgion');
+    ok(oView.update, 'update exists');
+    equal(typeof oView.update, 'function', 'update is a functgion');
+    ok(oView.updateHooks, 'updateHooks exists');
+    equal(typeof oView.updateHooks, 'function', 'updateHooks is a functgion');
+    ok(oView.updateLoop, 'updateLoop exists');
+    equal(typeof oView.updateLoop, 'function', 'updateLoop is a functgion');
 
 	oView.render(div);
 
@@ -488,7 +494,8 @@ test('Complex view/model structure', function() {
    var model = {
            title: 'Titre',
            subtitle: 'Sous Titre',
-           categories: ['action','adventure','sci-fi']
+           categories: ['action','adventure','sci-fi'],
+           topics: ['test','test2']
        },
        view = {
             article: {
@@ -506,9 +513,9 @@ test('Complex view/model structure', function() {
                             template: {
                                 item: {
                                     tag: 'li',
-                                    text: '$value',
+                                    text: 'categories',
                                     attributes: {
-                                        title: '$value'
+                                        title: 'categories'
                                     }
                                 }
                             }

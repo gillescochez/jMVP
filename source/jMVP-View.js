@@ -36,8 +36,8 @@ jMVP.View = function(oConfig) {
 jMVP.View.prototype.update = function(sReference, vValue) {
 
     // TODO write test for updateHooks and updateLoop
-    if (this.oMap[sReference]) this.updateHook(sReference, vValue);
-    else if (this.oLoopMap[sReference]) this.updateLoop(sReference, vValue);
+    if (this.oLoopMap[sReference]) this.updateLoop(sReference, vValue);
+    else if (this.oMap[sReference]) this.updateHooks(sReference, vValue);
     else {}
 };
 
@@ -46,19 +46,22 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  * @param sReference {String} Model key
  * @param vValue {*} Value to be used in hooks
  */
-jMVP.View.prototype.updateHook = function(sReference, vValue) {
+jMVP.View.prototype.updateHooks = function(sReference, vValue) {
 
     jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
-        if (sHookKey == 'attributes' || sHookKey == 'classNames') {
+        if (jMVP.View.hooks[sHookKey]) {
 
-            jMVP.each(vHookConfig, function(sKey, aNodes) {
-                jMVP.View.hooks[sHookKey](aNodes, vValue, sKey);
-            });
+            if (sHookKey == 'attributes' || sHookKey == 'classNames') {
 
-        } else {
+                jMVP.each(vHookConfig, function(sKey, aNodes) {
+                    jMVP.View.hooks[sHookKey](aNodes, vValue, sKey);
+                });
 
-            jMVP.View.hooks[sHookKey](vHookConfig, vValue);
+            } else {
+
+                jMVP.View.hooks[sHookKey](vHookConfig, vValue);
+            }
         }
 
     }, this);
@@ -74,46 +77,48 @@ jMVP.View.prototype.updateLoop = function(sReference, vValue) {
 
     jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
 
-        var eParent = oLoopConfig.node,
+        var eParent = oLoopConfig.parent,
             template = oLoopConfig.config.template;
 
-        jMVP.dom(eParent).html('');
+        // we might need to refresh the dom
+        //TODO map this smarter and only add/remove necessary elements
+        if (!this.oMap[sReference] ||
 
-        jMVP.each(vValue, function(sValue) {
+            this.oMap[sReference].nNodesCount / this.oMap[sReference].nHooksCount !== vValue.length) {
 
-            var eNode = document.createElement(template.tag || 'div');
+            jMVP.dom(eParent).html('');
 
-            // dirty... :/
-            this.generate(template, eNode);
+            jMVP.each(vValue, function(sValue) {
 
-            // looping hell.... =/
-            jMVP.each(jMVP.View.hooks, function(sHookKey) {
+                var eNode = document.createElement('div');
 
-                var cfg, x;
+                this.generate(template, eNode);
 
-                for (x in template) {
-
-                    cfg = template[x];
-
-                    if (cfg[sHookKey]) {
-
-                        if (sHookKey == 'attributes' || sHookKey == 'classNames') {
-
-                            jMVP.each(cfg[sHookKey], function(sKey) {
-                                jMVP.View.hooks[sHookKey](eNode.childNodes[0], sValue, sKey);
-                            });
-
-                        } else {
-
-                            jMVP.View.hooks[sHookKey](eNode.childNodes[0], sValue);
-                        }
-                    }
-
-                }
+                eParent.appendChild(eNode.childNodes[0]);
 
             }, this);
 
-            eParent.appendChild(eNode.childNodes[0]);
+        }
+
+        // actually apply the hooks
+        jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
+
+            jMVP.each(vValue, function(sValue, nIdx) {
+
+                if (jMVP.View.hooks[sHookKey]) {
+
+                    if (sHookKey == 'attributes' || sHookKey == 'classNames') {
+
+                        jMVP.each(vHookConfig, function(sKey) {
+                            jMVP.View.hooks[sHookKey](eParent.childNodes[nIdx], sValue, sKey);
+                        });
+
+                    } else {
+
+                        jMVP.View.hooks[sHookKey](eParent.childNodes[nIdx], sValue);
+                    }
+                }
+            }, this);
 
         }, this);
 
@@ -122,8 +127,8 @@ jMVP.View.prototype.updateLoop = function(sReference, vValue) {
 
 /**
  * Generate the map and the element necessary to generate the UI (DOM)
- * @param oConfig
- * @param [eParentNode]
+ * @param oConfig {Object}
+ * @param [eParentNode] {HTMLElement}
  * @returns {HTMLElement}
  */
 jMVP.View.prototype.generate = function(oConfig, eParentNode) {
@@ -140,7 +145,7 @@ jMVP.View.prototype.generate = function(oConfig, eParentNode) {
         eNode.className = sKey;
 
         // handle hooks
-        this.mapHooks(sKey, vValue, eNode);
+        this.mapHooks(vValue, eNode);
 
         // handle loops
         vValue.loop && this.mapLoop(sKey, vValue.loop, eNode);
@@ -156,12 +161,11 @@ jMVP.View.prototype.generate = function(oConfig, eParentNode) {
 };
 
 /**
- * Map hooks to oMap
- * @param sKey {String} Key reference
+ * Map hooks properties to oMap
  * @param oConfig {Object} Hooks config
  * @param eNode {HTMLElement}
  */
-jMVP.View.prototype.mapHooks = function(sKey, oConfig, eNode) {
+jMVP.View.prototype.mapHooks = function(oConfig, eNode) {
 
     jMVP.each(jMVP.View.hooks, function(sHookKey) {
 
@@ -171,17 +175,35 @@ jMVP.View.prototype.mapHooks = function(sKey, oConfig, eNode) {
             if (sHookKey === 'attributes' || sHookKey === 'classNames') {
 
                 jMVP.each(oConfig[sHookKey], function(sKey, sValue) {
-                    if (!this.oMap[sValue]) this.oMap[sValue] = {};
-                    if (!this.oMap[sValue][sHookKey]) this.oMap[sValue][sHookKey] = {};
+                    if (!this.oMap[sValue]) {
+                        this.oMap[sValue] = {
+                            nNodesCount: 0,
+                            nHooksCount: 0
+                        };
+                    }
+                    if (!this.oMap[sValue][sHookKey]) {
+                        this.oMap[sValue][sHookKey] = {};
+                        this.oMap[sValue].nHooksCount++;
+                    }
                     if (!this.oMap[sValue][sHookKey][sKey]) this.oMap[sValue][sHookKey][sKey] = [];
                     this.oMap[sValue][sHookKey][sKey].push(eNode);
+                    this.oMap[sValue].nNodesCount++;
                 }, this);
 
             } else {
 
-                if (!this.oMap[oConfig[sHookKey]]) this.oMap[oConfig[sHookKey]] = {};
-                if (!this.oMap[oConfig[sHookKey]][sHookKey]) this.oMap[oConfig[sHookKey]][sHookKey] = [];
+                if (!this.oMap[oConfig[sHookKey]]) {
+                    this.oMap[oConfig[sHookKey]] = {
+                        nNodesCount: 0,
+                        nHooksCount: 0
+                    };
+                }
+                if (!this.oMap[oConfig[sHookKey]][sHookKey]) {
+                    this.oMap[oConfig[sHookKey]][sHookKey] = [];
+                    this.oMap[oConfig[sHookKey]].nHooksCount++;
+                }
                 this.oMap[oConfig[sHookKey]][sHookKey].push(eNode);
+                this.oMap[oConfig[sHookKey]].nNodesCount++;
             }
         }
     }, this);
@@ -205,7 +227,7 @@ jMVP.View.prototype.mapLoop = function(sKey, oConfig, eNode) {
 
     this.oLoopMap[oConfig.source].push({
         config: oConfig,
-        node: eNode
+        parent: eNode
     });
 };
 
@@ -245,7 +267,7 @@ jMVP.View.prototype.isInMap = function(sKey) {
 };
 
 /**
- * DOM getter
+ * DOM element getter
  * @param sKey
  * @returns {HTMLElement}
  */
