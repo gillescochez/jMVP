@@ -63,6 +63,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 
 /**
  * Config object getter
+ * @returns {Object}
  */
 jMVP.View.prototype.getConfig = function() {
     return this.oConfig;
@@ -70,6 +71,7 @@ jMVP.View.prototype.getConfig = function() {
 
 /**
  * Map object getter
+ * @returns {Object}
  */
 jMVP.View.prototype.getMap = function() {
     return this.oMap;
@@ -86,6 +88,8 @@ jMVP.View.prototype.isInMap = function(sKey) {
 
 /**
  * DOM getter
+ * @param sKey
+ * @returns {HTMLElement}
  */
 jMVP.View.prototype.getElement = function(sKey) {
     return this.oNodesMap[sKey] || null;
@@ -93,6 +97,7 @@ jMVP.View.prototype.getElement = function(sKey) {
 
 /**
  * DOM getter
+ * @returns {HTMLElement}
  */
 jMVP.View.prototype.getDOM = function() {
     return this.eDomView;

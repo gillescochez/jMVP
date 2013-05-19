@@ -80,6 +80,7 @@ jMVP.Presenter.prototype.routeEvent = function(oDOMEvent) {
 
 /**
  * Config object getter
+ * @returns {Object}
  */
 jMVP.Presenter.prototype.getConfig = function() {
     return this.oConfig;
@@ -87,6 +88,7 @@ jMVP.Presenter.prototype.getConfig = function() {
 
 /**
  * Map object getter
+ * @returns {Object}
  */
 jMVP.Presenter.prototype.getMap = function() {
     return this.oMap;
@@ -103,6 +105,7 @@ jMVP.Presenter.prototype.isInMap = function(sKey) {
 
 /**
  * Model instance object getter
+ * @returns {jMVP.Model}
  */
 jMVP.Presenter.prototype.getModel = function() {
     return this.model;
@@ -110,6 +113,7 @@ jMVP.Presenter.prototype.getModel = function() {
 
 /**
  * View instance object getter
+ * @returns {jMVP.View}
  */
 jMVP.Presenter.prototype.getView = function() {
     return this.view;
