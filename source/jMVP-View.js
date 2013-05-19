@@ -47,7 +47,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 
     jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
-		if (sHookKey === 'attributes' || sHookKey === 'classNames') {
+		if (sHookKey == 'attributes' || sHookKey == 'classNames') {
 
 			jMVP.each(vHookConfig, function(sKey, aNodes) {
 				jMVP.View.hooks[sHookKey](aNodes, vValue, sKey);
