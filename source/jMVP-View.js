@@ -69,10 +69,54 @@ jMVP.View.prototype.updateHook = function(sReference, vValue) {
  * @param sReference {String} Model key
  * @param vValue {*} Value to be used in hooks
  */
+// TODO cleanup this mess it works but quite a hack and no tests =/
 jMVP.View.prototype.updateLoop = function(sReference, vValue) {
 
     jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
-        console.log(vValue);
+
+        var eParent = oLoopConfig.node,
+            template = oLoopConfig.config.template;
+
+        jMVP.dom(eParent).html('');
+
+        jMVP.each(vValue, function(sValue) {
+
+            var eNode = document.createElement(template.tag || 'div');
+
+            // dirty... :/
+            this.generate(template, eNode);
+
+            // looping hell.... =/
+            jMVP.each(jMVP.View.hooks, function(sHookKey) {
+
+                var cfg, x;
+
+                for (x in template) {
+
+                    cfg = template[x];
+
+                    if (cfg[sHookKey]) {
+
+                        if (sHookKey == 'attributes' || sHookKey == 'classNames') {
+
+                            jMVP.each(cfg[sHookKey], function(sKey) {
+                                jMVP.View.hooks[sHookKey](eNode.childNodes[0], sValue, sKey);
+                            });
+
+                        } else {
+
+                            jMVP.View.hooks[sHookKey](eNode.childNodes[0], sValue);
+                        }
+                    }
+
+                }
+
+            }, this);
+
+            eParent.appendChild(eNode.childNodes[0]);
+
+        }, this);
+
     }, this);
 };
 
@@ -155,9 +199,11 @@ jMVP.View.prototype.mapLoop = function(sKey, oConfig, eNode) {
         jMVP.error('View loop object require both a source and template');
     }
 
-    if (!this.oLoopMap[sKey]) this.oLoopMap[sKey] = [];
+    if (!this.oLoopMap[oConfig.source]) {
+        this.oLoopMap[oConfig.source] = [];
+    }
 
-    this.oLoopMap[sKey].push({
+    this.oLoopMap[oConfig.source].push({
         config: oConfig,
         node: eNode
     });
@@ -194,7 +240,8 @@ jMVP.View.prototype.getMap = function() {
  * @returns {boolean}
  */
 jMVP.View.prototype.isInMap = function(sKey) {
-    return this.oMap[sKey] ? true : false;
+    var vIsIn = this.oMap[sKey] || this.oLoopMap[sKey] || null;
+    return vIsIn ? true : false;
 };
 
 /**

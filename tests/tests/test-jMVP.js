@@ -506,7 +506,10 @@ test('Complex view/model structure', function() {
                             template: {
                                 item: {
                                     tag: 'li',
-                                    text: '$value'
+                                    text: '$value',
+                                    attributes: {
+                                        title: '$value'
+                                    }
                                 }
                             }
                         }
