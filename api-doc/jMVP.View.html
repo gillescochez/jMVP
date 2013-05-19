@@ -176,7 +176,7 @@
             
             
             
-            <td class="description last">Map of elements which depends on hooks/data update</td>
+            <td class="description last">Map used for handling the update process</td>
         </tr>
 	
 	
@@ -200,6 +200,52 @@
             
             
             <td class="description last">The DOM representation of the view</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>oNodesMap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to store nodes for quick access</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>oLoopMap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Map used for the handling of loops inside the views</td>
         </tr>
 	
 	
@@ -227,7 +273,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 21
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 23
     </li></ul></dd>
     
     
@@ -287,7 +333,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
         <dl>
             
 <dt>
-    <h4 class="name" id="parseHooks"><span class="type-signature">&lt;static> </span>parseHooks<span class="signature">(oMap, sKey, oConfig, oNode)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="generate"><span class="type-signature"></span>generate<span class="signature">(oConfig, <span class="optional">eParentNode</span>)</span><span class="type-signature"> &rarr; {HTMLElement}</span></h4>
     
     
 </dt>
@@ -295,169 +341,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     
     <div class="description">
-        Parse hooks inside the View configuration object
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>oMap</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>sKey</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>oConfig</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>oNode</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 191
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="parseObject"><span class="type-signature">&lt;static> </span>parseObject<span class="signature">(oRawView, oMap, oNodesMap, <span class="optional">eParentFragment</span>)</span><span class="type-signature"> &rarr; {DocumentFragment}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Convert an view object into DOM
+        Generate the map and the element necessary to generate the UI (DOM)
     </div>
     
 
@@ -493,7 +377,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
 	
         <tr>
             
-                <td class="name"><code>oRawView</code></td>
+                <td class="name"><code>oConfig</code></td>
             
             
             <td class="type">
@@ -519,59 +403,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
 	
         <tr>
             
-                <td class="name"><code>oMap</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>oNodesMap</code></td>
-            
-            
-            <td class="type">
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>eParentFragment</code></td>
+                <td class="name"><code>eParentNode</code></td>
             
             
             <td class="type">
@@ -623,7 +455,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 161
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 60
     </li></ul></dd>
     
     
@@ -651,7 +483,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
 	</dt>
 	<dd>
 		
-<span class="param-type">DocumentFragment</span>
+<span class="param-type">HTMLElement</span>
 
 
 	</dd>
@@ -706,7 +538,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 68
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 152
     </li></ul></dd>
     
     
@@ -789,7 +621,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 102
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 186
     </li></ul></dd>
     
     
@@ -915,7 +747,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 94
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 178
     </li></ul></dd>
     
     
@@ -998,7 +830,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 76
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 160
     </li></ul></dd>
     
     
@@ -1124,7 +956,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 85
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 169
     </li></ul></dd>
     
     
@@ -1159,6 +991,324 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
 </dl>
 
         
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="mapHooks"><span class="type-signature"></span>mapHooks<span class="signature">(sKey, oConfig, eNode)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Map hooks to oMap
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>sKey</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Key reference</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>oConfig</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Hooks config</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>eNode</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 95
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="mapLoop"><span class="type-signature"></span>mapLoop<span class="signature">(sKey, oConfig, eNode)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Map loops object to oLoopMap
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>sKey</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Key reference</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>oConfig</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Loop configuration object</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>eNode</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 127
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
     
     
 </dd>
@@ -1255,7 +1405,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 36
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 143
     </li></ul></dd>
     
     
@@ -1391,7 +1541,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 46
+        <a href="jMVP-View.js.html">jMVP-View.js</a>, line 36
     </li></ul></dd>
     
     
@@ -1434,7 +1584,7 @@ var oView = new jMVP.View(oViewConfig);</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sun May 19 2013 11:36:25 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sun May 19 2013 14:57:55 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

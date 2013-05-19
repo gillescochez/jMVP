@@ -28,18 +28,6 @@ test('Objects / Static methods - basic', function(){
 	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
 	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
 
-    ok(jMVP.View.parseObject, 'jMVP.View.parseObject exists');
-    equal(typeof jMVP.View.parseObject, 'function', 'jMVP.View.parseObject is a function');
-    equal(jMVP.View.parseObject && jMVP.View.prototype.parseObject === undefined, true,
-        'jMVP.View.parseObject is static');
-    equal(jMVP.View.parseObject.length, 4, 'jMVP.View.parseObject expect 3 arguments');
-
-    ok(jMVP.View.parseHooks, 'jMVP.View.parseHooks exists');
-    equal(typeof jMVP.View.parseHooks, 'function', 'jMVP.View.parseHooks is a function');
-    equal(jMVP.View.parseHooks && jMVP.View.prototype.parseHooks === undefined, true,
-        'jMVP.View.parseHooks is static');
-    equal(jMVP.View.parseHooks.length, 4, 'jMVP.View.parseHooks expect 3 arguments');
-
 	/**
 	 * jMVP Data object
 	 */
@@ -70,7 +58,7 @@ test('Objects / Static methods - basic', function(){
 	ok(jMVP.Presenter, 'jMVP.Presenter exists');
 	equal(typeof jMVP.Presenter, 'function', 'jMVP.Presenter is a function');
 	equal(jMVP.Presenter && jMVP.prototype.Presenter === undefined, true, 'jMVP.Presenter is static');
-	equal(jMVP.Presenter.length, 3, 'jMVP.Presenter expect 3 argument');
+	equal(jMVP.Presenter.length, 3, 'jMVP.Presenter expect 3 arguments');
 
 });
 test('.each static method - functional', function() {
@@ -185,18 +173,18 @@ test('View / Template / Element instances - functional', function() {
     ok(oView.oMap, 'oMap exists');
     equal(typeof oView.oMap, 'object', 'oMap is an object');
 
+    ok(oView.oLoopMap, 'oLoopMap exists');
+    equal(typeof oView.oLoopMap, 'object', 'oLoopMap is an object');
+
     ok(oView.oNodesMap, 'oNodesMap exists');
     equal(typeof oView.oNodesMap, 'object', 'oNodesMap is an object');
 
-    'getMap,getConfig,isInMap,getDOM,getElement'.split(',').forEach(function(method) {
-        ok(oView[method], method + ' exists');
-        equal(typeof oView[method], 'function', method + ' is a function');
-        if (method == 'isInMap' || method == 'getElement') {
-            equal(oView[method].length, 1, method + ' expects 1 argument');
-        } else {
-            equal(oView[method].length, 0, method + ' expects 0 argument');
-        }
-    });
+    'getMap,getConfig,isInMap,getDOM,getElement,generate,mapLoop,mapHooks'
+        .split(',').forEach(function(method) {
+
+            ok(oView[method], method + ' exists');
+            equal(typeof oView[method], 'function', method + ' is a function');
+        });
 
     deepEqual(oView.getConfig(), oTmpl, '.getConfig() === oTmpl');
     deepEqual(oView.getMap(), oView.oMap, '.getMap() === oView.oMap');
