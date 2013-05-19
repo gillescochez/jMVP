@@ -35,6 +35,19 @@ jMVP.View = function(oConfig) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
+    // TODO write test for updateHooks and updateLoop
+    if (this.oMap[sReference]) this.updateHook(sReference, vValue);
+    else if (this.oLoopMap[sReference]) this.updateLoop(sReference, vValue);
+    else {}
+};
+
+/**
+ * Update elements which are affected by the value change
+ * @param sReference {String} Model key
+ * @param vValue {*} Value to be used in hooks
+ */
+jMVP.View.prototype.updateHook = function(sReference, vValue) {
+
     jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
 
         if (sHookKey == 'attributes' || sHookKey == 'classNames') {
@@ -48,6 +61,18 @@ jMVP.View.prototype.update = function(sReference, vValue) {
             jMVP.View.hooks[sHookKey](vHookConfig, vValue);
         }
 
+    }, this);
+};
+
+/**
+ * Update elements which are affected by the value change
+ * @param sReference {String} Model key
+ * @param vValue {*} Value to be used in hooks
+ */
+jMVP.View.prototype.updateLoop = function(sReference, vValue) {
+
+    jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
+        console.log(vValue);
     }, this);
 };
 
@@ -130,10 +155,12 @@ jMVP.View.prototype.mapLoop = function(sKey, oConfig, eNode) {
         jMVP.error('View loop object require both a source and template');
     }
 
-    this.oLoopMap[sKey] = {
+    if (!this.oLoopMap[sKey]) this.oLoopMap[sKey] = [];
+
+    this.oLoopMap[sKey].push({
         config: oConfig,
         node: eNode
-    };
+    });
 };
 
 /**

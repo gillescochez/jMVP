@@ -517,5 +517,5 @@ test('Complex view/model structure', function() {
        presenter = {},
        jmvp = new jMVP(model, view, presenter);
 
-
+    console.log(jmvp.getView().getDOM());
 });
