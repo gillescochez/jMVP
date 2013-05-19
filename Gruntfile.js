@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     var aSources = [
         'build/header.js',
         'source/<%= pkg.name %>.js',
+        '!source/shims.js', // we remove shims on build as qunit task need them :(
         'source/*.js',
         'build/footer.js'
     ];
