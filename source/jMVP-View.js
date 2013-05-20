@@ -81,14 +81,14 @@ jMVP.View.prototype.updateLoop = function(sReference, vValue) {
             template = oLoopConfig.config.template;
 
         // we might need to refresh the dom
-        //TODO map this smarter and only add/remove necessary elements
+        //TODO make this smarter and only add/remove necessary elements
         if (!this.oMap[sReference] ||
 
             this.oMap[sReference].nNodesCount / this.oMap[sReference].nHooksCount !== vValue.length) {
 
             jMVP.dom(eParent).html('');
 
-            jMVP.each(vValue, function(sValue) {
+            jMVP.each(vValue, function() {
 
                 var eNode = document.createElement('div');
 
