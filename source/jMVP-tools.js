@@ -50,12 +50,8 @@ jMVP.each = function(vData, fCallback, oContext) {
 /**
  * Send a error message out
  * @param sMessage {String} Error message
- * @param nType {Interger} Error type
+ * @param nType {Number} Error type
  */
 jMVP.error = function(sMessage, nType) {
-    if (window.console && console.error) {
-        console.error(sMessage, nType);
-    } else {
-        throw sMessage + '' + nType;
-    }
+    throw sMessage + ' - Error: ' + nType;
 };

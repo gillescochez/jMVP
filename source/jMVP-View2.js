@@ -1,7 +1,56 @@
-jMVP.View = function() {
+/**
+ * Create a new jMVP.View instance
+ * @param oConfig {Object} View configuration
+ * @constructor
+ */
+jMVP.View = function(oConfig) {
 
+    if (!oConfig) {
+        jMVP.error('jMVP.View: Configuration object missing!', 101);
+    }
+
+    this.oConfig = oConfig;
+    this.oNodeMap = {};
+    this.oLoopMap = {};
+    this.oRefMap = {};
 };
 
+/**
+ * Parse the configuration object and generate nodes, ref based and loop based maps.
+ */
+jMVP.View.prototype.parse = function(oConfig) {
+
+    jMVP.each((oConfig || this.oConfig), function(sReference, oItemConfig) {
+
+
+
+    }, this)
+};
+
+
+
+
+/***** Getters & Setters *****/
+
+/**
+ * Return the view instance configuration object
+ * @returns {Object}
+ */
+jMVP.View.prototype.getConfig = function() {
+    return this.oConfig;
+};
+
+jMVP.View.prototype.getNodeMap = function() {
+    return this.oNodeMap;
+};
+
+jMVP.View.prototype.getLoopMap = function() {
+    return this.oLoopMap;
+};
+
+jMVP.View.prototype.getRefMap = function() {
+    return this.oRefMap;
+};
 /*
     Stuff it needs
 
@@ -37,4 +86,12 @@ jMVP.View = function() {
             - handle string with hooks
             - handle array/object with loop handler if used by any loop config
             - stringify array/object with NO config loop
+
+        Hooks
+            - text
+            - html
+            - css
+            - visible
+            - attr
+
 */
