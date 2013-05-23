@@ -18,6 +18,7 @@ jMVP.View = function(oConfig) {
     this.oNodeMap = {};
     this.oLoopMap = {};
     this.oRefMap = {};
+
     this.eDomView = jMVP.dom.create();
 };
 
@@ -25,14 +26,27 @@ jMVP.View = function(oConfig) {
  * Recursively parse the configuration object and generate nodes,
  * ref based and loop based maps.
  * @param [oConfig] {Object} Used if present instead of the instance oConfig
+ * @param [eParentNode] {HTMLElement} Parent to add element node into
  */
-jMVP.View.prototype.parse = function(oConfig) {
+jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
     jMVP.each(oConfig || this.oConfig, function(sElementId, oItemConfig) {
 
-        this.createNode(sElementId, oItemConfig.tag);
+        var eNode = this.createNode(sElementId, oItemConfig.tag);
+        this.storeNode(sElementId, eNode);
+
+        // TODO handle this view jMVP.dom
+        (eParentNode || this.eDomView).appendChild(eNode);
+
+        oItemConfig.children && this.parse(oItemConfig.children, eNode);
+
+        oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
 
     }, this);
+};
+
+jMVP.View.prototype.hook = function(oHookConfig, eNode) {
+
 };
 
 /**
@@ -43,9 +57,9 @@ jMVP.View.prototype.parse = function(oConfig) {
 jMVP.View.prototype.createNode = function(sElementId, sTagName) {
 
     var eNode = jMVP.dom.create(sTagName);
+    // TODO handle via jMVP.dom when addClass doesn't use space is className is empty string
     eNode.className = sElementId;
-
-    this.storeNode(sElementId, eNode);
+    return eNode;
 };
 
 
@@ -65,10 +79,6 @@ jMVP.View.prototype.storeNode = function(sElementId, eNode) {
 
 /*************** Getters & Setters ***************/
 
-/**
- * Return the view instance configuration object
- * @returns {Object}
- */
 jMVP.View.prototype.getConfig = function() {
     return this.oConfig;
 };
@@ -83,6 +93,59 @@ jMVP.View.prototype.getLoopMap = function() {
 
 jMVP.View.prototype.getRefMap = function() {
     return this.oRefMap;
+};
+
+jMVP.View.prototype.getDomView = function() {
+    return this.eDomView;
+};
+
+/*************** Hooks ***************/
+
+/**
+ * Hooks storage for special view binding
+ * @namespace
+ * @type {{text: Function, html: Function, visible: Function, attributes: Function, classNames: Function}}
+ */
+jMVP.View.hooks = {
+
+    /**
+     * Text update hook
+     * @param aNodes
+     * @param sValue
+     */
+    text: function(aNodes, sValue) {
+        jMVP.dom(aNodes).text(sValue);
+    },
+
+    /**
+     * HTML update hook
+     * @param aNodes
+     * @param sValue
+     */
+    html: function(aNodes, sValue) {
+        jMVP.dom(aNodes).html(sValue);
+    },
+
+    /**
+     * Attributes update hook
+     * @param aNodes
+     * @param vValue
+     * @param sAttrKey
+     */
+    attr: function(aNodes, vValue, sAttrKey) {
+        //TODO remove when undefined or null???
+        jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
+    },
+
+    /**
+     * CSS classes update hook
+     * @param aNodes
+     * @param bValue
+     * @param sClassName
+     */
+    css: function(aNodes, bValue, sClassName) {
+        jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
+    }
 };
 /*
     Stuff it needs
