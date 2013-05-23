@@ -19,6 +19,10 @@ jMVP.dom = function(vNodes) {
 	return new jMVP.dom.Wrap(vNodes);
 };
 
+jMVP.dom.create = function(sTag) {
+    return document.createElement(sTag || 'div');
+};
+
 /**
  * Node/Node list wrapper class to simplify DOM manipulation. It returns itself so that methods can be chained.
  * @param vNodes {NodeList|Array} NodeList or array of nodes

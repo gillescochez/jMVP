@@ -292,7 +292,8 @@ test('dom helper / Wrap class - basic / functional', function() {
 			document.createElement('div')
 		],
 		total = aDiv.length,
-		count = 0;
+		count = 0,
+        div = document.createElement('div');
 
 	/**
 	 * Basic tests
@@ -318,6 +319,9 @@ test('dom helper / Wrap class - basic / functional', function() {
 	divDom = jMVP.dom(div);
 	deepEqual(divDom.constructor, jMVP.dom.Wrap, 'dom method return an instance of dom.Wrap');
 	deepEqual(divDom.aNodes[0], div, 'element is stored');
+
+    deepEqual(jMVP.dom.create(), div, 'default is a div');
+    deepEqual(jMVP.dom.create('span'), document.createElement('span'), 'createNode custom tag');
 
 	// testing each
 	jMVP.dom(aDiv).each(function() {
@@ -526,6 +530,4 @@ test('Complex view/model structure', function() {
        },
        presenter = {},
        jmvp = new jMVP(model, view, presenter);
-
-    console.log(jmvp.getView().getDOM());
 });

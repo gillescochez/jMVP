@@ -1,36 +1,69 @@
 /**
  * Create a new jMVP.View instance
+ *
+ * @prop oConfig {Object}
+ * @prop oNodeMap {Object}
+ * @prop oLoopMap {Object}
+ * @prop oRefMap {Object}
+ * @prop eDomView {HTMLElement}
+ *
  * @param oConfig {Object} View configuration
  * @constructor
  */
 jMVP.View = function(oConfig) {
 
-    if (!oConfig) {
-        jMVP.error('jMVP.View: Configuration object missing!', 101);
-    }
+    (!oConfig) && jMVP.error('jMVP.View: Configuration object missing!', 101);
 
     this.oConfig = oConfig;
     this.oNodeMap = {};
     this.oLoopMap = {};
     this.oRefMap = {};
+    this.eDomView = jMVP.dom.create();
 };
 
 /**
- * Parse the configuration object and generate nodes, ref based and loop based maps.
+ * Recursively parse the configuration object and generate nodes,
+ * ref based and loop based maps.
+ * @param [oConfig] {Object} Used if present instead of the instance oConfig
  */
 jMVP.View.prototype.parse = function(oConfig) {
 
-    jMVP.each((oConfig || this.oConfig), function(sReference, oItemConfig) {
+    jMVP.each(oConfig || this.oConfig, function(sElementId, oItemConfig) {
 
+        this.createNode(sElementId, oItemConfig.tag);
 
+    }, this);
+};
 
-    }, this)
+/**
+ * Create a new dom element and store it in the node map
+ * @param sElementId {String} Id reference in the view used as className
+ * @param [sTagName] {String} Tag name to use to create the new element
+ */
+jMVP.View.prototype.createNode = function(sElementId, sTagName) {
+
+    var eNode = jMVP.dom.create(sTagName);
+    eNode.className = sElementId;
+
+    this.storeNode(sElementId, eNode);
 };
 
 
+/**
+ * Store a node to the node map property
+ * @param sElementId {String} Node reference
+ * @param eNode {HTMLElement} The node
+ */
+jMVP.View.prototype.storeNode = function(sElementId, eNode) {
 
+    if (!this.oNodeMap[sElementId]) {
+        this.oNodeMap[sElementId] = [];
+    }
 
-/***** Getters & Setters *****/
+    this.oNodeMap[sElementId].push(eNode);
+};
+
+/*************** Getters & Setters ***************/
 
 /**
  * Return the view instance configuration object
@@ -66,6 +99,7 @@ jMVP.View.prototype.getRefMap = function() {
         Recursive DOM generation method
             - Only handle DOM creation nothing else
                 - generateHtml(oView, [eParent])
+                - createNode(sId, oConfig);
 
         Fast access / return of DOM element
             - Using the current oNodesMap
