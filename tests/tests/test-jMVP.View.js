@@ -83,6 +83,11 @@ test('API', function() {
     equal(typeof oView.storeNode, 'function', 'oView.storeNode exists');
     equal(oView.storeNode.length, 2, '2 arguments');
 
+    // storeHook
+    ok(oView.storeHook, 'oView.storeHook exists');
+    equal(typeof oView.storeHook, 'function', 'oView.storeHook exists');
+    equal(oView.storeHook.length, 3, '3 arguments');
+
     var node = document.createElement('div');
     oView.storeNode('node', node);
     deepEqual(oView.getNodeMap()['node'][0], node, 'storeNode: node is stored');

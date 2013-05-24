@@ -45,8 +45,39 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
     }, this);
 };
 
+/**
+ * Handle the hook object for a given node
+ * @param oHookConfig {Object} Hook configuration object
+ * @param eNode {HTMLElement} Node currently targeted
+ */
 jMVP.View.prototype.hook = function(oHookConfig, eNode) {
+    jMVP.each(oHookConfig, function(sHook, vValue) {
+        if (jMVP.View.hooks[sHook]) {
+            this.storeHook(eNode, sHook, vValue);
+        }
+    }, this);
+};
 
+/**
+ * Store hook configuration
+ * @param eNode {HTMLElement} The node targeted
+ * @param sHook {String} The hook name
+ * @param vValue {String|Object}
+ */
+jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
+
+    // TODO tests
+    if (typeof vValue == 'string') {
+        if (!this.oMap[vValue]) this.oMap[vValue] = {};
+        if (!this.oMap[vValue][sHook]) this.oMap[vValue][sHook] = [];
+        this.oMap[vValue][sHook].push(eNode);
+    } else {
+        jMVP.each(vValue, function(sKey, sValue) {
+            if (!this.oMap[sValue]) this.oMap[sValue] = {};
+            if (!this.oMap[sValue][sKey]) this.oMap[sValue][sKey] = [];
+            this.oMap[sValue][sKey].push(eNode);
+        }, this);
+    }
 };
 
 /**
