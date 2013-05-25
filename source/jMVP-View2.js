@@ -28,6 +28,7 @@ jMVP.View = function(oConfig) {
  * @param [oConfig] {Object} Used if present instead of the instance oConfig
  * @param [eParentNode] {HTMLElement} Parent to add element node into
  */
+// TODO Not 100% sure "parse" is the right method name for it
 jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
     jMVP.each(oConfig || this.oConfig, function(sElementId, oItemConfig) {
@@ -35,7 +36,6 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
         var eNode = this.createNode(sElementId, oItemConfig.tag);
         this.storeNode(sElementId, eNode);
 
-        // TODO handle this view jMVP.dom
         (eParentNode || this.eDomView).appendChild(eNode);
 
         oItemConfig.children && this.parse(oItemConfig.children, eNode);
@@ -46,16 +46,27 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 };
 
 /**
+ * Store a configuration loop object inside the loop map object
+ * @param oLoopConfig {Object} Loop configuration object
+ */
+// TODO more tests
+jMVP.View.prototype.storeLoop = function(oLoopConfig) {
+
+    var sSource = oLoopConfig.source,
+        oTemplate = oLoopConfig.template;
+
+    if (!this.oLoopMap[sSource]) this.oLoopMap[sSource] = [];
+    this.oLoopMap[sSource].push(oTemplate);
+};
+
+/**
  * Handle the hook object for a given node
  * @param oHookConfig {Object} Hook configuration object
  * @param eNode {HTMLElement} Node currently targeted
  */
 jMVP.View.prototype.hook = function(oHookConfig, eNode) {
     jMVP.each(oHookConfig, function(sHook, vValue) {
-        if (jMVP.View.hooks[sHook]) {
-            console.log(eNode, sHook, vValue);
-            this.storeHook(eNode, sHook, vValue);
-        }
+        jMVP.View.hooks[sHook] && this.storeHook(eNode, sHook, vValue);
     }, this);
 };
 
@@ -67,12 +78,14 @@ jMVP.View.prototype.hook = function(oHookConfig, eNode) {
  */
 jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
 
-    // TODO tests
     if (typeof vValue == 'string') {
+
         if (!this.oRefMap[vValue]) this.oRefMap[vValue] = {};
         if (!this.oRefMap[vValue][sHook]) this.oRefMap[vValue][sHook] = [];
         this.oRefMap[vValue][sHook].push(eNode);
+
     } else {
+
         jMVP.each(vValue, function(sKey, sValue) {
             if (!this.oRefMap[sValue]) this.oRefMap[sValue] = {};
             if (!this.oRefMap[sValue][sHook]) this.oRefMap[sValue][sHook] = {};
@@ -90,11 +103,9 @@ jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
 jMVP.View.prototype.createNode = function(sElementId, sTagName) {
 
     var eNode = jMVP.dom.create(sTagName);
-    // TODO handle via jMVP.dom when addClass doesn't use space is className is empty string
     eNode.className = sElementId;
     return eNode;
 };
-
 
 /**
  * Store a node to the node map property
@@ -103,10 +114,7 @@ jMVP.View.prototype.createNode = function(sElementId, sTagName) {
  */
 jMVP.View.prototype.storeNode = function(sElementId, eNode) {
 
-    if (!this.oNodeMap[sElementId]) {
-        this.oNodeMap[sElementId] = [];
-    }
-
+    if (!this.oNodeMap[sElementId]) this.oNodeMap[sElementId] = [];
     this.oNodeMap[sElementId].push(eNode);
 };
 
@@ -166,7 +174,6 @@ jMVP.View.hooks = {
      * @param sAttrKey
      */
     attr: function(aNodes, vValue, sAttrKey) {
-        //TODO remove when undefined or null???
         jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
     },
 

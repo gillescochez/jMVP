@@ -113,6 +113,11 @@ test('API', function() {
         deepEqual(oView.getRefMap()[sProp][sHook][sProp == 'attr1' ? 'title' : 'rel'][0], node, 'Node is stored');
     });
 
+    // storeLoop
+    ok(oView.storeLoop, 'oView.storeLoop exists');
+    equal(typeof oView.storeLoop, 'function', 'oView.storeLoop exists');
+    equal(oView.storeLoop.length, 1, '1 argument');
+
     var node = document.createElement('div');
     oView.storeNode('node', node);
     deepEqual(oView.getNodeMap()['node'][0], node, 'storeNode: node is stored');
@@ -122,7 +127,7 @@ test('API', function() {
     equal(typeof oView.hook, 'function', 'oView.hookItUp exists');
     equal(oView.hook.length, 2, '2 optional arguments');
 
-    // reset node map
+    // reassign a new clean instance
     oView = new jMVP.View(viewConfig);
 
     // parse method
@@ -133,7 +138,6 @@ test('API', function() {
     oView.parse();
 
     equal(oView.eDomView.innerHTML, '<div class="test"><span class="foo"></span></div>', 'DOM generated');
-
 });
 test('View hooks - functional', function() {
 
