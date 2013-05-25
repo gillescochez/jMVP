@@ -1,11 +1,11 @@
 /**
  * Create a new jMVP.View instance
  *
- * @prop oConfig {Object}
- * @prop oNodeMap {Object}
- * @prop oLoopMap {Object}
- * @prop oRefMap {Object}
- * @prop eDomView {HTMLElement}
+ * @prop oConfig {Object} Store the original config object
+ * @prop oNodeMap {Object} Node map of created element for fast access
+ * @prop oLoopMap {Object} Store loop configuration object
+ * @prop oRefMap {Object} Store hooks and data relationships
+ * @prop eDomView {HTMLElement} The DOM equivalent of the view
  *
  * @param oConfig {Object} View configuration
  * @constructor
@@ -53,6 +53,7 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 jMVP.View.prototype.hook = function(oHookConfig, eNode) {
     jMVP.each(oHookConfig, function(sHook, vValue) {
         if (jMVP.View.hooks[sHook]) {
+            console.log(eNode, sHook, vValue);
             this.storeHook(eNode, sHook, vValue);
         }
     }, this);
@@ -62,20 +63,21 @@ jMVP.View.prototype.hook = function(oHookConfig, eNode) {
  * Store hook configuration
  * @param eNode {HTMLElement} The node targeted
  * @param sHook {String} The hook name
- * @param vValue {String|Object}
+ * @param vValue {String|Object} Only an object for attr and css hooks
  */
 jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
 
     // TODO tests
     if (typeof vValue == 'string') {
-        if (!this.oMap[vValue]) this.oMap[vValue] = {};
-        if (!this.oMap[vValue][sHook]) this.oMap[vValue][sHook] = [];
-        this.oMap[vValue][sHook].push(eNode);
+        if (!this.oRefMap[vValue]) this.oRefMap[vValue] = {};
+        if (!this.oRefMap[vValue][sHook]) this.oRefMap[vValue][sHook] = [];
+        this.oRefMap[vValue][sHook].push(eNode);
     } else {
         jMVP.each(vValue, function(sKey, sValue) {
-            if (!this.oMap[sValue]) this.oMap[sValue] = {};
-            if (!this.oMap[sValue][sKey]) this.oMap[sValue][sKey] = [];
-            this.oMap[sValue][sKey].push(eNode);
+            if (!this.oRefMap[sValue]) this.oRefMap[sValue] = {};
+            if (!this.oRefMap[sValue][sHook]) this.oRefMap[sValue][sHook] = {};
+            if (!this.oRefMap[sValue][sHook][sKey]) this.oRefMap[sValue][sHook][sKey] = [];
+            this.oRefMap[sValue][sHook][sKey].push(eNode);
         }, this);
     }
 };
@@ -141,8 +143,8 @@ jMVP.View.hooks = {
 
     /**
      * Text update hook
-     * @param aNodes
-     * @param sValue
+     * @param aNodes {Array} Array of nodes
+     * @param sValue {String} Value to be set as text
      */
     text: function(aNodes, sValue) {
         jMVP.dom(aNodes).text(sValue);
@@ -150,7 +152,7 @@ jMVP.View.hooks = {
 
     /**
      * HTML update hook
-     * @param aNodes
+     * @param aNodes {Array} Array of nodes
      * @param sValue
      */
     html: function(aNodes, sValue) {
@@ -159,7 +161,7 @@ jMVP.View.hooks = {
 
     /**
      * Attributes update hook
-     * @param aNodes
+     * @param aNodes {Array} Array of node
      * @param vValue
      * @param sAttrKey
      */
@@ -170,9 +172,9 @@ jMVP.View.hooks = {
 
     /**
      * CSS classes update hook
-     * @param aNodes
-     * @param bValue
-     * @param sClassName
+     * @param aNodes {Array} Array of node
+     * @param bValue {Boolean} Decide if we remove or add the class name
+     * @param sClassName {String} CSS class name
      */
     css: function(aNodes, bValue, sClassName) {
         jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);

@@ -83,10 +83,35 @@ test('API', function() {
     equal(typeof oView.storeNode, 'function', 'oView.storeNode exists');
     equal(oView.storeNode.length, 2, '2 arguments');
 
+    var sHook = 'text',
+        vValue = 'foo',
+        node = document.createElement('div');
+
     // storeHook
     ok(oView.storeHook, 'oView.storeHook exists');
     equal(typeof oView.storeHook, 'function', 'oView.storeHook exists');
     equal(oView.storeHook.length, 3, '3 arguments');
+
+    oView.storeHook(node, sHook, vValue);
+
+    ok(oView.getRefMap()[vValue], 'RefMap property created');
+    ok(oView.getRefMap()[vValue][sHook], 'RefMap for the hook created');
+    equal(oView.getRefMap()[vValue][sHook].constructor, Array, 'Map for the hook is an array');
+    deepEqual(oView.getRefMap()[vValue][sHook][0], node, 'Node is stored');
+
+    oView.storeHook(node, 'attr', {
+        title: 'attr1',
+        rel: 'attr2'
+    });
+
+    sHook = 'attr';
+
+    'attr1,attr2'.split(',').forEach(function(sProp) {
+        ok(oView.getRefMap()[sProp], 'Map property created');
+        ok(oView.getRefMap()[sProp][sHook], 'Map for the hook created');
+        equal(oView.getRefMap()[sProp][sHook][sProp == 'attr1' ? 'title' : 'rel'].constructor, Array, 'Map for the hook is an array');
+        deepEqual(oView.getRefMap()[sProp][sHook][sProp == 'attr1' ? 'title' : 'rel'][0], node, 'Node is stored');
+    });
 
     var node = document.createElement('div');
     oView.storeNode('node', node);
