@@ -87,6 +87,9 @@ test('API', function() {
         vValue = 'foo',
         node = document.createElement('div');
 
+    oView.storeNode('node', node);
+    deepEqual(oView.getNodeMap()['node'][0], node, 'storeNode: node is stored');
+
     // storeHook
     ok(oView.storeHook, 'oView.storeHook exists');
     equal(typeof oView.storeHook, 'function', 'oView.storeHook exists');
@@ -118,9 +121,17 @@ test('API', function() {
     equal(typeof oView.storeLoop, 'function', 'oView.storeLoop exists');
     equal(oView.storeLoop.length, 1, '1 argument');
 
-    var node = document.createElement('div');
-    oView.storeNode('node', node);
-    deepEqual(oView.getNodeMap()['node'][0], node, 'storeNode: node is stored');
+    var loop = {
+        source: 'a',
+        template: {
+            test: {
+                text: 'bla'
+            }
+        }
+    };
+
+    oView.storeLoop(loop);
+    deepEqual(oView.getLoopMap()['a'][0], loop);
 
     // hook method
     ok(oView.hook, 'oView.hookItUp exists');

@@ -52,11 +52,10 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 // TODO more tests
 jMVP.View.prototype.storeLoop = function(oLoopConfig) {
 
-    var sSource = oLoopConfig.source,
-        oTemplate = oLoopConfig.template;
+    var sSource = oLoopConfig.source || null;
 
     if (!this.oLoopMap[sSource]) this.oLoopMap[sSource] = [];
-    this.oLoopMap[sSource].push(oTemplate);
+    this.oLoopMap[sSource].push(oLoopConfig);
 };
 
 /**
