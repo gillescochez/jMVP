@@ -46,6 +46,22 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 };
 
 /**
+ * Update the view with the new value for a given reference
+ * @param sReference {String} Reference used with the hook
+ * @param vValue {*} The new value
+ */
+jMVP.View.prototype.update = function(sReference, vValue) {
+
+    if (this.oRefMap[sReference]) {
+
+    }
+
+    if (this.oLoopMap[sReference]) {
+
+    }
+};
+
+/**
  * Store a configuration loop object inside the loop map object
  * @param oLoopConfig {Object} Loop configuration object
  */

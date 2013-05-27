@@ -149,6 +149,13 @@ test('API', function() {
     oView.parse();
 
     equal(oView.eDomView.innerHTML, '<div class="test"><span class="foo"></span></div>', 'DOM generated');
+
+    // update method
+    ok(oView.update, 'oView.parse exists');
+    equal(typeof oView.update, 'function', 'oView.parse exists');
+    equal(oView.update.length, 2, '2 arguments');
+
+
 });
 test('View hooks - functional', function() {
 
