@@ -368,6 +368,15 @@ test('dom helper / Wrap class - basic / functional', function() {
     ok(divDom.off, 'off exists');
     equal(typeof divDom.off, 'function', 'off is a function');
     equal(divDom.off.length, 2, 'off expects 2 arguments');
+
+    // display method
+    divDom.display(false);
+    equal(divDom.aNodes[0].style.display, 'none', 'display = none');
+    divDom.display();
+    equal(divDom.aNodes[0].style.display, '', 'display = block (no argument)');
+    divDom.display(false);
+    divDom.display(true);
+    equal(divDom.aNodes[0].style.display, '', 'display = block');
 });
 
 module('jMVP.Presenter');

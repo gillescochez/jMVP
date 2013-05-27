@@ -19,6 +19,11 @@ jMVP.dom = function(vNodes) {
 	return new jMVP.dom.Wrap(vNodes);
 };
 
+/**
+ * Create a new DOM element and return it
+ * @param [sTag] {String} Tag name of the element
+ * @returns {HTMLElement}
+ */
 jMVP.dom.create = function(sTag) {
     return document.createElement(sTag || 'div');
 };
@@ -138,6 +143,18 @@ jMVP.dom.Wrap.prototype.rmAttr = function(sAttrKey) {
 	return this.each(function() {
 		this.removeAttribute(sAttrKey);
 	});
+};
+
+/**
+ * Show/Hide nodes using the display attribute. Default to show. Pass false argument to hide.
+ * @param [bDisplay] {Boolean} Pass as false to hide
+ * @returns {Object}
+ */
+jMVP.dom.Wrap.prototype.display = function(bDisplay) {
+    var sValue = bDisplay !== false ? '' : 'none';
+    return this.each(function() {
+        this.style.display = sValue;
+    });
 };
 
 /**

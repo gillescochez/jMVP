@@ -156,7 +156,7 @@ test('View hooks - functional', function() {
     equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
     equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
 
-    'text,html,attr,css'.split(',').forEach(function(hook) {
+    'text,html,attr,css,display'.split(',').forEach(function(hook) {
 
         ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
         equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');

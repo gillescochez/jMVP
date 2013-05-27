@@ -49,7 +49,6 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
  * Store a configuration loop object inside the loop map object
  * @param oLoopConfig {Object} Loop configuration object
  */
-// TODO more tests
 jMVP.View.prototype.storeLoop = function(oLoopConfig) {
 
     var sSource = oLoopConfig.source || null;
@@ -168,7 +167,7 @@ jMVP.View.hooks = {
 
     /**
      * Attributes update hook
-     * @param aNodes {Array} Array of node
+     * @param aNodes {Array} Array of nodes
      * @param vValue
      * @param sAttrKey
      */
@@ -178,12 +177,21 @@ jMVP.View.hooks = {
 
     /**
      * CSS classes update hook
-     * @param aNodes {Array} Array of node
+     * @param aNodes {Array} Array of nodes
      * @param bValue {Boolean} Decide if we remove or add the class name
      * @param sClassName {String} CSS class name
      */
     css: function(aNodes, bValue, sClassName) {
         jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
+    },
+
+    /**
+     * Show/Hide an element using the display property
+     * @param aNodes {Array} Array of nodes
+     * @param [bValue] {Boolean}
+     */
+    display: function(aNodes, bValue) {
+        jMVP.dom(aNodes).display(bValue);
     }
 };
 /*
