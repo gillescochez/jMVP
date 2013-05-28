@@ -52,13 +52,6 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-    if (this.oRefMap[sReference]) {
-
-    }
-
-    if (this.oLoopMap[sReference]) {
-
-    }
 };
 
 /**
