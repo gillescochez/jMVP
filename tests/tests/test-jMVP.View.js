@@ -88,7 +88,14 @@ test('API', function() {
         node = document.createElement('div');
 
     oView.storeNode('node', node);
-    deepEqual(oView.getNodeMap()['node'][0], node, 'storeNode: node is stored');
+    deepEqual(oView.getNodeMap()['node'], node, 'storeNode: node is stored');
+
+    // getNode method
+    ok(oView.getNode, 'oView.getNode exists');
+    equal(typeof oView.getNode, 'function', 'oView.getNode exists');
+    equal(oView.getNode.length, 1, '1 argument');
+    deepEqual(oView.getNode('node'), node, 'getNode on existing node');
+    equal(oView.getNode('asda'), null, 'getNode on non-existing node');
 
     // storeHook
     ok(oView.storeHook, 'oView.storeHook exists');
@@ -150,9 +157,16 @@ test('API', function() {
 
     equal(oView.eDomView.innerHTML, '<div class="test"><span class="foo"></span></div>', 'DOM generated');
 
+    // apply hooks
+    ok(oView.applyHooks, 'oView.applyHooks exists');
+    equal(typeof oView.applyHooks, 'function', 'oView.applyHooks exists');
+    equal(oView.applyHooks.length, 2, '2 arguments');
+    oView.applyHooks('foo', 'a');
+    equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
+
     // update method
-    ok(oView.update, 'oView.parse exists');
-    equal(typeof oView.update, 'function', 'oView.parse exists');
+    ok(oView.update, 'oView.update exists');
+    equal(typeof oView.update, 'function', 'oView.update exists');
     equal(oView.update.length, 2, '2 arguments');
 
 

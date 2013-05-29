@@ -28,7 +28,6 @@ jMVP.View = function(oConfig) {
  * @param [oConfig] {Object} Used if present instead of the instance oConfig
  * @param [eParentNode] {HTMLElement} Parent to add element node into
  */
-// TODO Not 100% sure "parse" is the right method name for it
 jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
     jMVP.each(oConfig || this.oConfig, function(sElementId, oItemConfig) {
@@ -55,12 +54,36 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 };
 
 /**
+ * Apply hooks to nodes stored under the given reference
+ * @param sReference {String} Value reference mapped to nodes
+ * @param vValue {*} The value used by the hooks
+ */
+jMVP.View.prototype.applyHooks = function(sReference, vValue) {
+
+    jMVP.each(this.oRefMap[sReference], function(sHook, vHook) {
+
+        // text, html, display
+        if (vHook[0]) {
+
+            jMVP.View.hooks[sHook](vHook, vValue);
+
+        // css, attr
+        } else {
+            jMVP.each(vHook, function(sKey, aNodes) {
+               jMVP.View.hooks[sHook](aNodes, sKey, vValue);
+            });
+        }
+    });
+};
+
+/**
  * Store a configuration loop object inside the loop map object
  * @param oLoopConfig {Object} Loop configuration object
  */
 jMVP.View.prototype.storeLoop = function(oLoopConfig) {
 
-    var sSource = oLoopConfig.source || null;
+    // TODO handle case where source isn't defined.
+    var sSource = oLoopConfig.source;
 
     if (!this.oLoopMap[sSource]) this.oLoopMap[sSource] = [];
     this.oLoopMap[sSource].push(oLoopConfig);
@@ -116,16 +139,16 @@ jMVP.View.prototype.createNode = function(sElementId, sTagName) {
 
 /**
  * Store a node to the node map property
- * @param sElementId {String} Node reference
+ * @param sNodeId {String} Node reference
  * @param eNode {HTMLElement} The node
  */
-jMVP.View.prototype.storeNode = function(sElementId, eNode) {
+jMVP.View.prototype.storeNode = function(sNodeId, eNode) {
 
-    if (!this.oNodeMap[sElementId]) this.oNodeMap[sElementId] = [];
-    this.oNodeMap[sElementId].push(eNode);
+    if (!this.oNodeMap[sNodeId]) this.oNodeMap[sNodeId] = eNode;
+    else jMVP.error('jMVP.View: "' + sNodeId + '" node id already used');
 };
 
-/*************** Getters & Setters ***************/
+/*************** Getters ***************/
 
 jMVP.View.prototype.getConfig = function() {
     return this.oConfig;
@@ -133,6 +156,10 @@ jMVP.View.prototype.getConfig = function() {
 
 jMVP.View.prototype.getNodeMap = function() {
     return this.oNodeMap;
+};
+
+jMVP.View.prototype.getNode = function(sNodeId) {
+    return this.oNodeMap[sNodeId] || null;
 };
 
 jMVP.View.prototype.getLoopMap = function() {
