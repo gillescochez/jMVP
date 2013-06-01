@@ -163,15 +163,25 @@ test('API', function() {
     equal(oView.applyHooks.length, 2, '2 arguments');
     oView.applyHooks('foo', 'a');
     equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
+    // reset
+    oView.applyHooks('foo', '');
 
     // update method
     ok(oView.update, 'oView.update exists');
     equal(typeof oView.update, 'function', 'oView.update exists');
     equal(oView.update.length, 2, '2 arguments');
 
+    oView.update('foo', 'a');
+    equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
+
+    oView.update('foo', {a:'b', c:'d'});
+    equal(oView.getNode('foo').innerHTML, 'a: b, c: d', 'apply Hooks');
+
+    oView.update('foo', ['a', 'b']);
+    equal(oView.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
 
 });
-test('View hooks - functional', function() {
+test('Hooks - functional', function() {
 
     ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
     equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');

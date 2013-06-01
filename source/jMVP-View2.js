@@ -50,7 +50,22 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
  * @param vValue {*} The new value
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
-
+    if (this.oRefMap[sReference]) {
+        if (typeof vValue == 'string') {
+            this.applyHooks(sReference, vValue);
+        }
+        if (vValue.constructor == Array) {
+            this.applyHooks(sReference, vValue.join(', '));
+        }
+        if (vValue.constructor == Object) {
+            this.applyHooks(sReference,
+                JSON.stringify(vValue)
+                    .replace(new RegExp('{|}|\\"', 'gi'), '')
+                    .replace(new RegExp(':', 'gi'), ': ')
+                    .replace(new RegExp(',', 'gi'), ', ')
+            );
+        }
+    }
 };
 
 /**
@@ -230,48 +245,3 @@ jMVP.View.hooks = {
         jMVP.dom(aNodes).display(bValue);
     }
 };
-/*
-    Stuff it needs
-
-        Rename classNames property to css (css should always be class based anyway)
-
-        Global config object parsing method
-            Store in oMap like before (look for cleaner structure or have oMapAttribute, oMapCSS)
-            - parser method
-                - parse()
-                - parseLoop()
-                - storeHooks()
-
-        Recursive DOM generation method
-            - Only handle DOM creation nothing else
-                - generateHtml(oView, [eParent])
-                - createNode(sId, oConfig);
-
-        Fast access / return of DOM element
-            - Using the current oNodesMap
-                - getNodeByRef(sReference)
-                - getNodes()
-
-        Apply hooks
-            - applyToRef(sReference)
-            - applyAll()
-
-        Looping
-            - handle children inside loops
-            - handle external data (not the actual loop data)
-            - handle loop data in a clean way
-
-        Updating
-            Store in oMapLoop for easily checking if data used by a loop
-            - handle string with hooks
-            - handle array/object with loop handler if used by any loop config
-            - stringify array/object with NO config loop
-
-        Hooks
-            - text
-            - html
-            - css
-            - visible
-            - attr
-
-*/
