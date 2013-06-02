@@ -57,14 +57,6 @@ jMVP.View.prototype.update = function(sReference, vValue) {
         if (vValue.constructor == Array) {
             this.applyHooks(sReference, vValue.join(', '));
         }
-        if (vValue.constructor == Object) {
-            this.applyHooks(sReference,
-                JSON.stringify(vValue)
-                    .replace(new RegExp('{|}|\\"', 'gi'), '')
-                    .replace(new RegExp(':', 'gi'), ': ')
-                    .replace(new RegExp(',', 'gi'), ', ')
-            );
-        }
     }
 };
 

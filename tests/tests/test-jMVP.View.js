@@ -174,9 +174,6 @@ test('API', function() {
     oView.update('foo', 'a');
     equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
 
-    oView.update('foo', {a:'b', c:'d'});
-    equal(oView.getNode('foo').innerHTML, 'a: b, c: d', 'apply Hooks');
-
     oView.update('foo', ['a', 'b']);
     equal(oView.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
 
