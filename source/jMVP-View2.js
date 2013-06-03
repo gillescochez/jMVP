@@ -41,6 +41,8 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
         oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
 
+        oItemConfig.loop && this.storeLoop(oItemConfig.loop);
+
     }, this);
 };
 

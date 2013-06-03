@@ -178,6 +178,32 @@ test('API', function() {
     equal(oView.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
 
 });
+test('Loops', function() {
+
+    var view = {
+        list: {
+            tag: 'ul',
+            loop: {
+                source: 'foo',
+                template: {
+                    item: {
+                        tag:'li',
+                        hook: {
+                            text: 'foo[i]'
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    var oView = new jMVP.View(view);
+    oView.parse();
+    deepEqual(oView.getLoopMap()['foo'][0], view.list.loop, 'Loop config stored');
+    equal(oView.getDomView().innerHTML, '<ul class="list"></ul>', 'Init: Loop template handled');
+    oView.update('foo', ['a', 'b']);
+    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
+});
 test('Hooks - functional', function() {
 
     ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
