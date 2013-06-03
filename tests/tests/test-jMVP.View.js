@@ -189,7 +189,7 @@ test('Loops', function() {
                     item: {
                         tag:'li',
                         hook: {
-                            text: 'foo[i]'
+                            text: 'foo.value'
                         }
                     }
                 }
@@ -199,8 +199,14 @@ test('Loops', function() {
 
     var oView = new jMVP.View(view);
     oView.parse();
+
     deepEqual(oView.getLoopMap()['foo'][0], view.list.loop, 'Loop config stored');
     equal(oView.getDomView().innerHTML, '<ul class="list"></ul>', 'Init: Loop template handled');
+
+    ok(oView.loop, '.loop exists');
+    equal(typeof oView.loop, 'function', '.loop is a function');
+    equal(oView.loop.length, 2, '.loop has 2 argument');
+
     oView.update('foo', ['a', 'b']);
     equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
 });

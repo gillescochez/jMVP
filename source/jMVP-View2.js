@@ -41,7 +41,10 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
         oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
 
-        oItemConfig.loop && this.storeLoop(oItemConfig.loop);
+        if (oItemConfig.loop) {
+            //oItemConfig.loop.parentNode = eNode;
+            this.storeLoop(oItemConfig.loop);
+        }
 
     }, this);
 };
@@ -60,29 +63,17 @@ jMVP.View.prototype.update = function(sReference, vValue) {
             this.applyHooks(sReference, vValue.join(', '));
         }
     }
+    if (this.oLoopMap[sReference]) {
+        this.loop(sReference, vValue);
+    }
 };
 
 /**
- * Apply hooks to nodes stored under the given reference
- * @param sReference {String} Value reference mapped to nodes
- * @param vValue {*} The value used by the hooks
+ * Execute a loop config, called on update affecting loops
+ * @param sReference {String} Data source reference
  */
-jMVP.View.prototype.applyHooks = function(sReference, vValue) {
-
-    jMVP.each(this.oRefMap[sReference], function(sHook, vHook) {
-
-        // text, html, display
-        if (vHook[0]) {
-
-            jMVP.View.hooks[sHook](vHook, vValue);
-
-        // css, attr
-        } else {
-            jMVP.each(vHook, function(sKey, aNodes) {
-               jMVP.View.hooks[sHook](aNodes, sKey, vValue);
-            });
-        }
-    });
+jMVP.View.prototype.loop = function(sReference, vValue) {
+    console.log(sReference, vValue);
 };
 
 /**
@@ -132,6 +123,29 @@ jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
             this.oRefMap[sValue][sHook][sKey].push(eNode);
         }, this);
     }
+};
+
+/**
+ * Apply hooks to nodes stored under the given reference
+ * @param sReference {String} Value reference mapped to nodes
+ * @param vValue {*} The value used by the hooks
+ */
+jMVP.View.prototype.applyHooks = function(sReference, vValue) {
+
+    jMVP.each(this.oRefMap[sReference], function(sHook, vHook) {
+
+        // text, html, display
+        if (vHook[0]) {
+
+            jMVP.View.hooks[sHook](vHook, vValue);
+
+            // css, attr
+        } else {
+            jMVP.each(vHook, function(sKey, aNodes) {
+                jMVP.View.hooks[sHook](aNodes, sKey, vValue);
+            });
+        }
+    });
 };
 
 /**
