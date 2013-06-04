@@ -189,7 +189,7 @@ test('Loops', function() {
                     item: {
                         tag:'li',
                         hook: {
-                            text: 'foo.value'
+                            text: 'foo[i]'
                         }
                     }
                 }

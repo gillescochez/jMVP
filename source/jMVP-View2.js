@@ -41,10 +41,7 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
         oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
 
-        if (oItemConfig.loop) {
-            //oItemConfig.loop.parentNode = eNode;
-            this.storeLoop(oItemConfig.loop);
-        }
+        oItemConfig.loop && this.storeLoop(oItemConfig.loop);
 
     }, this);
 };
@@ -55,14 +52,18 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
  * @param vValue {*} The new value
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
+
     if (this.oRefMap[sReference]) {
+
         if (typeof vValue == 'string') {
             this.applyHooks(sReference, vValue);
         }
+
         if (vValue.constructor == Array) {
             this.applyHooks(sReference, vValue.join(', '));
         }
     }
+
     if (this.oLoopMap[sReference]) {
         this.loop(sReference, vValue);
     }
@@ -71,9 +72,36 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 /**
  * Execute a loop config, called on update affecting loops
  * @param sReference {String} Data source reference
+ * @param vValue {*}
  */
 jMVP.View.prototype.loop = function(sReference, vValue) {
     console.log(sReference, vValue);
+
+    jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
+
+        if (this.oNodeMap[oLoopConfig.source + '[i]']) {
+
+        } else {
+            var eNode = this.createNode(sElementId, oItemConfig.tag);
+            this.storeNode(sElementId, eNode);
+        }
+
+
+
+    }, this);
+
+    // loop through loop config attach to the reference
+        // using the source check if some element exists already
+            // if they do
+                // we just do the minimum required
+                // same count as value count use same element
+                // less remove some
+                // more add some
+
+            //if they don't
+                // build element for each iteration
+        // render elements
+        // apply hooks to each element
 };
 
 /**
