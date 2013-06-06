@@ -61,7 +61,7 @@ var presenter = {
 
 	title: {
 		click: function(oDOMEvent, oModel) {
-			oModel.isRed.setValue(!oModel.isRed.getValue());
+            oModel.isRed(!oModel.isRed());
 		}
 	},
 
@@ -73,8 +73,8 @@ var presenter = {
 
 function updatePageTitle(oDOMEvent, oModel) {
     var sValue = oDOMEvent.target.value;
-    if (oModel.pagetitle.getValue() != sValue) {
-        oModel.pagetitle.setValue(sValue);
+    if (oModel.pagetitle() != sValue) {
+        oModel.pagetitle(sValue);
     }
 };
 
@@ -85,5 +85,5 @@ var jmvp = new jMVP(model, view, presenter);
 jmvp.view.render(document.body);
 
 // let's update our model (view is updated automatically)
-jmvp.model.sitetitle.setValue('New site title');
-jmvp.model.pagetitle.setValue('Page title');
+jmvp.model.sitetitle('New site title');
+jmvp.model.pagetitle('Page title');

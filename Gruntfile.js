@@ -4,7 +4,12 @@ module.exports = function(grunt) {
         'build/header.js',
         'source/<%= pkg.name %>.js',
         '!source/shims.js', // we remove shims on build as qunit task need them :(
-        'source/*.js',
+        'source/jMVP-domWrap.js',
+        'source/jMVP-Model.js',
+        'source/jMVP-Presenter.js',
+        'source/jMVP-tools.js',
+        'source/jMVP-View.js',
+//        'source/*.js',
         'build/footer.js'
     ];
 
@@ -12,7 +17,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         qunit: {
-            all: ['tests/index.html']
+            all: [
+                'tests/index.html',
+                'tests/jMVP.Model.html'
+//                'tests/jMVP.View.html'
+            ]
         },
         concat: {
             build: {

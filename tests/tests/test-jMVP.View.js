@@ -178,6 +178,23 @@ test('API', function() {
     equal(oView.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
 
 });
+test('Hooks', function() {
+
+    ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
+    equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
+    equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
+
+    'text,html,attr,css,display'.split(',').forEach(function(hook) {
+
+        ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
+        equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
+        if (hook == 'css' || hook == 'attr') {
+            equal(jMVP.View.hooks[hook].length, 3, 'jMVP.View.hooks.' + hook + ' expects 3 arguments');
+        } else {
+            equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
+        }
+    });
+});
 test('Loops', function() {
 
     var view = {
@@ -205,25 +222,12 @@ test('Loops', function() {
 
     ok(oView.loop, '.loop exists');
     equal(typeof oView.loop, 'function', '.loop is a function');
-    equal(oView.loop.length, 2, '.loop has 2 argument');
+    equal(oView.loop.length, 2, '.loop has 2 arguments');
+
+    ok(oView.doLoopNodes, '.doLoopNodes exists');
+    equal(typeof oView.doLoopNodes, 'function', '.doLoopNodes is a function');
+    equal(oView.doLoopNodes.length, 2, '.doLoopNodes has 2 argument');
 
     oView.update('foo', ['a', 'b']);
     equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
-});
-test('Hooks - functional', function() {
-
-    ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
-    equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
-    equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
-
-    'text,html,attr,css,display'.split(',').forEach(function(hook) {
-
-        ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
-        equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
-        if (hook == 'css' || hook == 'attr') {
-            equal(jMVP.View.hooks[hook].length, 3, 'jMVP.View.hooks.' + hook + ' expects 3 arguments');
-        } else {
-            equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
-        }
-    });
 });

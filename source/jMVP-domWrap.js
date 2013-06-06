@@ -24,7 +24,7 @@ jMVP.dom = function(vNodes) {
  * @param [sTag] {String} Tag name of the element
  * @returns {HTMLElement}
  */
-jMVP.dom.create = function(sTag) {
+jMVP.dom.createNode = function(sTag) {
     return document.createElement(sTag || 'div');
 };
 

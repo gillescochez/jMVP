@@ -34,8 +34,15 @@ jMVP.Model.prototype.onModelUpdated = function(sKey, vValue) {};
  * @param sKey {String} The string being bind
  */
 jMVP.Model.dataBind = function(oInstance, oModel, sKey) {
-	oInstance[sKey] = new jMVP.Data(oModel[sKey]);
-	oInstance[sKey].onValueUpdated = function(vValue) {
+
+    oInstance[sKey] = function(vValue) {
+        if (vValue !== undefined) oInstance[sKey].oData.setValue(vValue);
+        return oInstance[sKey].oData.getValue();
+    };
+
+	oInstance[sKey].oData = new jMVP.Data(oModel[sKey]);
+
+    oInstance[sKey].oData.onValueUpdated = function(vValue) {
 		oModel[sKey] = vValue;
         oInstance.onModelUpdated.apply(oInstance, [sKey, vValue]);
 	};

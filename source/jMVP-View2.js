@@ -19,7 +19,7 @@ jMVP.View = function(oConfig) {
     this.oLoopMap = {};
     this.oRefMap = {};
 
-    this.eDomView = jMVP.dom.create();
+    this.eDomView = jMVP.dom.createNode();
 };
 
 /**
@@ -75,16 +75,12 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  * @param vValue {*}
  */
 jMVP.View.prototype.loop = function(sReference, vValue) {
-    console.log(sReference, vValue);
 
     jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
 
-        if (this.oNodeMap[oLoopConfig.source + '[i]']) {
+        var aNodes = this.doLoopNodes(oLoopConfig, vValue);
 
-        } else {
-            var eNode = this.createNode(sElementId, oItemConfig.tag);
-            this.storeNode(sElementId, eNode);
-        }
+
 
 
 
@@ -102,6 +98,10 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
                 // build element for each iteration
         // render elements
         // apply hooks to each element
+};
+
+jMVP.View.prototype.doLoopNodes = function(oLoopConfig, vValue) {
+
 };
 
 /**
@@ -183,7 +183,7 @@ jMVP.View.prototype.applyHooks = function(sReference, vValue) {
  */
 jMVP.View.prototype.createNode = function(sElementId, sTagName) {
 
-    var eNode = jMVP.dom.create(sTagName);
+    var eNode = jMVP.dom.createNode(sTagName);
     eNode.className = sElementId;
     return eNode;
 };
