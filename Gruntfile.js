@@ -3,12 +3,17 @@ module.exports = function(grunt) {
     var aSources = [
         'build/header.js',
         'source/<%= pkg.name %>.js',
-        '!source/shims.js', // we remove shims on build as qunit task need them :(
+
+        // TODO remove shims on build after qunit task as it needs them (well phantomJS needs them) :(
+        '!source/shims.js',
+
+        // temp - use when not wanting file being worked on to be included
         'source/jMVP-domWrap.js',
         'source/jMVP-Model.js',
         'source/jMVP-Presenter.js',
         'source/jMVP-tools.js',
         'source/jMVP-View.js',
+
 //        'source/*.js',
         'build/footer.js'
     ];
