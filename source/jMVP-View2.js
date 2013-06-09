@@ -21,23 +21,7 @@ jMVP.View = function(oConfig) {
     this.oNodeMap = {};
     this.oLoopMap = {};
     this.oRefMap = {};
-
-    if (oConfig.tag) {
-        this.eDomView = jMVP.dom.createNode(oConfig.tag);
-        delete oConfig.tag;
-    } else {
-        this.eDomView = jMVP.dom.createNode();
-    }
-
-    if (oConfig.id) {
-        this.eDomView.id = oConfig.id;
-        delete oConfig.id;
-    }
-    if (oConfig.className) {
-        this.eDomView.className = oConfig.className;
-        delete oConfig.className;
-    }
-
+    this.eDomView = jMVP.View.emptyDomView(oConfig);
 };
 
 /**
@@ -298,4 +282,34 @@ jMVP.View.hooks = {
     display: function(aNodes, bValue) {
         jMVP.dom(aNodes).display(bValue);
     }
+};
+
+
+/**
+ * Static method creating a new empty dom view based on a view config.
+ * Support custom id/tag/className, those options are delete from the config object after use.
+ * @param oConfig {Object} View configuration object
+ */
+jMVP.View.emptyDomView = function(oConfig) {
+
+    var eDomView;
+
+    if (oConfig.tag) {
+        eDomView = jMVP.dom.createNode(oConfig.tag);
+        delete oConfig.tag;
+    } else {
+        eDomView = jMVP.dom.createNode();
+    }
+
+    if (oConfig.id) {
+        eDomView.id = oConfig.id;
+        delete oConfig.id;
+    }
+
+    if (oConfig.className) {
+        eDomView.className = oConfig.className;
+        delete oConfig.className;
+    }
+
+    return eDomView;
 };
