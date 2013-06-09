@@ -12,14 +12,32 @@
  */
 jMVP.View = function(oConfig) {
 
-    (!oConfig) && jMVP.error('jMVP.View: Configuration object missing!', 101);
+    if (!oConfig) {
+        jMVP.error('jMVP.View: Configuration object missing!', 101);
+        return;
+    }
 
     this.oConfig = oConfig;
     this.oNodeMap = {};
     this.oLoopMap = {};
     this.oRefMap = {};
 
-    this.eDomView = jMVP.dom.createNode();
+    if (oConfig.tag) {
+        this.eDomView = jMVP.dom.createNode(oConfig.tag);
+        delete oConfig.tag;
+    } else {
+        this.eDomView = jMVP.dom.createNode();
+    }
+
+    if (oConfig.id) {
+        this.eDomView.id = oConfig.id;
+        delete oConfig.id;
+    }
+    if (oConfig.className) {
+        this.eDomView.className = oConfig.className;
+        delete oConfig.className;
+    }
+
 };
 
 /**

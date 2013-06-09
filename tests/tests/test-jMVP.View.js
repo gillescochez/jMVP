@@ -73,6 +73,14 @@ test('API', function() {
     deepEqual(oView.getDomView().outerHTML, '<div></div>', 'getDomView == {}');
     deepEqual(oView.getDomView(), oView.eDomView, 'getDomView == stored prop');
 
+    // custom id/tag/className for dom view
+    var simpleView = new jMVP.View({
+        id: 'test',
+        className: 'foo',
+        tag: 'span'
+    });
+    deepEqual(simpleView.getDomView().outerHTML, '<span id="test" class="foo"></span>', 'getDomView == {}');
+
     // createNode method
     ok(oView.createNode, 'oView.createNode exists');
     equal(typeof oView.createNode, 'function', 'oView.createNode exists');
