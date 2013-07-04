@@ -21,6 +21,7 @@
  *
  * @constructor
  */
+// TODO Improve event binding, we want to use delegation
 jMVP.Presenter = function(oConfig, oView, oModel) {
 
 	this.oMap = {};

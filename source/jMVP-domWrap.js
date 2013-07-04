@@ -54,6 +54,10 @@ jMVP.dom.Wrap.prototype.each = function(fCallback) {
 	return this;
 };
 
+jMVP.dom.Wrap.prototype.do = function() {
+
+};
+
 /**
  * Bind a handler to elements
  * @param sEventType {String} The event type

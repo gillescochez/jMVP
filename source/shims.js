@@ -9,7 +9,7 @@ if (!Array.prototype.forEach) {
             }
         }
     };
-};
+}
 
 /**
  * Function.prototype.bind
@@ -37,4 +37,4 @@ if (!Function.prototype.bind) {
 
         return fBound;
     };
-};
+}

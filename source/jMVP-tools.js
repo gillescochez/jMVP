@@ -53,5 +53,5 @@ jMVP.each = function(vData, fCallback, oContext) {
  * @param nType {Number} Error type
  */
 jMVP.error = function(sMessage, nType) {
-    throw sMessage + ' - Error: ' + nType;
+    throw new Error(sMessage + ' - Error: ' + nType);
 };

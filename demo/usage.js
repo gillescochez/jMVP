@@ -76,7 +76,7 @@ function updatePageTitle(oDOMEvent, oModel) {
     if (oModel.pagetitle() != sValue) {
         oModel.pagetitle(sValue);
     }
-};
+}
 
 // mix it all together
 var jmvp = new jMVP(model, view, presenter);
