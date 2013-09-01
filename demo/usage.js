@@ -14,7 +14,7 @@ var viewHeader = {
         logo: {
             text: 'sitetitle'
         },
-        search: {
+        liveEdit: {
             tag: 'input',
             attributes: {
                 value: 'pagetitle',
@@ -65,7 +65,7 @@ var presenter = {
 		}
 	},
 
-    search: {
+    liveEdit: {
         blur: updatePageTitle,
         keyup: updatePageTitle
     }
