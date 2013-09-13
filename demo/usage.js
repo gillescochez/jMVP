@@ -24,19 +24,21 @@ var viewHeader = {
                     type: 'search'
                 }
             }
+        },
+        select: {
+            tag: 'select',
+            loop: {
+                source: 'items',
+                template: {
+                    item: {
+                        tag: 'option',
+                        hook: {
+                            text: 'items'
+                        }
+                    }
+                }
+            }
         }
-//        select: {
-//            tag: 'select',
-//            loop: {
-//                source: 'items',
-//                template: {
-//                    item: {
-//                        tag: 'option',
-//                        text: 'items'
-//                    }
-//                }
-//            }
-//        }
     }
 };
 
@@ -74,17 +76,17 @@ var presenter = {
 	},
 
     liveEdit: {
-        blur: updatePageTitle,
-        keyup: updatePageTitle
+        blur: this.updatePageTitle,
+        keyup: this.updatePageTitle
+    },
+
+    updatePageTitle: function(oDOMEvent, oModel) {
+        var sValue = oDOMEvent.target.value;
+        if (oModel.pagetitle() != sValue) {
+            oModel.pagetitle(sValue);
+        }
     }
 };
-
-function updatePageTitle(oDOMEvent, oModel) {
-    var sValue = oDOMEvent.target.value;
-    if (oModel.pagetitle() != sValue) {
-        oModel.pagetitle(sValue);
-    }
-}
 
 // mix it all together
 var jmvp = new jMVP(model, view, presenter);

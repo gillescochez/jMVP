@@ -435,6 +435,8 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
     this.oConfig = oConfig;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
+
+        // TODO check if present in view before store as handler to allow methods to be attached to the presenter in a "clean" manner
 		this.oMap[sReference] = oHandlers;
         this.view && this.bindToView(sReference);
 	}, this);
@@ -629,7 +631,7 @@ jMVP.View.prototype.parse = function(oConfig, eParentNode) {
 
         oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
 
-        oItemConfig.loop && this.storeLoop(oItemConfig.loop);
+        oItemConfig.loop && this.storeLoop(oItemConfig.loop, eNode);
 
     }, this);
 };
@@ -664,12 +666,74 @@ jMVP.View.prototype.update = function(sReference, vValue) {
  */
 jMVP.View.prototype.loop = function(sReference, vValue) {
 
+    var nValueLen = vValue.length;
+
     jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
 
-        var aNodes = this.doLoopNodes(oLoopConfig, vValue);
+        jMVP.each(oLoopConfig.template, function(sItemKey, oTemplateItemConfig) {
+
+            var aNodes = this.oNodeMap[sItemKey],
+                nNodesLen = aNodes ? aNodes.length : 0,
+                nNodesCount = 0;
+
+            if (nNodesLen === 0) {
+
+                nNodesCount = nValueLen;
+
+            } else if (nNodesLen !== nValueLen) {
+
+                if (nNodesLen < nValueLen) {
+
+                    nNodesCount = nValueLen - nNodesLen;
+
+                } else {
+
+                }
+            }
+
+            this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
+            aNodes = this.oNodeMap[sItemKey];
+
+            jMVP.each(aNodes, function(eNode) {
+                oLoopConfig.parent.appendChild(eNode)
+            }, this);
+
+//            this.applyHooks(sReference, vValue);
+
+            console.log(aNodes);
+
+        }, this);
+
+//        var oTemplate = oLoopConfig.template,
+//            sSource = oLoopConfig.source,
+//            aNodes = this.oNodeMap[sReference],
+//            nNodesLen = aNodes ? aNodes.length : 0,
+//            nNodesCount = 0;
+//
+//        if (nNodesLen === 0) {
+//
+//            nNodesCount = nValueLen;
+//
+//        } else if (nNodesLen !== nValueLen) {
+//
+//            if (nNodesLen < nValueLen) {
+//
+//                nNodesCount = nValueLen - nNodesLen;
+//
+//            } else {
+//
+//            }
+//        }
+//
+//        this.doNodes(nNodesCount, oTemplate.tag, sReference);
+//        aNodes = this.oNodeMap[sReference];
+
+//        this.applyHooks(sSource, vValue);
 
 
+//        var aNodes = this.doLoopNodes(oLoopConfig, vValue);
 
+//        console.log(aNodes);
 
 
     }, this);
@@ -688,18 +752,28 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
         // apply hooks to each element or apply hook then render?
 };
 
-jMVP.View.prototype.doLoopNodes = function(oLoopConfig, vValue) {
+jMVP.View.prototype.doNodes = function(nCount, sTag, sReference) {
 
+    var i = 0;
+
+    for (; i < nCount; i++) {
+
+        var eNode = this.createNode(sReference, sTag);
+        this.storeNode(sReference, eNode);
+    }
 };
 
 /**
  * Store a configuration loop object inside the loop map object
  * @param oLoopConfig {Object} Loop configuration object
+ * @param eParentNode {HTMLElement} The container for the loop
  */
-jMVP.View.prototype.storeLoop = function(oLoopConfig) {
+jMVP.View.prototype.storeLoop = function(oLoopConfig, eParentNode) {
 
     // TODO handle case where source isn't defined.
     var sSource = oLoopConfig.source;
+
+    oLoopConfig.parent = eParentNode;
 
     if (!this.oLoopMap[sSource]) this.oLoopMap[sSource] = [];
     this.oLoopMap[sSource].push(oLoopConfig);
@@ -784,7 +858,14 @@ jMVP.View.prototype.createNode = function(sElementId, sTagName) {
 jMVP.View.prototype.storeNode = function(sNodeId, eNode) {
 
     if (!this.oNodeMap[sNodeId]) this.oNodeMap[sNodeId] = eNode;
-    else jMVP.error('jMVP.View: "' + sNodeId + '" node id already used');
+    else {
+        if (this.oNodeMap[sNodeId].constructor != Array) {
+            var eExistingNode = this.oNodeMap[sNodeId];
+            this.oNodeMap[sNodeId] = [];
+            this.oNodeMap[sNodeId].push(eExistingNode);
+        }
+        this.oNodeMap[sNodeId].push(eNode);
+    }
 };
 
 /**

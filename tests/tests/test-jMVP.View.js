@@ -232,9 +232,9 @@ test('Loops', function() {
     equal(typeof oView.loop, 'function', '.loop is a function');
     equal(oView.loop.length, 2, '.loop has 2 arguments');
 
-    ok(oView.doLoopNodes, '.doLoopNodes exists');
-    equal(typeof oView.doLoopNodes, 'function', '.doLoopNodes is a function');
-    equal(oView.doLoopNodes.length, 2, '.doLoopNodes has 2 argument');
+    ok(oView.doNodes, '.doNodes exists');
+    equal(typeof oView.doNodes, 'function', '.doNodes is a function');
+    equal(oView.doNodes.length, 3, '.doNodes has 2 argument');
 
 //    oView.update('foo', ['a', 'b']);
 //    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
