@@ -1,9 +1,20 @@
 jMVP
 ====
 
-Experimental Javascript MVP framework for creating app without HTML templates.
+Experimental Javascript MVP framework.
 
-It has limitations and needs more work, just something I play with here and there and went over the top from a UTs POV :p
+It's all quite simple really, models/views/presenters can be simple static objects, which can be good for building
+something small and being static the performance are greater (and static object can still be extended).
+
+New instances of jMVP are created by passing the model/view/presenter objects which initialized
+jMVP Model/View/Presenter instances and make them available for manipulation.
+
+Just wanted to see what it would be like to have objects instead of HTML templates.
+
+Unit tested only for now and there is a demo.
+
+But yeah, "experimental" =)
+
 
 ## JS Source of the demo
 
@@ -13,7 +24,7 @@ It has limitations and needs more work, just something I play with here and ther
 var model = {
 	sitetitle: 'jMVP site',
 	pagetitle: 'Hello World!',
-	pagecontent: '<p>Welcome to a jMVP powered app</p>',
+	pagecontent: '<p>Welcome to a jMVP powered website</p>',
     items: ['option1','option2','option3'],
     isBig: true,
 	isRed: true
@@ -23,13 +34,17 @@ var model = {
 var viewHeader = {
     children: {
         logo: {
-            text: 'sitetitle'
+            hook: {
+                text: 'sitetitle'
+            }
         },
         liveEdit: {
             tag: 'input',
-            attributes: {
-                value: 'pagetitle',
-                type: 'search'
+            hook: {
+                attr: {
+                    value: 'pagetitle',
+                    type: 'search'
+                }
             }
         },
         select: {
@@ -54,14 +69,18 @@ var view = {
         children: {
             title: {
                 tag: 'h1',
-                text: 'pagetitle',
-                classNames: {
-                    red: 'isRed',
-                    big: 'isBig'
+                hook: {
+                    css: {
+                        red: 'isRed',
+                        big: 'isBig'
+                    },
+                    text: 'pagetitle'
                 }
             },
             content: {
-                html: 'pagecontent'
+                hook: {
+                    html: 'pagecontent'
+                }
             }
         }
 	}
