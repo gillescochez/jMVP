@@ -1,9 +1,9 @@
 /**
  * Create a new jMVP instance
  *
- * @prop oRawModel {Object} The original model confi object
- * @prop oRawView {Object} The original model confi object
- * @prop oRawPresenter {Object} The original model confi object
+ * @prop oRawModel {Object} The original model config object
+ * @prop oRawView {Object} The original model config object
+ * @prop oRawPresenter {Object} The original model config object
  * @prop model {Object} Instance of jMVP.Model
  * @prop view {Object} Instance of jMVP.View
  * @prop presenter {Object} Instance of jMVP.Presenter
@@ -43,7 +43,7 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
     this.oRawPresenter = oRawPresenter;
 
     this.model = new jMVP.Model(oRawModel);
-    this.view = new jMVP.View(oRawView);
+    this.view = new jMVP.View(oRawView, true);
     this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
 
     this.addModelListener();
@@ -64,7 +64,7 @@ jMVP.prototype.addModelListener = function() {
  */
 jMVP.prototype.applyModelToView = function() {
     jMVP.each(this.oRawModel, function(sKey, vValue) {
-        this.view.isInMap(sKey) && this.view.update(sKey, vValue);
+        this.view.update(sKey, vValue);
     }, this);
 };
 

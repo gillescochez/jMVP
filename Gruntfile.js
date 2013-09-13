@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         'source/jMVP-Model.js',
         'source/jMVP-Presenter.js',
         'source/jMVP-tools.js',
-        'source/jMVP-View.js',
+        'source/jMVP-View2.js',
 
 //        'source/*.js',
         'build/footer.js'
@@ -24,8 +24,8 @@ module.exports = function(grunt) {
         qunit: {
             all: [
                 'tests/index.html',
-                'tests/jMVP.Model.html'
-//                'tests/jMVP.View.html'
+                'tests/jMVP.Model.html',
+                'tests/jMVP.View.html'
             ]
         },
         concat: {

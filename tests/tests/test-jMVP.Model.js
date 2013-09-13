@@ -1,5 +1,39 @@
 module("jMVP.Model");
-test('new API', function() {
+test('Data API', function() {
+
+    var oRawData = {
+            foo: 'foo',
+            boo:'boo',
+            arr: ['a', 'b'],
+            obj: {c:'d'}
+        },
+        oModel = new jMVP.Model(oRawData),
+        oData = new jMVP.Data('a'),
+        valueFromOnValueUpdated,
+        valueFromOnModelUpdated = {};
+
+    /**
+     * jMVP.Data
+     */
+    ok(oData.vValue, 'value property');
+    equal(oData.vValue, 'a', 'value is correct');
+
+    ok(oData.getValue, 'data getter exists');
+    ok(oData.setValue, 'data setter exists');
+    ok(oData.onValueUpdated, 'data onValueUpdated callback exists');
+    equal(typeof oData.getValue, 'function', 'getter is function');
+    equal(typeof oData.setValue, 'function', 'setter is function');
+    equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
+    oData.onValueUpdated = function(vValue) {
+        valueFromOnValueUpdated = vValue;
+    };
+    oData.setValue('A');
+    equal(valueFromOnValueUpdated, 'A', 'onValueUpdated return updated data');
+    equal(oData.getValue(), 'A', 'data updated returned properly');
+
+
+});
+test('Model API', function() {
 
     var model = {
             sitetitle: 'jMVP site',

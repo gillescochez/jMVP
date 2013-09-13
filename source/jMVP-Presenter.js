@@ -33,7 +33,6 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
 		this.oMap[sReference] = oHandlers;
         this.view && this.bindToView(sReference);
 	}, this);
-
 };
 
 /**
@@ -46,11 +45,12 @@ jMVP.Presenter.prototype.bindToView = function(sReference) {
         oModel = this.model;
 
     jMVP.each(this.oMap[sReference], function(sEventType, fHandler) {
-        var eNode = this.view.getElement(sReference);
+
+        var eNode = oView.getNode(sReference);
         jMVP.dom(eNode).on(sEventType, function(oEvent) {
             fHandler.apply(eNode, [oEvent, oModel, oView]);
         });
-    }, this);
+    });
 };
 
 /**

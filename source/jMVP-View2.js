@@ -8,9 +8,10 @@
  * @prop eDomView {HTMLElement} The DOM equivalent of the view
  *
  * @param oConfig {Object} View configuration
+ * @param bAutoParse {Boolean} If true the View will parse
  * @constructor
  */
-jMVP.View = function(oConfig) {
+jMVP.View = function(oConfig, bAutoParse) {
 
     if (!oConfig) {
         jMVP.error('jMVP.View: Configuration object missing!', 101);
@@ -22,6 +23,8 @@ jMVP.View = function(oConfig) {
     this.oLoopMap = {};
     this.oRefMap = {};
     this.eDomView = jMVP.View.emptyDomView(oConfig);
+
+    if (bAutoParse) this.parse();
 };
 
 /**
@@ -57,7 +60,7 @@ jMVP.View.prototype.update = function(sReference, vValue) {
 
     if (this.oRefMap[sReference]) {
 
-        if (typeof vValue == 'string') {
+        if (typeof vValue == 'string' || vValue.constructor == Boolean) {
             this.applyHooks(sReference, vValue);
         }
 
@@ -99,7 +102,7 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
             //if they don't
                 // build element for each iteration
         // render elements
-        // apply hooks to each element
+        // apply hooks to each element or apply hook then render?
 };
 
 jMVP.View.prototype.doLoopNodes = function(oLoopConfig, vValue) {
@@ -201,6 +204,26 @@ jMVP.View.prototype.storeNode = function(sNodeId, eNode) {
     else jMVP.error('jMVP.View: "' + sNodeId + '" node id already used');
 };
 
+/**
+ * Render the DOM view to a target DOM element
+ * @param eTarget {Node} The DOM element targeted
+ */
+jMVP.View.prototype.render = function(eTarget) {
+
+    eTarget.appendChild(this.eDomView);
+    this.eDomView = eTarget.childNodes[eTarget.childNodes.length-1];
+};
+
+/**
+ * Check if a node key id is in the map
+ * @param sNodeId
+ * @returns {boolean}
+ */
+jMVP.View.prototype.isInMap = function(sNodeId) {
+    var vIsIn = this.oMap[sNodeId] || this.oLoopMap[sNodeId] || null;
+    return vIsIn ? true : false;
+};
+
 /*************** Getters ***************/
 
 jMVP.View.prototype.getConfig = function() {
@@ -260,7 +283,7 @@ jMVP.View.hooks = {
      * @param vValue
      * @param sAttrKey
      */
-    attr: function(aNodes, vValue, sAttrKey) {
+    attr: function(aNodes, sAttrKey, vValue) {
         jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
     },
 
@@ -270,7 +293,7 @@ jMVP.View.hooks = {
      * @param bValue {Boolean} Decide if we remove or add the class name
      * @param sClassName {String} CSS class name
      */
-    css: function(aNodes, bValue, sClassName) {
+    css: function(aNodes, sClassName, bValue) {
         jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
     },
 

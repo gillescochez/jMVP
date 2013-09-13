@@ -19,38 +19,6 @@ test('Objects / Static methods - basic', function(){
     equal(jMVP.error && jMVP.prototype.error === undefined, true, 'jMVP.error is static');
     equal(jMVP.error.length, 2, 'jMVP.error expect 2 arguments');
 
-    /**
-	 * jMVP View object
-	 */
-
-	ok(jMVP.View, 'jMVP.View exists');
-	equal(typeof jMVP.View, 'function', 'jMVP.View is a function');
-	equal(jMVP.prototype.View, undefined, 'jMVP.View is static');
-	equal(jMVP.View.length, 1, 'jMVP.View expect 1 argument');
-
-	/**
-	 * jMVP Data object
-	 */
-
-	ok(jMVP.Data, 'jMVP.Data exists');
-	equal(typeof jMVP.Data, 'function', 'jMVP.Data is a function');
-	equal(jMVP.Data && jMVP.prototype.Data === undefined, true, 'jMVP.Data is static');
-	equal(jMVP.Data.length, 1, 'jMVP.Data expect 1 argument');
-
-	/**
-	 * jMVP Model object
-	 */
-
-    ok(jMVP.Model, 'jMVP.Model exists');
-    equal(typeof jMVP.Model, 'function', 'jMVP.Model is a function');
-    equal(jMVP.Model && jMVP.prototype.Model === undefined, true, 'jMVP.Model is static');
-    equal(jMVP.Model.length, 1, 'jMVP.Model expect 1 argument');
-
-	ok(jMVP.Model.dataBind, 'jMVP.Model.dataBind exists');
-	equal(typeof jMVP.Model.dataBind, 'function', 'jMVP.Model.dataBind is a function');
-	equal(jMVP.Model.dataBind && jMVP.Model.prototype.dataBind === undefined, true, 'jMVP.Model.dataBind is static');
-	equal(jMVP.Model.dataBind.length, 3, 'jMVP.Model.dataBind expect 3 arguments');
-
 	/**
 	 * jMVP Presenter object
 	 */
@@ -97,188 +65,6 @@ test('.each static method - functional', function() {
 	});
 
 	equal(count, 2, 'each with array');
-});
-
-module('jMVP.Model');
-test('Model / Data instances - functional', function() {
-
-	var oRawData = {
-			foo: 'foo',
-			boo:'boo',
-            arr: ['a', 'b'],
-            obj: {c:'d'}
-		},
-		oModel = new jMVP.Model(oRawData),
-		oData = new jMVP.Data('a'),
-		valueFromOnValueUpdated,
-        valueFromOnModelUpdated = {};
-
-    /**
-     * jMVP.Data
-     */
-	ok(oData.vValue, 'value property');
-	equal(oData.vValue, 'a', 'value is correct');
-
-	ok(oData.getValue, 'data getter exists');
-	ok(oData.setValue, 'data setter exists');
-	ok(oData.onValueUpdated, 'data onValueUpdated callback exists');
-	equal(typeof oData.getValue, 'function', 'getter is function');
-	equal(typeof oData.setValue, 'function', 'setter is function');
-	equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
-	oData.onValueUpdated = function(vValue) {
-		valueFromOnValueUpdated = vValue;
-	};
-	oData.setValue('A');
-	equal(valueFromOnValueUpdated, 'A', 'onValueUpdated return updated data');
-    equal(oData.getValue(), 'A', 'data updated returned properly');
-
-    /**
-     * jMVP.Model
-     */
-//	equal(oModel.foo.getValue(), 'foo', 'getValue return right data');
-//	oModel.foo.setValue('FOO');
-//	equal(oRawData.foo, 'FOO', 'original data update');
-//	equal(oModel.foo.getValue(), 'FOO', 'getValue return updated data');
-//
-//    ok(oModel.onModelUpdated, 'onModelUpdated exists');
-//    equal(typeof oModel.onModelUpdated, 'function', 'onModelUpdated is a function');
-//
-//    oModel.onModelUpdated = function(sKey, vValue) {
-//        valueFromOnModelUpdated.key = sKey;
-//        valueFromOnModelUpdated.value = vValue;
-//    };
-//    oModel.foo.setValue('FOOO');
-//    equal(valueFromOnModelUpdated.key, 'foo', 'onModelUpdated return key');
-//    equal(valueFromOnModelUpdated.value, 'FOOO', 'onModelUpdated return updated value');
-});
-
-module('jMVP.View');
-test('View / Template / Element instances - functional', function() {
-
-	var oModel = {foo:'foo'},
-		oTmpl = {test:{
-			text: 'foo'
-		}},
-		oView = new jMVP.View(oTmpl),
-		div = document.createElement('div');
-
-	/**
-	 * jMVP.View instance
-	 */
-	ok(oView.oConfig, 'oRawView exists');
-	deepEqual(oView.oConfig, oTmpl, 'oRawView === oTmpl');
-
-	ok(oView.eDomView, 'eDomView exists');
-
-    ok(oView.oMap, 'oMap exists');
-    equal(typeof oView.oMap, 'object', 'oMap is an object');
-
-    ok(oView.oLoopMap, 'oLoopMap exists');
-    equal(typeof oView.oLoopMap, 'object', 'oLoopMap is an object');
-
-    ok(oView.oNodesMap, 'oNodesMap exists');
-    equal(typeof oView.oNodesMap, 'object', 'oNodesMap is an object');
-
-    'getMap,getConfig,isInMap,getDOM,getElement,generate,mapLoop,mapHooks'
-        .split(',').forEach(function(method) {
-
-            ok(oView[method], method + ' exists');
-            equal(typeof oView[method], 'function', method + ' is a function');
-        });
-
-    deepEqual(oView.getConfig(), oTmpl, '.getConfig() === oTmpl');
-    deepEqual(oView.getMap(), oView.oMap, '.getMap() === oView.oMap');
-    deepEqual(oView.getDOM(), oView.eDomView, '.getDOM() === oView.eDomView');
-    equal(oView.isInMap('foo'), true, 'is in map');
-    equal(oView.isInMap('aaa'), false, 'is not in map');
-    deepEqual(oView.getElement('test'), oView.eDomView.querySelector('.test'), 'getElement gets');
-    equal(oView.getElement('aaa'), null, 'getElement null');
-
-    ok(oView.render, 'render exists');
-    equal(typeof oView.render, 'function', 'render is a functgion');
-    ok(oView.update, 'update exists');
-    equal(typeof oView.update, 'function', 'update is a functgion');
-    ok(oView.updateHooks, 'updateHooks exists');
-    equal(typeof oView.updateHooks, 'function', 'updateHooks is a functgion');
-    ok(oView.updateLoop, 'updateLoop exists');
-    equal(typeof oView.updateLoop, 'function', 'updateLoop is a functgion');
-
-	oView.render(div);
-
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="test"></div></div>', 'View rendered properly');
-
-	ok(oView.update, 'update exists');
-	equal(typeof oView.update, 'function', 'update is a function');
-	equal(oView.update.length, 2, 'render expects 2 arguments');
-
-	oView.update('foo', oModel.foo);
-
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), '<div><div class="test">foo</div></div>', 'Basic hook test');
-});
-test('View hooks - functional', function() {
-
-	ok(jMVP.View.hooks, 'jMVP.View.hooks exists');
-	equal(typeof jMVP.View.hooks, 'object', 'jMVP.View.hooks is an object');
-	equal(jMVP.View.prototype.hooks, undefined, 'jMVP.View.hooks is static');
-
-	'text,html,attributes,classNames'.split(',').forEach(function(hook) {
-
-		ok(jMVP.View.hooks[hook], 'jMVP.View.hooks.' + hook + ' exists');
-		equal(typeof jMVP.View.hooks[hook], 'function', 'jMVP.View.hooks.' + hook + ' is a function');
-		if (hook == 'classNames' || hook == 'attributes') {
-			equal(jMVP.View.hooks[hook].length, 3, 'jMVP.View.hooks.' + hook + ' expects 3 arguments');
-		} else {
-			equal(jMVP.View.hooks[hook].length, 2, 'jMVP.View.hooks.' + hook + ' expects 2 arguments');
-		}
-	});
-
-	var oModel = {
-			pagetitle: 'test',
-			pagecontent: '<p>Bla bla bla</p>',
-			hideTitle: true
-		},
-		oTmpl = {
-			header: {},
-			content: {
-                children: {
-                    side: {},
-                    main: {
-                        children:{
-                            title: {
-                                tag: 'h1',
-                                text: 'pagetitle',
-                                attributes: {
-                                    title: 'pagetitle'
-                                },
-                                classNames: {
-                                    visible: 'hideTitle'
-                                }
-                            },
-                            article: {
-                                html: 'pagecontent',
-                                attributes: {
-                                    title: 'pagetitle'
-                                }
-                            }
-                        }
-                    }
-                }
-			}
-		},
-		oView = new jMVP.View(oTmpl),
-		div = document.createElement('div'),
-		updatedHtml = '<div><div class="header"></div><div class="content"><div class="side"></div><div class="main"><h1 class="title visible" title="test">test</h1><div class="article" title="test"><p>bla bla bla</p></div></div></div></div>',
-		emptyHtml = '<div><div class="header"></div><div class="content"><div class="side"></div><div class="main"><h1 class="title"></h1><div class="article"></div></div></div></div>';
-
-	oView.render(div);
-
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), emptyHtml, 'Complex view markup');
-
-	oView.update('pagetitle', oModel.pagetitle);
-	oView.update('pagecontent', oModel.pagecontent);
-	oView.update('hideTitle', oModel.hideTitle);
-
-	equal(div.innerHTML.toLowerCase().replace(/[\n\r]/g, ''), updatedHtml, 'text and html hooks');
 });
 
 module('jMVP.dom');
@@ -408,7 +194,7 @@ test('Presenter instance - basic / functional', function() {
         },
 		presenter = new jMVP.Presenter(handlers),
         oModel = new jMVP.Model(model),
-        oView = new jMVP.View(view);
+        oView = new jMVP.View(view, true);
 
         /**
      * With Presenter config object only
@@ -460,7 +246,9 @@ test('Instance - functional', function() {
         },
         view = {
             test: {
-                text: 'foo'
+                hook:{
+                    text: 'foo'
+                }
             }
         },
         model = {
@@ -501,41 +289,4 @@ test('Instance - functional', function() {
     deepEqual(jmvp.getView(), jmvp.view, 'getView works');
     deepEqual(jmvp.getPresenter(), jmvp.presenter, 'getPresenter works');
 
-});
-test('Complex view/model structure', function() {
-   var model = {
-           title: 'Titre',
-           subtitle: 'Sous Titre',
-           categories: ['action','adventure','sci-fi'],
-           topics: ['test','test2']
-       },
-       view = {
-            article: {
-                children: {
-                    header: {
-                        text: 'title'
-                    },
-                    subheader: {
-                        text: 'subtitle'
-                    },
-                    genres: {
-                        tag: 'ul',
-                        loop: {
-                            source: 'categories',
-                            template: {
-                                item: {
-                                    tag: 'li',
-                                    text: 'categories',
-                                    attributes: {
-                                        title: 'categories'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-       },
-       presenter = {},
-       jmvp = new jMVP(model, view, presenter);
 });

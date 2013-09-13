@@ -12,27 +12,31 @@ var model = {
 var viewHeader = {
     children: {
         logo: {
-            text: 'sitetitle'
+            hook: {
+                text: 'sitetitle'
+            }
         },
         liveEdit: {
             tag: 'input',
-            attributes: {
-                value: 'pagetitle',
-                type: 'search'
-            }
-        },
-        select: {
-            tag: 'select',
-            loop: {
-                source: 'items',
-                template: {
-                    item: {
-                        tag: 'option',
-                        text: 'items'
-                    }
+            hook: {
+                attr: {
+                    value: 'pagetitle',
+                    type: 'search'
                 }
             }
         }
+//        select: {
+//            tag: 'select',
+//            loop: {
+//                source: 'items',
+//                template: {
+//                    item: {
+//                        tag: 'option',
+//                        text: 'items'
+//                    }
+//                }
+//            }
+//        }
     }
 };
 
@@ -43,14 +47,18 @@ var view = {
         children: {
             title: {
                 tag: 'h1',
-                text: 'pagetitle',
-                classNames: {
-                    red: 'isRed',
-                    big: 'isBig'
+                hook: {
+                    css: {
+                        red: 'isRed',
+                        big: 'isBig'
+                    },
+                    text: 'pagetitle'
                 }
             },
             content: {
-                html: 'pagecontent'
+                hook: {
+                    html: 'pagecontent'
+                }
             }
         }
 	}
