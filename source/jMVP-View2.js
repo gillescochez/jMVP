@@ -91,29 +91,30 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
                 nNodesLen = aNodes ? aNodes.length : 0,
                 nNodesCount = 0;
 
+            if (nNodesLen === 0) nNodesCount = nValueLen;
+            else if (nNodesLen !== nValueLen) {
 
-            // TODO implement system to remove nodes if there is too many
-            if (nNodesLen === 0) {
+                if (nNodesLen < nValueLen) nNodesCount = nValueLen - nNodesLen;
+                else {
 
-                nNodesCount = nValueLen;
+                    nNodesCount = nNodesLen - nValueLen;
 
-            } else if (nNodesLen !== nValueLen) {
+                    // TODO implement system to remove nodes if there is too many
 
-                if (nNodesLen < nValueLen) {
-
-                    nNodesCount = nValueLen - nNodesLen;
-
-                } else {
-
+                    // reset nNodesCount to avoid creation of new nodes
+                    nNodesCount = 0;
                 }
             }
 
-            this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
-            aNodes = this.oNodeMap[sItemKey];
+            console.log(this.oNodeMap[sItemKey], nNodesCount);
+
+            aNodes = this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
 
             jMVP.each(aNodes, function(eNode) {
+
                 oLoopConfig.parent.appendChild(eNode);
                 this.hook(oTemplateItemConfig.hook, eNode);
+
             }, this);
 
         }, this);
@@ -131,13 +132,17 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
  */
 jMVP.View.prototype.doNodes = function(nCount, sTag, sReference) {
 
-    var i = 0;
+    var i = 0,
+        aNodes = [];
 
     for (; i < nCount; i++) {
 
         var eNode = this.createNode(sReference, sTag);
         this.storeNode(sReference, eNode);
+        aNodes.push(eNode);
     }
+
+    return aNodes;
 };
 
 /**
