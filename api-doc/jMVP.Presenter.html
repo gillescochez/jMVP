@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Presenter"><span class="type-signature"></span>new Presenter<span class="signature">(oConfig, <span class="optional">oView</span>, <span class="optional">oModel</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Presenter"><span class="type-signature"></span>new Presenter<span class="signature">(config, <span class="optional">view</span>, <span class="optional">model</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -85,7 +85,7 @@
 	
         <tr>
             
-                <td class="name"><code>oConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -116,7 +116,7 @@
 	
         <tr>
             
-                <td class="name"><code>oView</code></td>
+                <td class="name"><code>view</code></td>
             
             
             <td class="type">
@@ -149,7 +149,7 @@
 	
         <tr>
             
-                <td class="name"><code>oModel</code></td>
+                <td class="name"><code>model</code></td>
             
             
             <td class="type">
@@ -330,7 +330,7 @@
      }
 };
 
-var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pre>
+var oPresenter = new jMVP.Presenter(oPresenterConfig, view, model);</code></pre>
 
     
 </dd>
@@ -356,7 +356,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
         <dl>
             
 <dt>
-    <h4 class="name" id="bindToView"><span class="type-signature"></span>bindToView<span class="signature">(sReference)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="bindToView"><span class="type-signature"></span>bindToView<span class="signature">(ref)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -398,7 +398,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
 	
         <tr>
             
-                <td class="name"><code>sReference</code></td>
+                <td class="name"><code>ref</code></td>
             
             
             <td class="type">
@@ -510,7 +510,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 86
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 87
     </li></ul></dd>
     
     
@@ -593,7 +593,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 94
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 95
     </li></ul></dd>
     
     
@@ -676,7 +676,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 111
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 112
     </li></ul></dd>
     
     
@@ -759,7 +759,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 119
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 120
     </li></ul></dd>
     
     
@@ -801,7 +801,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
         
             
 <dt>
-    <h4 class="name" id="isInMap"><span class="type-signature"></span>isInMap<span class="signature">(sKey)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="isInMap"><span class="type-signature"></span>isInMap<span class="signature">(key)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
@@ -843,7 +843,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
 	
         <tr>
             
-                <td class="name"><code>sKey</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
@@ -885,7 +885,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 103
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 104
     </li></ul></dd>
     
     
@@ -927,7 +927,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
         
             
 <dt>
-    <h4 class="name" id="routeEvent"><span class="type-signature"></span>routeEvent<span class="signature">(oDOMEvent)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="routeEvent"><span class="type-signature"></span>routeEvent<span class="signature">(domEvent)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -969,7 +969,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
 	
         <tr>
             
-                <td class="name"><code>oDOMEvent</code></td>
+                <td class="name"><code>domEvent</code></td>
             
             
             <td class="type">
@@ -1016,7 +1016,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 60
+        <a href="jMVP-Presenter.js.html">jMVP-Presenter.js</a>, line 61
     </li></ul></dd>
     
     
@@ -1059,7 +1059,7 @@ var oPresenter = new jMVP.Presenter(oPresenterConfig, oView, oModel);</code></pr
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 14 2013 13:39:07 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 14 2013 14:14:11 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -28,50 +28,50 @@ test('API', function() {
         errorExists = true;
     };
 
-    var oView = new jMVP.View();
+    var viewInstance = new jMVP.View();
     equal(errorExists, true, 'Error if no config object');
 
     /** re-assign error method **/
     jMVP.error = jMVP_error;
 
-    oView = new jMVP.View(viewConfig);
+    viewInstance = new jMVP.View(viewConfig);
 
-    ok(oView instanceof jMVP.View, 'jMVP.View instance');
+    ok(viewInstance instanceof jMVP.View, 'jMVP.View instance');
 
     // config object
-    ok(oView.oConfig, 'config obj exists');
-    deepEqual(oView.oConfig, viewConfig, 'Configuration stored');
-    ok(oView.getConfig, 'oView.getConfig exists');
-    equal(typeof oView.getConfig, 'function', 'oView.getConfig exists');
-    equal(oView.getConfig.length, 0, '0 argument');
-    deepEqual(oView.getConfig(), viewConfig, 'oView.getConfig() == raw config');
-    deepEqual(oView.getConfig(), oView.oConfig, 'oView.getConfig() == stored prop');
+    ok(viewInstance.config, 'config obj exists');
+    deepEqual(viewInstance.config, viewConfig, 'Configuration stored');
+    ok(viewInstance.getConfig, 'viewInstance.getConfig exists');
+    equal(typeof viewInstance.getConfig, 'function', 'viewInstance.getConfig exists');
+    equal(viewInstance.getConfig.length, 0, '0 argument');
+    deepEqual(viewInstance.getConfig(), viewConfig, 'viewInstance.getConfig() == raw config');
+    deepEqual(viewInstance.getConfig(), viewInstance.config, 'viewInstance.getConfig() == stored prop');
 
     // maps and getters
-    'oNodeMap,oRefMap,oLoopMap'.split(',').forEach(function(sMapName) {
+    'nodeMap,refMap,loopMap'.split(',').forEach(function(mapName) {
 
-        var sGetter = 'get' + sMapName.substring(1, sMapName.length);
+        var getter = 'get' + mapName.substring(0, 1).toUpperCase() + mapName.substring(1, mapName.length);
 
         // property tests
-        ok(oView[sMapName], sMapName);
-        deepEqual(oView[sMapName], {}, sMapName + ' configuration stored');
+        ok(viewInstance[mapName], mapName);
+        deepEqual(viewInstance[mapName], {}, mapName + ' configuration stored');
 
         // getter  tests
-        ok(oView[sGetter], sGetter);
-        equal(typeof oView[sGetter], 'function', sGetter + ' is function');
-        equal(oView[sGetter].length, 0, '0 argument');
-        deepEqual(oView[sGetter](), {}, sGetter + ' == {}');
-        deepEqual(oView[sGetter](), oView[sMapName], sGetter + ' == stored prop');
+        ok(viewInstance[getter], getter);
+        equal(typeof viewInstance[getter], 'function', getter + ' is function');
+        equal(viewInstance[getter].length, 0, '0 argument');
+        deepEqual(viewInstance[getter](), {}, getter + ' == {}');
+        deepEqual(viewInstance[getter](), viewInstance[mapName], getter + ' == stored prop');
     });
 
     // dom view
-    ok(oView.eDomView, 'eDomView exists');
-    equal(oView.eDomView.outerHTML, '<div></div>', 'eDomView is set');
-    ok(oView.getDomView, 'getDomView');
-    equal(typeof oView.getDomView, 'function', 'getDomView is function');
-    equal(oView.getDomView.length, 0, '0 argument');
-    deepEqual(oView.getDomView().outerHTML, '<div></div>', 'getDomView == {}');
-    deepEqual(oView.getDomView(), oView.eDomView, 'getDomView == stored prop');
+    ok(viewInstance.domView, 'domView exists');
+    equal(viewInstance.domView.outerHTML, '<div></div>', 'domView is set');
+    ok(viewInstance.getDomView, 'getDomView');
+    equal(typeof viewInstance.getDomView, 'function', 'getDomView is function');
+    equal(viewInstance.getDomView.length, 0, '0 argument');
+    deepEqual(viewInstance.getDomView().outerHTML, '<div></div>', 'getDomView == {}');
+    deepEqual(viewInstance.getDomView(), viewInstance.domView, 'getDomView == stored prop');
 
     // custom id/tag/className for dom view
     var simpleView = new jMVP.View({
@@ -82,59 +82,59 @@ test('API', function() {
     deepEqual(simpleView.getDomView().outerHTML, '<span id="test" class="foo"></span>', 'getDomView == {}');
 
     // createNode method
-    ok(oView.createNode, 'oView.createNode exists');
-    equal(typeof oView.createNode, 'function', 'oView.createNode exists');
-    equal(oView.createNode.length, 2, '2 arguments');
+    ok(viewInstance.createNode, 'viewInstance.createNode exists');
+    equal(typeof viewInstance.createNode, 'function', 'viewInstance.createNode exists');
+    equal(viewInstance.createNode.length, 2, '2 arguments');
 
     // storeNode method
-    ok(oView.storeNode, 'oView.storeNode exists');
-    equal(typeof oView.storeNode, 'function', 'oView.storeNode exists');
-    equal(oView.storeNode.length, 2, '2 arguments');
+    ok(viewInstance.storeNode, 'viewInstance.storeNode exists');
+    equal(typeof viewInstance.storeNode, 'function', 'viewInstance.storeNode exists');
+    equal(viewInstance.storeNode.length, 2, '2 arguments');
 
-    var sHook = 'text',
-        vValue = 'foo',
+    var hook = 'text',
+        value = 'foo',
         node = document.createElement('div');
 
-    oView.storeNode('node', node);
-    deepEqual(oView.getNodeMap()['node'], node, 'storeNode: node is stored');
+    viewInstance.storeNode('node', node);
+    deepEqual(viewInstance.getNodeMap()['node'], node, 'storeNode: node is stored');
 
     // getNode method
-    ok(oView.getNode, 'oView.getNode exists');
-    equal(typeof oView.getNode, 'function', 'oView.getNode exists');
-    equal(oView.getNode.length, 1, '1 argument');
-    deepEqual(oView.getNode('node'), node, 'getNode on existing node');
-    equal(oView.getNode('asda'), null, 'getNode on non-existing node');
+    ok(viewInstance.getNode, 'viewInstance.getNode exists');
+    equal(typeof viewInstance.getNode, 'function', 'viewInstance.getNode exists');
+    equal(viewInstance.getNode.length, 1, '1 argument');
+    deepEqual(viewInstance.getNode('node'), node, 'getNode on existing node');
+    equal(viewInstance.getNode('asda'), null, 'getNode on non-existing node');
 
     // storeHook
-    ok(oView.storeHook, 'oView.storeHook exists');
-    equal(typeof oView.storeHook, 'function', 'oView.storeHook exists');
-    equal(oView.storeHook.length, 3, '3 arguments');
+    ok(viewInstance.storeHook, 'viewInstance.storeHook exists');
+    equal(typeof viewInstance.storeHook, 'function', 'viewInstance.storeHook exists');
+    equal(viewInstance.storeHook.length, 3, '3 arguments');
 
-    oView.storeHook(node, sHook, vValue);
+    viewInstance.storeHook(node, hook, value);
 
-    ok(oView.getRefMap()[vValue], 'RefMap property created');
-    ok(oView.getRefMap()[vValue][sHook], 'RefMap for the hook created');
-    equal(oView.getRefMap()[vValue][sHook].constructor, Array, 'Map for the hook is an array');
-    deepEqual(oView.getRefMap()[vValue][sHook][0], node, 'Node is stored');
+    ok(viewInstance.getRefMap()[value], 'RefMap property created');
+    ok(viewInstance.getRefMap()[value][hook], 'RefMap for the hook created');
+    equal(viewInstance.getRefMap()[value][hook].constructor, Array, 'Map for the hook is an array');
+    deepEqual(viewInstance.getRefMap()[value][hook][0], node, 'Node is stored');
 
-    oView.storeHook(node, 'attr', {
+    viewInstance.storeHook(node, 'attr', {
         title: 'attr1',
         rel: 'attr2'
     });
 
-    sHook = 'attr';
+    hook = 'attr';
 
     'attr1,attr2'.split(',').forEach(function(sProp) {
-        ok(oView.getRefMap()[sProp], 'Map property created');
-        ok(oView.getRefMap()[sProp][sHook], 'Map for the hook created');
-        equal(oView.getRefMap()[sProp][sHook][sProp == 'attr1' ? 'title' : 'rel'].constructor, Array, 'Map for the hook is an array');
-        deepEqual(oView.getRefMap()[sProp][sHook][sProp == 'attr1' ? 'title' : 'rel'][0], node, 'Node is stored');
+        ok(viewInstance.getRefMap()[sProp], 'Map property created');
+        ok(viewInstance.getRefMap()[sProp][hook], 'Map for the hook created');
+        equal(viewInstance.getRefMap()[sProp][hook][sProp == 'attr1' ? 'title' : 'rel'].constructor, Array, 'Map for the hook is an array');
+        deepEqual(viewInstance.getRefMap()[sProp][hook][sProp == 'attr1' ? 'title' : 'rel'][0], node, 'Node is stored');
     });
 
     // storeLoop
-    ok(oView.storeLoop, 'oView.storeLoop exists');
-    equal(typeof oView.storeLoop, 'function', 'oView.storeLoop exists');
-    equal(oView.storeLoop.length, 2, '2 arguments');
+    ok(viewInstance.storeLoop, 'viewInstance.storeLoop exists');
+    equal(typeof viewInstance.storeLoop, 'function', 'viewInstance.storeLoop exists');
+    equal(viewInstance.storeLoop.length, 2, '2 arguments');
 
     var loop = {
         source: 'a',
@@ -145,45 +145,45 @@ test('API', function() {
         }
     };
 
-    oView.storeLoop(loop);
-    deepEqual(oView.getLoopMap()['a'][0], loop);
+    viewInstance.storeLoop(loop);
+    deepEqual(viewInstance.getLoopMap()['a'][0], loop);
 
     // hook method
-    ok(oView.hook, 'oView.hookItUp exists');
-    equal(typeof oView.hook, 'function', 'oView.hookItUp exists');
-    equal(oView.hook.length, 2, '2 optional arguments');
+    ok(viewInstance.hook, 'viewInstance.hookItUp exists');
+    equal(typeof viewInstance.hook, 'function', 'viewInstance.hookItUp exists');
+    equal(viewInstance.hook.length, 2, '2 optional arguments');
 
     // reassign a new clean instance
-    oView = new jMVP.View(viewConfig);
+    viewInstance = new jMVP.View(viewConfig);
 
     // parse method
-    ok(oView.parse, 'oView.parse exists');
-    equal(typeof oView.parse, 'function', 'oView.parse exists');
-    equal(oView.parse.length, 2, '2 optional arguments');
+    ok(viewInstance.parse, 'viewInstance.parse exists');
+    equal(typeof viewInstance.parse, 'function', 'viewInstance.parse exists');
+    equal(viewInstance.parse.length, 2, '2 optional arguments');
 
-    oView.parse();
+    viewInstance.parse();
 
-    equal(oView.eDomView.innerHTML, '<div class="test"><span class="foo"></span></div>', 'DOM generated');
+    equal(viewInstance.domView.innerHTML, '<div class="test"><span class="foo"></span></div>', 'DOM generated');
 
     // apply hooks
-    ok(oView.applyHooks, 'oView.applyHooks exists');
-    equal(typeof oView.applyHooks, 'function', 'oView.applyHooks exists');
-    equal(oView.applyHooks.length, 2, '2 arguments');
-    oView.applyHooks('foo', 'a');
-    equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
+    ok(viewInstance.applyHooks, 'viewInstance.applyHooks exists');
+    equal(typeof viewInstance.applyHooks, 'function', 'viewInstance.applyHooks exists');
+    equal(viewInstance.applyHooks.length, 2, '2 arguments');
+    viewInstance.applyHooks('foo', 'a');
+    equal(viewInstance.getNode('foo').innerHTML, 'a', 'apply Hooks');
     // reset
-    oView.applyHooks('foo', '');
+    viewInstance.applyHooks('foo', '');
 
     // update method
-    ok(oView.update, 'oView.update exists');
-    equal(typeof oView.update, 'function', 'oView.update exists');
-    equal(oView.update.length, 2, '2 arguments');
+    ok(viewInstance.update, 'viewInstance.update exists');
+    equal(typeof viewInstance.update, 'function', 'viewInstance.update exists');
+    equal(viewInstance.update.length, 2, '2 arguments');
 
-    oView.update('foo', 'a');
-    equal(oView.getNode('foo').innerHTML, 'a', 'apply Hooks');
+    viewInstance.update('foo', 'a');
+    equal(viewInstance.getNode('foo').innerHTML, 'a', 'apply Hooks');
 
-    oView.update('foo', ['a', 'b']);
-    equal(oView.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
+    viewInstance.update('foo', ['a', 'b']);
+    equal(viewInstance.getNode('foo').innerHTML, 'a, b', 'apply Hooks');
 
 });
 test('Hooks', function() {
@@ -222,28 +222,28 @@ test('Loops', function() {
         }
     };
 
-    var oView = new jMVP.View(view);
-    oView.parse();
+    var viewInstance = new jMVP.View(view);
+    viewInstance.parse();
 
-    deepEqual(oView.getLoopMap()['foo'][0], view.list.loop, 'Loop config stored');
-    equal(oView.getDomView().innerHTML, '<ul class="list"></ul>', 'Init: Loop template handled');
+    deepEqual(viewInstance.getLoopMap()['foo'][0], view.list.loop, 'Loop config stored');
+    equal(viewInstance.getDomView().innerHTML, '<ul class="list"></ul>', 'Init: Loop template handled');
 
-    ok(oView.loop, '.loop exists');
-    equal(typeof oView.loop, 'function', '.loop is a function');
-    equal(oView.loop.length, 2, '.loop has 2 arguments');
+    ok(viewInstance.loop, '.loop exists');
+    equal(typeof viewInstance.loop, 'function', '.loop is a function');
+    equal(viewInstance.loop.length, 2, '.loop has 2 arguments');
 
-    ok(oView.doNodes, '.doNodes exists');
-    equal(typeof oView.doNodes, 'function', '.doNodes is a function');
-    equal(oView.doNodes.length, 3, '.doNodes has 2 argument');
+    ok(viewInstance.doNodes, '.doNodes exists');
+    equal(typeof viewInstance.doNodes, 'function', '.doNodes is a function');
+    equal(viewInstance.doNodes.length, 3, '.doNodes has 2 argument');
 
-    oView.update('foo', ['a', 'b']);
-    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
+    viewInstance.update('foo', ['a', 'b']);
+    equal(viewInstance.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
 
     // testing adding nodes
-    oView.update('foo', ['a', 'b', 'c']);
-    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li><li class="item">c</li></ul>', 'Array: Loop content updated with more elements');
+    viewInstance.update('foo', ['a', 'b', 'c']);
+    equal(viewInstance.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li><li class="item">c</li></ul>', 'Array: Loop content updated with more elements');
 
     // testing removing nodes
-    oView.update('foo', ['a', 'b']);
-    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated with less elements');
+    viewInstance.update('foo', ['a', 'b']);
+    equal(viewInstance.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated with less elements');
 });

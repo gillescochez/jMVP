@@ -70,7 +70,7 @@ test('.each static method - functional', function() {
 module('jMVP.dom');
 test('dom helper / Wrap class - basic / functional', function() {
 
-	var aMethods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
+	var methods = 'each,addClass,removeClass,text,html,rmAttr,setAttr'.split(','),
 		div = document.createElement('div'),
 		divDom,
 		aDiv = [
@@ -92,9 +92,9 @@ test('dom helper / Wrap class - basic / functional', function() {
     ok(jMVP.dom.DIV, 'DIV constant exists');
     ok(jMVP.dom.INNER_TEXT, 'INNER_TEXT constant exists');
 
-	aMethods.forEach(function(sMethod) {
-		ok(jMVP.dom.Wrap.prototype[sMethod], 'jMVP.dom.Wrap.prototype.' + sMethod + ' exists');
-		equal(typeof jMVP.dom.Wrap.prototype[sMethod], 'function', 'jMVP.dom.Wrap.prototype.' + sMethod + ' is a function');
+	methods.forEach(function(method) {
+		ok(jMVP.dom.Wrap.prototype[method], 'jMVP.dom.Wrap.prototype.' + method + ' exists');
+		equal(typeof jMVP.dom.Wrap.prototype[method], 'function', 'jMVP.dom.Wrap.prototype.' + method + ' is a function');
 	});
 
 	/**
@@ -103,7 +103,7 @@ test('dom helper / Wrap class - basic / functional', function() {
 	//TODO Move text and html test from View hooks into here
 	divDom = jMVP.dom(div);
 	deepEqual(divDom.constructor, jMVP.dom.Wrap, 'dom method return an instance of dom.Wrap');
-	deepEqual(divDom.aNodes[0], div, 'element is stored');
+	deepEqual(divDom.nodes[0], div, 'element is stored');
 
 //    deepEqual(jMVP.dom.createNode(), document.createElement('div'), 'default is a div');
 //    deepEqual(jMVP.dom.createNode('span'), document.createElement('span'), 'createNode custom tag');
@@ -116,14 +116,14 @@ test('dom helper / Wrap class - basic / functional', function() {
 	equal(count, total, 'each iterated correctly');
 
 	divDom.addClass('foo');
-	equal(divDom.aNodes[0].className, ' foo', 'addClass success');
+	equal(divDom.nodes[0].className, ' foo', 'addClass success');
 	divDom.removeClass('foo');
-	equal(divDom.aNodes[0].className, '', 'removeClass success');
+	equal(divDom.nodes[0].className, '', 'removeClass success');
 
 	divDom.setAttr('foo', 'yes');
-	equal(divDom.aNodes[0].getAttribute('foo'), 'yes', 'setAttr success');
+	equal(divDom.nodes[0].getAttribute('foo'), 'yes', 'setAttr success');
 	divDom.rmAttr('foo');
-	equal(divDom.aNodes[0].getAttribute('foo'), null, 'rmAttr success');
+	equal(divDom.nodes[0].getAttribute('foo'), null, 'rmAttr success');
 
     var span = document.createElement('span');
     span.className = 'test';
@@ -131,9 +131,9 @@ test('dom helper / Wrap class - basic / functional', function() {
 
     // reset divDom before chain test as can affect test above
     divDom = jMVP.dom(document.createElement('div'));
-	aMethods.forEach(function(sMethod) {
-        if (sMethod == 'each') deepEqual(divDom[sMethod](function(){}), divDom, sMethod + ' chained');
-        else deepEqual(divDom[sMethod]('a'), divDom, sMethod + ' chained');
+	methods.forEach(function(method) {
+        if (method == 'each') deepEqual(divDom[method](function(){}), divDom, method + ' chained');
+        else deepEqual(divDom[method]('a'), divDom, method + ' chained');
 
 	});
 
@@ -156,12 +156,12 @@ test('dom helper / Wrap class - basic / functional', function() {
 
     // display method
     divDom.display(false);
-    equal(divDom.aNodes[0].style.display, 'none', 'display = none');
+    equal(divDom.nodes[0].style.display, 'none', 'display = none');
     divDom.display();
-    equal(divDom.aNodes[0].style.display, '', 'display = block (no argument)');
+    equal(divDom.nodes[0].style.display, '', 'display = block (no argument)');
     divDom.display(false);
     divDom.display(true);
-    equal(divDom.aNodes[0].style.display, '', 'display = block');
+    equal(divDom.nodes[0].style.display, '', 'display = block');
 });
 
 module('jMVP.Presenter');
@@ -178,8 +178,8 @@ test('Presenter instance - basic / functional', function() {
         },
         handlers = {
 			test: {
-				click: function(oEvent) {
-                    deepEqual(oEvent, mockEvent, 'Event object returned');
+				click: function(event) {
+                    deepEqual(event, mockEvent, 'Event object returned');
                     clicked = true;
 				}
 			}
@@ -193,17 +193,17 @@ test('Presenter instance - basic / functional', function() {
             foo: 'foo'
         },
 		presenter = new jMVP.Presenter(handlers),
-        oModel = new jMVP.Model(model),
-        oView = new jMVP.View(view, true);
+        modelInstance = new jMVP.Model(model),
+        viewInstance = new jMVP.View(view, true);
 
         /**
      * With Presenter config object only
      */
 
-	ok(presenter.oMap, 'Map exists');
-	ok(presenter.oMap.test, 'data stored in map');
-    deepEqual(presenter.oMap, handlers, 'data stored properly');
-    deepEqual(presenter.oMap.test, handlers.test, 'data stored properly');
+	ok(presenter.map, 'Map exists');
+	ok(presenter.map.test, 'data stored in map');
+    deepEqual(presenter.map, handlers, 'data stored properly');
+    deepEqual(presenter.map.test, handlers.test, 'data stored properly');
 
     'getMap,getView,getModel,getConfig,isInMap,routeEvent,bindToView'.split(',').forEach(function(method) {
         ok(presenter[method], method + ' exists');
@@ -223,12 +223,12 @@ test('Presenter instance - basic / functional', function() {
      * @type {jMVP.Presenter}
      */
     presenter = new jMVP.Presenter(
-        handlers, oView, oModel
+        handlers, viewInstance, modelInstance
     );
 
-    deepEqual(presenter.getMap(), presenter.oMap, 'getMap');
-    deepEqual(presenter.getModel(), oModel, 'getModel');
-    deepEqual(presenter.getView(), oView, 'getView');
+    deepEqual(presenter.getMap(), presenter.map, 'getMap');
+    deepEqual(presenter.getModel(), modelInstance, 'getModel');
+    deepEqual(presenter.getView(), viewInstance, 'getView');
     deepEqual(presenter.getConfig(), handlers, 'getView');
 
     ok(presenter.view, 'View is stored');
@@ -241,7 +241,7 @@ module('jMVP');
 test('Instance - functional', function() {
     var presenter = {
             test: {
-                click: function(oEvent, oModel, oView) {}
+                click: function(event, model, view) {}
             }
         },
         view = {
@@ -256,9 +256,9 @@ test('Instance - functional', function() {
         },
         jmvp = new jMVP(model, view, presenter);
 
-    ok(jmvp.oRawModel, 'oRawModel exists');
-    ok(jmvp.oRawView, 'oRawView exists');
-    ok(jmvp.oRawPresenter, 'oRawPresenter exists');
+    ok(jmvp.rawModel, 'rawModel exists');
+    ok(jmvp.rawView, 'rawView exists');
+    ok(jmvp.rawPresenter, 'rawPresenter exists');
 
     ok(jmvp.model, 'model exists');
     ok(jmvp.view, 'view exists');
@@ -268,7 +268,7 @@ test('Instance - functional', function() {
     deepEqual(jmvp.view.constructor, jMVP.View, 'view instance of jMVP.View');
     deepEqual(jmvp.presenter.constructor, jMVP.Presenter, 'presenter instance of jMVP.Presenter');
 
-    equal(jmvp.view.eDomView.innerHTML.toLowerCase(), '<div class="test">foo</div>', 'Setting new value on the model update the view');
+    equal(jmvp.view.domView.innerHTML.toLowerCase(), '<div class="test">foo</div>', 'Setting new value on the model update the view');
 
     ok(jmvp.addModelListener, 'addModelListener exists');
     equal(typeof jmvp.addModelListener, 'function', 'addModelListener is a function');
@@ -276,9 +276,9 @@ test('Instance - functional', function() {
     equal(typeof jmvp.applyModelToView, 'function', 'applyModelToView is a fucntion');
 
     // getter/setter for raw data
-    'RawModel,RawView,RawPresenter,Model,View,Presenter'.split(',').forEach(function(sValue) {
-        ok(jmvp['get' + sValue], sValue + ' exists');
-        equal(typeof jmvp['get' + sValue], 'function', sValue + ' is a function');
+    'RawModel,RawView,RawPresenter,Model,View,Presenter'.split(',').forEach(function(value) {
+        ok(jmvp['get' + value], value + ' exists');
+        equal(typeof jmvp['get' + value], 'function', value + ' is a function');
     });
 
     deepEqual(jmvp.getRawModel(), model, 'getRawModel works');

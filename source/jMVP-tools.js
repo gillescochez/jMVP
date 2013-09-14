@@ -1,8 +1,8 @@
 /**
  * Iterate over object, string and arrays and run a give function on each iteration
- * @param vData {*} The data to iterate over
- * @param fCallback {Function} The callback function
- * @param [oContext] {{}} The object context used to run the callback in
+ * @param data {*} The data to iterate over
+ * @param callback {Function} The callback function
+ * @param [context] {{}} The object context used to run the callback in
  *
  * @example
  *
@@ -26,32 +26,32 @@
  * }
  *
  */
-jMVP.each = function(vData, fCallback, oContext) {
+jMVP.each = function(data, callback, context) {
 
-    var sKey;
+    var key;
 
-    if (vData.constructor === Object && vData.constructor !== Array) {
+    if (data.constructor === Object && data.constructor !== Array) {
 
-        for (sKey in vData) {
+        for (key in data) {
 
-            if (vData[sKey]) {
-                fCallback.apply(oContext, [sKey, vData[sKey]]);
+            if (data.hasOwnProperty(key) && data[key]) {
+                callback.apply(context, [key, data[key]]);
             }
         }
 
-    } else if (typeof vData === "string" || vData instanceof Array) {
+    } else if (typeof data === "string" || data instanceof Array) {
 
-        (typeof vData === "string" ? vData.split("") : vData).forEach(function(vValue, nIdx) {
-            fCallback.apply(oContext, [vValue, nIdx]);
+        (typeof data === "string" ? data.split("") : data).forEach(function(value, i) {
+            callback.apply(context, [value, i]);
         });
     }
 };
 
 /**
  * Send a error message out
- * @param sMessage {String} Error message
- * @param nType {Number} Error type
+ * @param msg {String} Error message
+ * @param type {Number} Error type
  */
-jMVP.error = function(sMessage, nType) {
-    throw new Error(sMessage + ' - Error: ' + nType);
+jMVP.error = function(msg, type) {
+    throw new Error(msg + ' - Error: ' + type);
 };

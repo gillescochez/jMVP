@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="View"><span class="type-signature"></span>new View<span class="signature">(oConfig, bAutoParse)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="View"><span class="type-signature"></span>new View<span class="signature">(config, parse)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -83,7 +83,7 @@
 	
         <tr>
             
-                <td class="name"><code>oConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -106,7 +106,7 @@
 	
         <tr>
             
-                <td class="name"><code>bAutoParse</code></td>
+                <td class="name"><code>parse</code></td>
             
             
             <td class="type">
@@ -160,7 +160,7 @@
 	
         <tr>
             
-                <td class="name"><code>oConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -345,7 +345,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="emptyDomView"><span class="type-signature">&lt;static> </span>emptyDomView<span class="signature">(oConfig)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="emptyDomView"><span class="type-signature">&lt;static> </span>emptyDomView<span class="signature">(config)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -387,7 +387,7 @@
 	
         <tr>
             
-                <td class="name"><code>oConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -458,7 +458,7 @@
         
             
 <dt>
-    <h4 class="name" id="applyHooks"><span class="type-signature"></span>applyHooks<span class="signature">(sReference, vValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="applyHooks"><span class="type-signature"></span>applyHooks<span class="signature">(ref, value)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -500,7 +500,7 @@
 	
         <tr>
             
-                <td class="name"><code>sReference</code></td>
+                <td class="name"><code>ref</code></td>
             
             
             <td class="type">
@@ -523,7 +523,7 @@
 	
         <tr>
             
-                <td class="name"><code>vValue</code></td>
+                <td class="name"><code>value</code></td>
             
             
             <td class="type">
@@ -594,7 +594,7 @@
         
             
 <dt>
-    <h4 class="name" id="createNode"><span class="type-signature"></span>createNode<span class="signature">(sElementId, <span class="optional">sTagName</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createNode"><span class="type-signature"></span>createNode<span class="signature">(id, <span class="optional">tag</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -638,7 +638,7 @@
 	
         <tr>
             
-                <td class="name"><code>sElementId</code></td>
+                <td class="name"><code>id</code></td>
             
             
             <td class="type">
@@ -669,7 +669,7 @@
 	
         <tr>
             
-                <td class="name"><code>sTagName</code></td>
+                <td class="name"><code>tag</code></td>
             
             
             <td class="type">
@@ -750,7 +750,7 @@
         
             
 <dt>
-    <h4 class="name" id="doNodes"><span class="type-signature"></span>doNodes<span class="signature">(nCount, sTag, sReference)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="doNodes"><span class="type-signature"></span>doNodes<span class="signature">(count, tag, ref)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -792,7 +792,7 @@
 	
         <tr>
             
-                <td class="name"><code>nCount</code></td>
+                <td class="name"><code>count</code></td>
             
             
             <td class="type">
@@ -810,7 +810,7 @@
 	
         <tr>
             
-                <td class="name"><code>sTag</code></td>
+                <td class="name"><code>tag</code></td>
             
             
             <td class="type">
@@ -828,7 +828,7 @@
 	
         <tr>
             
-                <td class="name"><code>sReference</code></td>
+                <td class="name"><code>ref</code></td>
             
             
             <td class="type">
@@ -894,7 +894,7 @@
         
             
 <dt>
-    <h4 class="name" id="hook"><span class="type-signature"></span>hook<span class="signature">(oHookConfig, eNode)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="hook"><span class="type-signature"></span>hook<span class="signature">(config, node)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -936,7 +936,7 @@
 	
         <tr>
             
-                <td class="name"><code>oHookConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -959,7 +959,7 @@
 	
         <tr>
             
-                <td class="name"><code>eNode</code></td>
+                <td class="name"><code>node</code></td>
             
             
             <td class="type">
@@ -1030,7 +1030,7 @@
         
             
 <dt>
-    <h4 class="name" id="isInMap"><span class="type-signature"></span>isInMap<span class="signature">(sNodeId)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="isInMap"><span class="type-signature"></span>isInMap<span class="signature">(id)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
@@ -1072,7 +1072,7 @@
 	
         <tr>
             
-                <td class="name"><code>sNodeId</code></td>
+                <td class="name"><code>id</code></td>
             
             
             <td class="type">
@@ -1156,7 +1156,7 @@
         
             
 <dt>
-    <h4 class="name" id="loop"><span class="type-signature"></span>loop<span class="signature">(sReference, vValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loop"><span class="type-signature"></span>loop<span class="signature">(ref, value)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1198,7 +1198,7 @@
 	
         <tr>
             
-                <td class="name"><code>sReference</code></td>
+                <td class="name"><code>ref</code></td>
             
             
             <td class="type">
@@ -1221,7 +1221,7 @@
 	
         <tr>
             
-                <td class="name"><code>vValue</code></td>
+                <td class="name"><code>value</code></td>
             
             
             <td class="type">
@@ -1292,7 +1292,7 @@
         
             
 <dt>
-    <h4 class="name" id="loopNodes"><span class="type-signature"></span>loopNodes<span class="signature">(nValueLen, oLoopConfig, oTemplateItemConfig, sItemKey)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loopNodes"><span class="type-signature"></span>loopNodes<span class="signature">(valueLen, loopConfig, itemConfig, key)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1334,7 +1334,7 @@
 	
         <tr>
             
-                <td class="name"><code>nValueLen</code></td>
+                <td class="name"><code>valueLen</code></td>
             
             
             <td class="type">
@@ -1352,7 +1352,7 @@
 	
         <tr>
             
-                <td class="name"><code>oLoopConfig</code></td>
+                <td class="name"><code>loopConfig</code></td>
             
             
             <td class="type">
@@ -1370,7 +1370,7 @@
 	
         <tr>
             
-                <td class="name"><code>oTemplateItemConfig</code></td>
+                <td class="name"><code>itemConfig</code></td>
             
             
             <td class="type">
@@ -1388,7 +1388,7 @@
 	
         <tr>
             
-                <td class="name"><code>sItemKey</code></td>
+                <td class="name"><code>key</code></td>
             
             
             <td class="type">
@@ -1454,7 +1454,7 @@
         
             
 <dt>
-    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(<span class="optional">oConfig</span>, <span class="optional">eParentNode</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(<span class="optional">config</span>, <span class="optional">parentNode</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1498,7 +1498,7 @@
 	
         <tr>
             
-                <td class="name"><code>oConfig</code></td>
+                <td class="name"><code>config</code></td>
             
             
             <td class="type">
@@ -1524,14 +1524,14 @@
             
             
             
-            <td class="description last">Used if present instead of the instance oConfig</td>
+            <td class="description last">Used if present instead of the instance config</td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>eParentNode</code></td>
+                <td class="name"><code>parentNode</code></td>
             
             
             <td class="type">
@@ -1612,7 +1612,7 @@
         
             
 <dt>
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(eTarget)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(target)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1654,7 +1654,7 @@
 	
         <tr>
             
-                <td class="name"><code>eTarget</code></td>
+                <td class="name"><code>target</code></td>
             
             
             <td class="type">
@@ -1725,7 +1725,7 @@
         
             
 <dt>
-    <h4 class="name" id="storeHook"><span class="type-signature"></span>storeHook<span class="signature">(eNode, sHook, vValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="storeHook"><span class="type-signature"></span>storeHook<span class="signature">(node, hook, value)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1767,7 +1767,7 @@
 	
         <tr>
             
-                <td class="name"><code>eNode</code></td>
+                <td class="name"><code>node</code></td>
             
             
             <td class="type">
@@ -1790,7 +1790,7 @@
 	
         <tr>
             
-                <td class="name"><code>sHook</code></td>
+                <td class="name"><code>hook</code></td>
             
             
             <td class="type">
@@ -1813,7 +1813,7 @@
 	
         <tr>
             
-                <td class="name"><code>vValue</code></td>
+                <td class="name"><code>value</code></td>
             
             
             <td class="type">
@@ -1887,7 +1887,7 @@
         
             
 <dt>
-    <h4 class="name" id="storeLoop"><span class="type-signature"></span>storeLoop<span class="signature">(oLoopConfig, eParentNode)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="storeLoop"><span class="type-signature"></span>storeLoop<span class="signature">(loopConfig, parentNode)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1929,7 +1929,7 @@
 	
         <tr>
             
-                <td class="name"><code>oLoopConfig</code></td>
+                <td class="name"><code>loopConfig</code></td>
             
             
             <td class="type">
@@ -1952,7 +1952,7 @@
 	
         <tr>
             
-                <td class="name"><code>eParentNode</code></td>
+                <td class="name"><code>parentNode</code></td>
             
             
             <td class="type">
@@ -2023,7 +2023,7 @@
         
             
 <dt>
-    <h4 class="name" id="storeNode"><span class="type-signature"></span>storeNode<span class="signature">(sNodeId, eNode)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="storeNode"><span class="type-signature"></span>storeNode<span class="signature">(id, node)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2065,7 +2065,7 @@
 	
         <tr>
             
-                <td class="name"><code>sNodeId</code></td>
+                <td class="name"><code>id</code></td>
             
             
             <td class="type">
@@ -2088,7 +2088,7 @@
 	
         <tr>
             
-                <td class="name"><code>eNode</code></td>
+                <td class="name"><code>node</code></td>
             
             
             <td class="type">
@@ -2159,7 +2159,7 @@
         
             
 <dt>
-    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(sReference, vValue)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(ref, value)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2201,7 +2201,7 @@
 	
         <tr>
             
-                <td class="name"><code>sReference</code></td>
+                <td class="name"><code>ref</code></td>
             
             
             <td class="type">
@@ -2224,7 +2224,7 @@
 	
         <tr>
             
-                <td class="name"><code>vValue</code></td>
+                <td class="name"><code>value</code></td>
             
             
             <td class="type">
@@ -2314,7 +2314,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 14 2013 13:39:07 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 14 2013 14:14:11 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

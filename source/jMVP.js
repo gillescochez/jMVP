@@ -1,16 +1,16 @@
 /**
  * Create a new jMVP instance
  *
- * @prop oRawModel {Object} The original model config object
- * @prop oRawView {Object} The original model config object
- * @prop oRawPresenter {Object} The original model config object
+ * @prop rawModel {Object} The original model config object
+ * @prop rawView {Object} The original model config object
+ * @prop rawPresenter {Object} The original model config object
  * @prop model {Object} Instance of jMVP.Model
  * @prop view {Object} Instance of jMVP.View
  * @prop presenter {Object} Instance of jMVP.Presenter
  *
- * @param oRawModel {Object} The original model object
- * @param oRawView {Object} The view configuration object
- * @param oRawPresenter {Object} The presenter configuration object
+ * @param rawModel {Object} The original model object
+ * @param rawView {Object} The view configuration object
+ * @param rawPresenter {Object} The presenter configuration object
  *
  * @example
  *
@@ -36,15 +36,15 @@
  *
  * @constructor
  */
-var jMVP = function(oRawModel, oRawView, oRawPresenter) {
+var jMVP = function(rawModel, rawView, rawPresenter) {
 
-    this.oRawModel = oRawModel;
-    this.oRawView = oRawView;
-    this.oRawPresenter = oRawPresenter;
+    this.rawModel = rawModel;
+    this.rawView = rawView;
+    this.rawPresenter = rawPresenter;
 
-    this.model = new jMVP.Model(oRawModel);
-    this.view = new jMVP.View(oRawView, true);
-    this.presenter = new jMVP.Presenter(oRawPresenter, this.view, this.model);
+    this.model = new jMVP.Model(rawModel);
+    this.view = new jMVP.View(rawView, true);
+    this.presenter = new jMVP.Presenter(rawPresenter, this.view, this.model);
 
     this.addModelListener();
     this.applyModelToView();
@@ -54,8 +54,8 @@ var jMVP = function(oRawModel, oRawView, oRawPresenter) {
  * Set the onModelUpdated listener
  */
 jMVP.prototype.addModelListener = function() {
-    this.model.onModelUpdated = function(sKey, vValue) {
-        this.view.update(sKey, vValue);
+    this.model.onModelUpdated = function(key, value) {
+        this.view.update(key, value);
     }.bind(this);
 };
 
@@ -63,8 +63,8 @@ jMVP.prototype.addModelListener = function() {
  * Loop through all original data and update the view accordingly
  */
 jMVP.prototype.applyModelToView = function() {
-    jMVP.each(this.oRawModel, function(sKey, vValue) {
-        this.view.update(sKey, vValue);
+    jMVP.each(this.rawModel, function(key, value) {
+        this.view.update(key, value);
     }, this);
 };
 
@@ -97,7 +97,7 @@ jMVP.prototype.getPresenter = function(){
  * @returns {Object}
  */
 jMVP.prototype.getRawModel = function(){
-    return this.oRawModel;
+    return this.rawModel;
 };
 
 /**
@@ -105,7 +105,7 @@ jMVP.prototype.getRawModel = function(){
  * @returns {Object}
  */
 jMVP.prototype.getRawView = function(){
-    return this.oRawView;
+    return this.rawView;
 };
 
 /**
@@ -113,5 +113,5 @@ jMVP.prototype.getRawView = function(){
  * @returns {Object}
  */
 jMVP.prototype.getRawPresenter = function(){
-    return this.oRawPresenter;
+    return this.rawPresenter;
 };

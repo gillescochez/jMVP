@@ -1,35 +1,33 @@
 module("jMVP.Model");
 test('Data API', function() {
 
-    var oRawData = {
+    var rawData = {
             foo: 'foo',
             boo:'boo',
             arr: ['a', 'b'],
             obj: {c:'d'}
         },
-        oModel = new jMVP.Model(oRawData),
-        oData = new jMVP.Data('a'),
-        valueFromOnValueUpdated,
-        valueFromOnModelUpdated = {};
+        data = new jMVP.Data('a'),
+        valueFromOnValueUpdated;
 
     /**
      * jMVP.Data
      */
-    ok(oData.vValue, 'value property');
-    equal(oData.vValue, 'a', 'value is correct');
+    ok(data.value, 'value property');
+    equal(data.value, 'a', 'value is correct');
 
-    ok(oData.getValue, 'data getter exists');
-    ok(oData.setValue, 'data setter exists');
-    ok(oData.onValueUpdated, 'data onValueUpdated callback exists');
-    equal(typeof oData.getValue, 'function', 'getter is function');
-    equal(typeof oData.setValue, 'function', 'setter is function');
-    equal(typeof oData.onValueUpdated, 'function', 'onValueUpdated callback is function');
-    oData.onValueUpdated = function(vValue) {
-        valueFromOnValueUpdated = vValue;
+    ok(data.getValue, 'data getter exists');
+    ok(data.setValue, 'data setter exists');
+    ok(data.onValueUpdated, 'data onValueUpdated callback exists');
+    equal(typeof data.getValue, 'function', 'getter is function');
+    equal(typeof data.setValue, 'function', 'setter is function');
+    equal(typeof data.onValueUpdated, 'function', 'onValueUpdated callback is function');
+    data.onValueUpdated = function(value) {
+        valueFromOnValueUpdated = value;
     };
-    oData.setValue('A');
+    data.setValue('A');
     equal(valueFromOnValueUpdated, 'A', 'onValueUpdated return updated data');
-    equal(oData.getValue(), 'A', 'data updated returned properly');
+    equal(data.getValue(), 'A', 'data updated returned properly');
 
 
 });
@@ -43,16 +41,16 @@ test('Model API', function() {
             isBig: true,
             isRed: true
         },
-        oModel = new jMVP.Model(model),
+        modelInstance = new jMVP.Model(model),
         key;
 
     for (key in model) {
-        ok(oModel[key], key + ' exists');
-        equal(typeof oModel[key], 'function', key + ' is a function');
-        equal(oModel[key].length, 1, key + ' has 1 optional argument');
-        equal(oModel[key](), model[key], key + ' has default value');
-        oModel[key]('foo');
-        equal(oModel[key](), model[key], key + ' has updated value');
+        ok(modelInstance[key], key + ' exists');
+        equal(typeof modelInstance[key], 'function', key + ' is a function');
+        equal(modelInstance[key].length, 1, key + ' has 1 optional argument');
+        equal(modelInstance[key](), model[key], key + ' has default value');
+        modelInstance[key]('foo');
+        equal(modelInstance[key](), model[key], key + ' has updated value');
     }
 
 });
