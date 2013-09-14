@@ -91,6 +91,8 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
                 nNodesLen = aNodes ? aNodes.length : 0,
                 nNodesCount = 0;
 
+
+            // TODO implement system to remove nodes if there is too many
             if (nNodesLen === 0) {
 
                 nNodesCount = nValueLen;
@@ -110,63 +112,23 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
             aNodes = this.oNodeMap[sItemKey];
 
             jMVP.each(aNodes, function(eNode) {
-                oLoopConfig.parent.appendChild(eNode)
+                oLoopConfig.parent.appendChild(eNode);
+                this.hook(oTemplateItemConfig.hook, eNode);
             }, this);
-
-//            this.applyHooks(sReference, vValue);
-
-            console.log(aNodes);
 
         }, this);
 
-//        var oTemplate = oLoopConfig.template,
-//            sSource = oLoopConfig.source,
-//            aNodes = this.oNodeMap[sReference],
-//            nNodesLen = aNodes ? aNodes.length : 0,
-//            nNodesCount = 0;
-//
-//        if (nNodesLen === 0) {
-//
-//            nNodesCount = nValueLen;
-//
-//        } else if (nNodesLen !== nValueLen) {
-//
-//            if (nNodesLen < nValueLen) {
-//
-//                nNodesCount = nValueLen - nNodesLen;
-//
-//            } else {
-//
-//            }
-//        }
-//
-//        this.doNodes(nNodesCount, oTemplate.tag, sReference);
-//        aNodes = this.oNodeMap[sReference];
-
-//        this.applyHooks(sSource, vValue);
-
-
-//        var aNodes = this.doLoopNodes(oLoopConfig, vValue);
-
-//        console.log(aNodes);
-
+        this.applyHooks(sReference, vValue);
 
     }, this);
-
-    // loop through loop config attach to the reference
-        // using the source check if some element exists already
-            // if they do
-                // we just do the minimum required
-                // same count as value count use same element
-                // less remove some
-                // more add some
-
-            //if they don't
-                // build element for each iteration
-        // render elements
-        // apply hooks to each element or apply hook then render?
 };
 
+/**
+ * Generate and store nodes
+ * @param nCount
+ * @param sTag
+ * @param sReference
+ */
 jMVP.View.prototype.doNodes = function(nCount, sTag, sReference) {
 
     var i = 0;
@@ -237,19 +199,27 @@ jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
  */
 jMVP.View.prototype.applyHooks = function(sReference, vValue) {
 
-    jMVP.each(this.oRefMap[sReference], function(sHook, vHook) {
+    // TODO convert vValue into an array if it isn't to cleanup code below
+    var pData = vValue.constructor == Array ? vValue : [vValue];
+
+    jMVP.each(this.oRefMap[sReference] || [], function(sHook, vHook) {
 
         // text, html, display
         if (vHook[0]) {
 
-            jMVP.View.hooks[sHook](vHook, vValue);
+            jMVP.each(pData, function(sValue, nIndex) {
+                jMVP.View.hooks[sHook](vHook[nIndex], sValue);
+            });
 
             // css, attr
         } else {
             jMVP.each(vHook, function(sKey, aNodes) {
-                jMVP.View.hooks[sHook](aNodes, sKey, vValue);
+                jMVP.each(pData, function(sValue, nIndex) {
+                    jMVP.View.hooks[sHook](aNodes[nIndex], sKey, sValue);
+                });
             });
         }
+
     });
 };
 

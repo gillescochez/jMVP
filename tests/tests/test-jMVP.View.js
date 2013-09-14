@@ -134,7 +134,7 @@ test('API', function() {
     // storeLoop
     ok(oView.storeLoop, 'oView.storeLoop exists');
     equal(typeof oView.storeLoop, 'function', 'oView.storeLoop exists');
-    equal(oView.storeLoop.length, 1, '1 argument');
+    equal(oView.storeLoop.length, 2, '2 arguments');
 
     var loop = {
         source: 'a',
@@ -214,7 +214,7 @@ test('Loops', function() {
                     item: {
                         tag:'li',
                         hook: {
-                            text: 'foo[i]'
+                            text: 'foo'
                         }
                     }
                 }
@@ -236,6 +236,6 @@ test('Loops', function() {
     equal(typeof oView.doNodes, 'function', '.doNodes is a function');
     equal(oView.doNodes.length, 3, '.doNodes has 2 argument');
 
-//    oView.update('foo', ['a', 'b']);
-//    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
+    oView.update('foo', ['a', 'b']);
+    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
 });

@@ -76,17 +76,17 @@ var presenter = {
 	},
 
     liveEdit: {
-        blur: this.updatePageTitle,
-        keyup: this.updatePageTitle
-    },
-
-    updatePageTitle: function(oDOMEvent, oModel) {
-        var sValue = oDOMEvent.target.value;
-        if (oModel.pagetitle() != sValue) {
-            oModel.pagetitle(sValue);
-        }
+        blur: updatePageTitle,
+        keyup: updatePageTitle
     }
 };
+
+function updatePageTitle(oDOMEvent, oModel) {
+    var sValue = oDOMEvent.target.value;
+    if (oModel.pagetitle() != sValue) {
+        oModel.pagetitle(sValue);
+    }
+}
 
 // mix it all together
 var jmvp = new jMVP(model, view, presenter);
