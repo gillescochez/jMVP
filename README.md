@@ -11,7 +11,7 @@ jMVP Model/View/Presenter instances and make them available for manipulation.
 
 Just wanted to see what it would be like to have objects instead of HTML templates.
 
-Unit tested only for now and there is a demo.
+Unit tested only, has a fair amount of limitations and there is a demo.
 
 But yeah, "experimental" =)
 
@@ -54,7 +54,9 @@ var viewHeader = {
                 template: {
                     item: {
                         tag: 'option',
-                        text: 'items'
+                        hook: {
+                            text: 'items'
+                        }
                     }
                 }
             }
