@@ -30,9 +30,7 @@ jMVP.Presenter = function(oConfig, oView, oModel) {
     this.oConfig = oConfig;
 
 	jMVP.each(oConfig, function(sReference, oHandlers) {
-
-        // TODO check if present in view before store as handler to allow methods to be attached to the presenter in a "clean" manner
-		this.oMap[sReference] = oHandlers;
+        this.oMap[sReference] = oHandlers;
         this.view && this.bindToView(sReference);
 	}, this);
 };

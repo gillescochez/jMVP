@@ -219,7 +219,6 @@ jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
  */
 jMVP.View.prototype.applyHooks = function(sReference, vValue) {
 
-    // TODO convert vValue into an array if it isn't to cleanup code below
     var pData = vValue.constructor == Array ? vValue : [vValue];
 
     jMVP.each(this.oRefMap[sReference] || [], function(sHook, vHook) {
