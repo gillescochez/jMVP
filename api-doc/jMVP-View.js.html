@@ -26,141 +26,277 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * jMVP View object constructor
+ * Create a new jMVP.View instance
  *
- * @prop oConfig {Object} Original view object configuration
- * @prop oMap {Object} Map used for handling the update process
- * @prop eDomView {Node} The DOM representation of the view
- * @prop oNodesMap {Object} Object to store nodes for quick access
- * @prop oLoopMap {Object} Map used for the handling of loops inside the views
+ * @prop oConfig {Object} Store the original config object
+ * @prop oNodeMap {Object} Node map of created element for fast access
+ * @prop oLoopMap {Object} Store loop configuration object
+ * @prop oRefMap {Object} Store hooks and data relationships
+ * @prop eDomView {HTMLElement} The DOM equivalent of the view
  *
- * @param oConfig {Object} Representation of the view and its binding
- *
- * @example
- * var oViewConfig = {
- *      header: {
- *          text: 'Hello'
- *      }
- * };
- *
- * var oView = new jMVP.View(oViewConfig);
- *
+ * @param oConfig {Object} View configuration
+ * @param bAutoParse {Boolean} If true the View will parse
  * @constructor
  */
-jMVP.View = function(oConfig) {
-	this.oConfig = oConfig;
-	this.oMap = {};
-    this.oNodesMap = {};
+jMVP.View = function(oConfig, bAutoParse) {
+
+    if (!oConfig) {
+        jMVP.error('jMVP.View: Configuration object missing!', 101);
+        return;
+    }
+
+    this.oConfig = oConfig;
+    this.oNodeMap = {};
     this.oLoopMap = {};
-	this.eDomView = this.generate(oConfig);
+    this.oRefMap = {};
+    this.eDomView = jMVP.View.emptyDomView(oConfig);
+
+    if (bAutoParse) this.parse();
 };
 
 /**
- * Update elements which are affected by the value change
- * @param sReference {String} Model key
- * @param vValue {*} Value to be used in hooks
+ * Recursively parse the configuration object and generate nodes,
+ * ref based and loop based maps.
+ * @param [oConfig] {Object} Used if present instead of the instance oConfig
+ * @param [eParentNode] {HTMLElement} Parent to add element node into
+ */
+jMVP.View.prototype.parse = function(oConfig, eParentNode) {
+
+    jMVP.each(oConfig || this.oConfig, function(sElementId, oItemConfig) {
+
+        var eNode = this.createNode(sElementId, oItemConfig.tag);
+        this.storeNode(sElementId, eNode);
+
+        (eParentNode || this.eDomView).appendChild(eNode);
+
+        oItemConfig.children && this.parse(oItemConfig.children, eNode);
+
+        oItemConfig.hook && this.hook(oItemConfig.hook, eNode);
+
+        oItemConfig.loop && this.storeLoop(oItemConfig.loop, eNode);
+
+    }, this);
+};
+
+/**
+ * Update the view with the new value for a given reference
+ * @param sReference {String} Reference used with the hook
+ * @param vValue {*} The new value
  */
 jMVP.View.prototype.update = function(sReference, vValue) {
 
-    jMVP.each(this.oMap[sReference], function(sHookKey, vHookConfig) {
+    if (this.oRefMap[sReference]) {
 
-        if (sHookKey == 'attributes' || sHookKey == 'classNames') {
-
-            jMVP.each(vHookConfig, function(sKey, aNodes) {
-                jMVP.View.hooks[sHookKey](aNodes, vValue, sKey);
-            });
-
-        } else {
-
-            jMVP.View.hooks[sHookKey](vHookConfig, vValue);
+        if (typeof vValue == 'string' || vValue.constructor == Boolean) {
+            this.applyHooks(sReference, vValue);
         }
 
-    }, this);
-};
-
-/**
- * Generate the map and the element necessary to generate the UI (DOM)
- * @param oConfig
- * @param [eParentNode]
- * @returns {HTMLElement}
- */
-jMVP.View.prototype.generate = function(oConfig, eParentNode) {
-
-    // TODO try documentFragment approach - extra div is ugly :(
-    var eView = eParentNode || document.createElement('div');
-
-    jMVP.each(oConfig, function(sKey, vValue) {
-
-        var eNode = document.createElement(vValue.tag || 'div');
-
-        this.oNodesMap[sKey] = eNode;
-
-        eNode.className = sKey;
-
-        // handle hooks
-        this.mapHooks(sKey, vValue, eNode);
-
-        // handle loops
-        vValue.loop && this.mapLoop(sKey, vValue.loop, eNode);
-
-        // handle children
-        vValue.children && this.generate(vValue.children, eNode);
-
-        eView.appendChild(eNode);
-
-    }, this);
-
-    return eView;
-};
-
-/**
- * Map hooks to oMap
- * @param sKey {String} Key reference
- * @param oConfig {Object} Hooks config
- * @param eNode {HTMLElement}
- */
-jMVP.View.prototype.mapHooks = function(sKey, oConfig, eNode) {
-
-    jMVP.each(jMVP.View.hooks, function(sHookKey) {
-
-        if (oConfig[sHookKey]) {
-
-            // Handle attributes and classNames objects
-            if (sHookKey === 'attributes' || sHookKey === 'classNames') {
-
-                jMVP.each(oConfig[sHookKey], function(sKey, sValue) {
-                    if (!this.oMap[sValue]) this.oMap[sValue] = {};
-                    if (!this.oMap[sValue][sHookKey]) this.oMap[sValue][sHookKey] = {};
-                    if (!this.oMap[sValue][sHookKey][sKey]) this.oMap[sValue][sHookKey][sKey] = [];
-                    this.oMap[sValue][sHookKey][sKey].push(eNode);
-                }, this);
-
-            } else {
-
-                if (!this.oMap[oConfig[sHookKey]]) this.oMap[oConfig[sHookKey]] = {};
-                if (!this.oMap[oConfig[sHookKey]][sHookKey]) this.oMap[oConfig[sHookKey]][sHookKey] = [];
-                this.oMap[oConfig[sHookKey]][sHookKey].push(eNode);
-            }
+        if (vValue.constructor == Array) {
+            this.applyHooks(sReference, vValue.join(', '));
         }
-    }, this);
-};
-
-/**
- * Map loops object to oLoopMap
- * @param sKey {String} Key reference
- * @param oConfig {Object} Loop configuration object
- * @param eNode {HTMLElement}
- */
-jMVP.View.prototype.mapLoop = function(sKey, oConfig, eNode) {
-
-    if (!oConfig.source || !oConfig.template) {
-        jMVP.error('View loop object require both a source and template');
     }
 
-    this.oLoopMap[sKey] = {
-        config: oConfig,
-        node: eNode
-    };
+    if (this.oLoopMap[sReference]) {
+        this.loop(sReference, vValue);
+    }
+};
+
+/**
+ * Execute a loop config, called on update affecting loops
+ * @param sReference {String} Data source reference
+ * @param vValue {*}
+ */
+jMVP.View.prototype.loop = function(sReference, vValue) {
+
+    var nValueLen = vValue.length;
+
+    jMVP.each(this.oLoopMap[sReference], function(oLoopConfig) {
+
+        jMVP.each(oLoopConfig.template, function(sItemKey, oTemplateItemConfig) {
+
+            this.loopNodes(nValueLen, oLoopConfig, oTemplateItemConfig, sItemKey);
+
+        }, this);
+
+        this.applyHooks(sReference, vValue);
+
+    }, this);
+};
+
+/**
+ * Update stored loop nodes to match the length of the value being passed.
+ * @param nValueLen
+ * @param oLoopConfig
+ * @param oTemplateItemConfig
+ * @param sItemKey
+ */
+jMVP.View.prototype.loopNodes = function(nValueLen, oLoopConfig, oTemplateItemConfig, sItemKey) {
+
+    var aNodes = this.oNodeMap[sItemKey],
+        nNodesLen = aNodes ? aNodes.length : 0,
+        nNodesCount = 0;
+
+    if (nNodesLen === 0) nNodesCount = nValueLen;
+    else if (nNodesLen !== nValueLen) {
+
+        if (nNodesLen &lt; nValueLen) nNodesCount = nValueLen - nNodesLen;
+        else {
+
+            nNodesCount = nNodesLen - nValueLen;
+
+            var i = 0;
+            var eParentNode = oLoopConfig.parent;
+
+            for (; i &lt; nNodesCount; i++) {
+                eParentNode.removeChild(aNodes[nNodesLen - (i + 1)]);
+            }
+
+            // reset nNodesCount to avoid creation of new nodes
+            nNodesCount = 0;
+        }
+    }
+
+    aNodes = this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
+
+    jMVP.each(aNodes, function(eNode) {
+
+        oLoopConfig.parent.appendChild(eNode);
+        this.hook(oTemplateItemConfig.hook, eNode);
+
+    }, this);
+};
+
+/**
+ * Generate and store nodes
+ * @param nCount
+ * @param sTag
+ * @param sReference
+ */
+jMVP.View.prototype.doNodes = function(nCount, sTag, sReference) {
+
+    var i = 0,
+        aNodes = [];
+
+    for (; i &lt; nCount; i++) {
+
+        var eNode = this.createNode(sReference, sTag);
+        this.storeNode(sReference, eNode);
+        aNodes.push(eNode);
+    }
+
+    return aNodes;
+};
+
+/**
+ * Store a configuration loop object inside the loop map object
+ * @param oLoopConfig {Object} Loop configuration object
+ * @param eParentNode {HTMLElement} The container for the loop
+ */
+jMVP.View.prototype.storeLoop = function(oLoopConfig, eParentNode) {
+
+    // TODO handle case where source isn't defined.
+    var sSource = oLoopConfig.source;
+
+    oLoopConfig.parent = eParentNode;
+
+    if (!this.oLoopMap[sSource]) this.oLoopMap[sSource] = [];
+    this.oLoopMap[sSource].push(oLoopConfig);
+};
+
+/**
+ * Handle the hook object for a given node
+ * @param oHookConfig {Object} Hook configuration object
+ * @param eNode {HTMLElement} Node currently targeted
+ */
+jMVP.View.prototype.hook = function(oHookConfig, eNode) {
+    jMVP.each(oHookConfig, function(sHook, vValue) {
+        jMVP.View.hooks[sHook] && this.storeHook(eNode, sHook, vValue);
+    }, this);
+};
+
+/**
+ * Store hook configuration
+ * @param eNode {HTMLElement} The node targeted
+ * @param sHook {String} The hook name
+ * @param vValue {String|Object} Only an object for attr and css hooks
+ */
+jMVP.View.prototype.storeHook = function(eNode, sHook, vValue) {
+
+    if (typeof vValue == 'string') {
+
+        if (!this.oRefMap[vValue]) this.oRefMap[vValue] = {};
+        if (!this.oRefMap[vValue][sHook]) this.oRefMap[vValue][sHook] = [];
+        this.oRefMap[vValue][sHook].push(eNode);
+
+    } else {
+
+        jMVP.each(vValue, function(sKey, sValue) {
+            if (!this.oRefMap[sValue]) this.oRefMap[sValue] = {};
+            if (!this.oRefMap[sValue][sHook]) this.oRefMap[sValue][sHook] = {};
+            if (!this.oRefMap[sValue][sHook][sKey]) this.oRefMap[sValue][sHook][sKey] = [];
+            this.oRefMap[sValue][sHook][sKey].push(eNode);
+        }, this);
+    }
+};
+
+/**
+ * Apply hooks to nodes stored under the given reference
+ * @param sReference {String} Value reference mapped to nodes
+ * @param vValue {*} The value used by the hooks
+ */
+jMVP.View.prototype.applyHooks = function(sReference, vValue) {
+
+    var pData = vValue.constructor == Array ? vValue : [vValue];
+
+    jMVP.each(this.oRefMap[sReference] || [], function(sHook, vHook) {
+
+        // text, html, display
+        if (vHook[0]) {
+
+            jMVP.each(pData, function(sValue, nIndex) {
+                jMVP.View.hooks[sHook](vHook[nIndex], sValue);
+            });
+
+            // css, attr
+        } else {
+            jMVP.each(vHook, function(sKey, aNodes) {
+                jMVP.each(pData, function(sValue, nIndex) {
+                    jMVP.View.hooks[sHook](aNodes[nIndex], sKey, sValue);
+                });
+            });
+        }
+
+    });
+};
+
+/**
+ * Create a new dom element and store it in the node map
+ * @param sElementId {String} Id reference in the view used as className
+ * @param [sTagName] {String} Tag name to use to create the new element
+ */
+jMVP.View.prototype.createNode = function(sElementId, sTagName) {
+
+    var eNode = jMVP.dom.createNode(sTagName);
+    eNode.className = sElementId;
+    return eNode;
+};
+
+/**
+ * Store a node to the node map property
+ * @param sNodeId {String} Node reference
+ * @param eNode {HTMLElement} The node
+ */
+jMVP.View.prototype.storeNode = function(sNodeId, eNode) {
+
+    if (!this.oNodeMap[sNodeId]) this.oNodeMap[sNodeId] = eNode;
+    else {
+        if (this.oNodeMap[sNodeId].constructor != Array) {
+            var eExistingNode = this.oNodeMap[sNodeId];
+            this.oNodeMap[sNodeId] = [];
+            this.oNodeMap[sNodeId].push(eExistingNode);
+        }
+        this.oNodeMap[sNodeId].push(eNode);
+    }
 };
 
 /**
@@ -168,51 +304,48 @@ jMVP.View.prototype.mapLoop = function(sKey, oConfig, eNode) {
  * @param eTarget {Node} The DOM element targeted
  */
 jMVP.View.prototype.render = function(eTarget) {
+
     eTarget.appendChild(this.eDomView);
     this.eDomView = eTarget.childNodes[eTarget.childNodes.length-1];
 };
 
 /**
- * Config object getter
- * @returns {Object}
+ * Check if a node key id is in the map
+ * @param sNodeId
+ * @returns {boolean}
  */
+jMVP.View.prototype.isInMap = function(sNodeId) {
+    var vIsIn = this.oMap[sNodeId] || this.oLoopMap[sNodeId] || null;
+    return vIsIn ? true : false;
+};
+
+/*************** Getters ***************/
+
 jMVP.View.prototype.getConfig = function() {
     return this.oConfig;
 };
 
-/**
- * Map object getter
- * @returns {Object}
- */
-jMVP.View.prototype.getMap = function() {
-    return this.oMap;
+jMVP.View.prototype.getNodeMap = function() {
+    return this.oNodeMap;
 };
 
-/**
- * Check if a key is in the map
- * @param sKey
- * @returns {boolean}
- */
-jMVP.View.prototype.isInMap = function(sKey) {
-    return this.oMap[sKey] ? true : false;
+jMVP.View.prototype.getNode = function(sNodeId) {
+    return this.oNodeMap[sNodeId] || null;
 };
 
-/**
- * DOM getter
- * @param sKey
- * @returns {HTMLElement}
- */
-jMVP.View.prototype.getElement = function(sKey) {
-    return this.oNodesMap[sKey] || null;
+jMVP.View.prototype.getLoopMap = function() {
+    return this.oLoopMap;
 };
 
-/**
- * DOM getter
- * @returns {HTMLElement}
- */
-jMVP.View.prototype.getDOM = function() {
+jMVP.View.prototype.getRefMap = function() {
+    return this.oRefMap;
+};
+
+jMVP.View.prototype.getDomView = function() {
     return this.eDomView;
 };
+
+/*************** Hooks ***************/
 
 /**
  * Hooks storage for special view binding
@@ -221,44 +354,82 @@ jMVP.View.prototype.getDOM = function() {
  */
 jMVP.View.hooks = {
 
-	/**
-	 * Text update hook
-	 * @param aNodes
-	 * @param sValue
-	 */
-	text: function(aNodes, sValue) {
-		jMVP.dom(aNodes).text(sValue);
-	},
+    /**
+     * Text update hook
+     * @param aNodes {Array} Array of nodes
+     * @param sValue {String} Value to be set as text
+     */
+    text: function(aNodes, sValue) {
+        jMVP.dom(aNodes).text(sValue);
+    },
 
-	/**
-	 * HTML update hook
-	 * @param aNodes
-	 * @param sValue
-	 */
-	html: function(aNodes, sValue) {
-		jMVP.dom(aNodes).html(sValue);
-	},
+    /**
+     * HTML update hook
+     * @param aNodes {Array} Array of nodes
+     * @param sValue
+     */
+    html: function(aNodes, sValue) {
+        jMVP.dom(aNodes).html(sValue);
+    },
 
-	/**
-	 * Attributes update hook
-	 * @param aNodes
-	 * @param vValue
-	 * @param sAttrKey
-	 */
-	attributes: function(aNodes, vValue, sAttrKey) {
-		//TODO remove when undefined or null???
-		jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
-	},
+    /**
+     * Attributes update hook
+     * @param aNodes {Array} Array of nodes
+     * @param vValue
+     * @param sAttrKey
+     */
+    attr: function(aNodes, sAttrKey, vValue) {
+        jMVP.dom(aNodes)[(vValue === false || vValue === null ? 'rm' : 'set') + 'Attr'](sAttrKey, vValue);
+    },
 
-	/**
-	 * CSS classes update hook
-	 * @param aNodes
-	 * @param bValue
-	 * @param sClassName
-	 */
-	classNames: function(aNodes, bValue, sClassName) {
-		jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
-	}
+    /**
+     * CSS classes update hook
+     * @param aNodes {Array} Array of nodes
+     * @param bValue {Boolean} Decide if we remove or add the class name
+     * @param sClassName {String} CSS class name
+     */
+    css: function(aNodes, sClassName, bValue) {
+        jMVP.dom(aNodes)[(bValue ? 'add' : 'remove') + 'Class'](sClassName);
+    },
+
+    /**
+     * Show/Hide an element using the display property
+     * @param aNodes {Array} Array of nodes
+     * @param [bValue] {Boolean}
+     */
+    display: function(aNodes, bValue) {
+        jMVP.dom(aNodes).display(bValue);
+    }
+};
+
+
+/**
+ * Static method creating a new empty dom view based on a view config.
+ * Support custom id/tag/className, those options are delete from the config object after use.
+ * @param oConfig {Object} View configuration object
+ */
+jMVP.View.emptyDomView = function(oConfig) {
+
+    var eDomView;
+
+    if (oConfig.tag) {
+        eDomView = jMVP.dom.createNode(oConfig.tag);
+        delete oConfig.tag;
+    } else {
+        eDomView = jMVP.dom.createNode();
+    }
+
+    if (oConfig.id) {
+        eDomView.id = oConfig.id;
+        delete oConfig.id;
+    }
+
+    if (oConfig.className) {
+        eDomView.className = oConfig.className;
+        delete oConfig.className;
+    }
+
+    return eDomView;
 };</code></pre>
         </article>
     </section>
@@ -275,7 +446,7 @@ jMVP.View.hooks = {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sun May 19 2013 14:57:54 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sat Sep 14 2013 13:39:07 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
