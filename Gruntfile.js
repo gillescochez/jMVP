@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         'source/jMVP-Model.js',
         'source/jMVP-Presenter.js',
         'source/jMVP-tools.js',
-        'source/jMVP-View2.js',
+        'source/jMVP-View.js',
 
 //        'source/*.js',
         'build/footer.js'
