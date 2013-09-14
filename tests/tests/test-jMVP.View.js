@@ -239,6 +239,11 @@ test('Loops', function() {
     oView.update('foo', ['a', 'b']);
     equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated');
 
+    // testing adding nodes
     oView.update('foo', ['a', 'b', 'c']);
-    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li><li class="item">c</li></ul>', 'Array: Loop content updated');
+    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li><li class="item">c</li></ul>', 'Array: Loop content updated with more elements');
+
+    // testing removing nodes
+    oView.update('foo', ['a', 'b']);
+    equal(oView.getDomView().innerHTML, '<ul class="list"><li class="item">a</li><li class="item">b</li></ul>', 'Array: Loop content updated with less elements');
 });

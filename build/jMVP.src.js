@@ -672,38 +672,54 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
 
         jMVP.each(oLoopConfig.template, function(sItemKey, oTemplateItemConfig) {
 
-            var aNodes = this.oNodeMap[sItemKey],
-                nNodesLen = aNodes ? aNodes.length : 0,
-                nNodesCount = 0;
-
-
-            // TODO implement system to remove nodes if there is too many
-            if (nNodesLen === 0) {
-
-                nNodesCount = nValueLen;
-
-            } else if (nNodesLen !== nValueLen) {
-
-                if (nNodesLen < nValueLen) {
-
-                    nNodesCount = nValueLen - nNodesLen;
-
-                } else {
-
-                }
-            }
-
-            this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
-            aNodes = this.oNodeMap[sItemKey];
-
-            jMVP.each(aNodes, function(eNode) {
-                oLoopConfig.parent.appendChild(eNode);
-                this.hook(oTemplateItemConfig.hook, eNode);
-            }, this);
+            this.loopNodes(nValueLen, oLoopConfig, oTemplateItemConfig, sItemKey);
 
         }, this);
 
         this.applyHooks(sReference, vValue);
+
+    }, this);
+};
+
+/**
+ * Update stored loop nodes to match the length of the value being passed.
+ * @param nValueLen
+ * @param oLoopConfig
+ * @param oTemplateItemConfig
+ * @param sItemKey
+ */
+jMVP.View.prototype.loopNodes = function(nValueLen, oLoopConfig, oTemplateItemConfig, sItemKey) {
+
+    var aNodes = this.oNodeMap[sItemKey],
+        nNodesLen = aNodes ? aNodes.length : 0,
+        nNodesCount = 0;
+
+    if (nNodesLen === 0) nNodesCount = nValueLen;
+    else if (nNodesLen !== nValueLen) {
+
+        if (nNodesLen < nValueLen) nNodesCount = nValueLen - nNodesLen;
+        else {
+
+            nNodesCount = nNodesLen - nValueLen;
+
+            var i = 0;
+            var eParentNode = oLoopConfig.parent;
+
+            for (; i < nNodesCount; i++) {
+                eParentNode.removeChild(aNodes[nNodesLen - (i + 1)]);
+            }
+
+            // reset nNodesCount to avoid creation of new nodes
+            nNodesCount = 0;
+        }
+    }
+
+    aNodes = this.doNodes(nNodesCount, oTemplateItemConfig.tag, sItemKey);
+
+    jMVP.each(aNodes, function(eNode) {
+
+        oLoopConfig.parent.appendChild(eNode);
+        this.hook(oTemplateItemConfig.hook, eNode);
 
     }, this);
 };
@@ -716,13 +732,17 @@ jMVP.View.prototype.loop = function(sReference, vValue) {
  */
 jMVP.View.prototype.doNodes = function(nCount, sTag, sReference) {
 
-    var i = 0;
+    var i = 0,
+        aNodes = [];
 
     for (; i < nCount; i++) {
 
         var eNode = this.createNode(sReference, sTag);
         this.storeNode(sReference, eNode);
+        aNodes.push(eNode);
     }
+
+    return aNodes;
 };
 
 /**
